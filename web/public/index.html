@@ -4,6 +4,51 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" />
+    <link rel="stylesheet preload" as="style" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700;800&display=swap" />
+    <style>
+      *, *::before, *::after {
+        margin: 0;
+        padding: 0;
+        box-sizing: inherit;
+      }
+
+      html {
+        height: 100%;
+        font-size: 62.5%; /* 1rem = 10px */
+      }
+
+      body {
+        position: relative;
+        height: 100%;
+        box-sizing: border-box;
+        color: #fff;
+        font-size: 1.6rem;
+        font-family: 'Open Sans', sans-serif;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        background: rgb(8,135,191);
+        background: linear-gradient(to bottom, rgba(15,166,200,1) 0%, rgba(1,104,182,1) 100%);
+        background-attachment:fixed;
+      }
+
+      a {
+        color: #fff;
+        font-weight: 600;
+        text-decoration: none;
+      }
+
+      noscript {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 2.4rem;
+      }
+
+      #root {
+        height: 100%;
+      }
+    </style>
     <title>Chatbox</title>
   </head>
   <body>
