@@ -22,7 +22,8 @@ function App() {
     [],
   );
 
-  const send = () => {
+  const send = (event) => {
+    event.preventDefault();
     const message = inputRef.current?.value;
     if (message) inputRef.current.value = '';
 
@@ -51,10 +52,10 @@ function App() {
           );
         })}
       </ol>
-      <div>
-        <input ref={inputRef} type="text"></input>
-        <button onClick={send}>Send</button>
-      </div>
+      <form onSubmit={send}>
+        <input ref={inputRef} type="text" />
+        <button type="submit">Send</button>
+      </form>
       <button onClick={logout}>Logout</button>
     </AuthRouter>
   );
