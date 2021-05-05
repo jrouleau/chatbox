@@ -1,7 +1,10 @@
-import firebase, { db } from './firebase';
+import firebase, { auth, db } from './firebase';
 import * as React from 'react';
+import AuthRouter from './routers/AuthRouter';
 
 function App() {
+  console.log('App');
+
   const inputRef = React.useRef();
   const [messages, setMessages] = React.useState([]);
 
@@ -30,8 +33,12 @@ function App() {
     });
   };
 
+  const logout = () => {
+    auth.signOut();
+  };
+
   return (
-    <>
+    <AuthRouter>
       <ol>
         {messages.map((doc) => {
           const { author, message, time } = doc.data({
@@ -44,9 +51,12 @@ function App() {
           );
         })}
       </ol>
-      <input ref={inputRef} type="text"></input>
-      <button onClick={send}>Send</button>
-    </>
+      <div>
+        <input ref={inputRef} type="text"></input>
+        <button onClick={send}>Send</button>
+      </div>
+      <button onClick={logout}>Logout</button>
+    </AuthRouter>
   );
 }
 
