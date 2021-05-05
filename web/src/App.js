@@ -38,6 +38,10 @@ function App() {
     auth.signOut();
   };
 
+  const deleteAccount = () => {
+    auth.currentUser?.delete();
+  };
+
   return (
     <AuthRouter>
       <ol>
@@ -57,6 +61,7 @@ function App() {
         <button type="submit">Send</button>
       </form>
       <button onClick={logout}>Logout</button>
+      <button onClick={deleteAccount}>Delete Account</button>
     </AuthRouter>
   );
 }
