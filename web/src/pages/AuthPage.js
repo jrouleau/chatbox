@@ -1,7 +1,7 @@
 import { auth } from '../firebase';
 import * as React from 'react';
 
-function AuthPage() {
+export function AuthPage() {
   console.log('AuthPage');
 
   const anonymousLogin = (e) => {
@@ -18,5 +18,3 @@ function AuthPage() {
     </>
   );
 }
-
-export default AuthPage;

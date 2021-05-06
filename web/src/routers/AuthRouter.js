@@ -1,8 +1,8 @@
 import { auth } from '../firebase';
 import * as React from 'react';
-import AuthPage from '../pages/AuthPage';
+import { AuthPage } from '../pages/AuthPage';
 
-function AuthRouter({ children }) {
+export function AuthRouter({ children }) {
   console.log('AuthRouter');
 
   const [user, setUser] = React.useState(null);
@@ -15,5 +15,3 @@ function AuthRouter({ children }) {
 
   return user ? children : <AuthPage />;
 }
-
-export default AuthRouter;

@@ -1,7 +1,7 @@
 import firebase, { auth, db } from '../firebase';
 import * as React from 'react';
 
-function ChatPage() {
+export function ChatPage() {
   console.log('ChatPage');
 
   const inputRef = React.useRef();
@@ -64,5 +64,3 @@ function ChatPage() {
     </>
   );
 }
-
-export default ChatPage;
