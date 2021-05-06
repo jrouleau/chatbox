@@ -41,19 +41,10 @@ export function ChatPane({ chatId }) {
       });
   };
 
-  const logout = () => {
-    history.push('/');
-    auth.signOut();
-  };
-
-  const deleteAccount = () => {
-    history.push('/');
-    auth.currentUser?.delete();
-  };
-
   return (
     <>
       <p>ChatPane</p>
+      <button onClick={() => history.goBack()}>Back</button>
       <ol>
         {messages.map((doc) => {
           const { author, message, time } = doc.data({
@@ -76,10 +67,6 @@ export function ChatPane({ chatId }) {
         <input ref={inputRef} type="text" />
         <button type="submit">Send</button>
       </form>
-      <button disabled={auth.currentUser?.isAnonymous} onClick={logout}>
-        Logout
-      </button>
-      <button onClick={deleteAccount}>Delete Account</button>
     </>
   );
 }

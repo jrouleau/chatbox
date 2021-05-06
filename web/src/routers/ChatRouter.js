@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { ChatPane } from '../panes/ChatPane';
-import { HomePage } from '../pages/HomePage';
+import { HomePane } from '../panes/HomePane';
 
 export function ChatRouter({ children }) {
   console.log('ChatRouter');
@@ -9,7 +9,7 @@ export function ChatRouter({ children }) {
   return (
     <BrowserRouter>
       <Switch>
-        <Route path="/" exact component={HomePage} />
+        <Route path="/" exact component={HomePane} />
         <Route
           path="/:chatId"
           exact
