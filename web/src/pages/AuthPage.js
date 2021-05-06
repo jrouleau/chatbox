@@ -1,10 +1,10 @@
 import { auth } from '../firebase';
 import * as React from 'react';
 
-function LoginPage() {
-  console.log('LoginPage');
+function AuthPage() {
+  console.log('AuthPage');
 
-  const loginAnon = (e) => {
+  const anonymousLogin = (e) => {
     e.target.disabled = true;
     auth.signInAnonymously().catch((err) => {
       e.target.disabled = false;
@@ -14,9 +14,9 @@ function LoginPage() {
 
   return (
     <>
-      <button onClick={loginAnon}>Continue Anonymously</button>
+      <button onClick={anonymousLogin}>Continue Anonymously</button>
     </>
   );
 }
 
-export default LoginPage;
+export default AuthPage;

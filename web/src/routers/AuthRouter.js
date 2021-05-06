@@ -1,6 +1,6 @@
 import { auth } from '../firebase';
 import * as React from 'react';
-import LoginPage from '../pages/LoginPage';
+import AuthPage from '../pages/AuthPage';
 
 function AuthRouter({ children }) {
   console.log('AuthRouter');
@@ -13,7 +13,7 @@ function AuthRouter({ children }) {
     }),
   );
 
-  return user ? children : <LoginPage />;
+  return user ? children : <AuthPage />;
 }
 
 export default AuthRouter;
