@@ -26,11 +26,17 @@ export function ChatPage() {
     const message = inputRef.current?.value;
     if (message) inputRef.current.value = '';
 
-    db.collection('chats').doc('TODO').collection('messages').add({
-      author: auth.currentUser.displayName,
-      message,
-      time: firebase.firestore.FieldValue.serverTimestamp(),
-    });
+    db.collection('chats')
+      .doc('TODO')
+      .collection('messages')
+      .add({
+        author: {
+          displayName: auth.currentUser.displayName,
+          uid: auth.currentUser.uid,
+        },
+        message,
+        time: firebase.firestore.FieldValue.serverTimestamp(),
+      });
   };
 
   const logout = () => {
@@ -50,7 +56,13 @@ export function ChatPage() {
           });
           return (
             <li key={doc.id}>
-              {`${time.toDate().toLocaleString()} (${author}): ${message}`}
+              {`${time.toDate().toLocaleString()} ` +
+                `(${
+                  author.uid === auth.currentUser.uid
+                    ? 'me'
+                    : author.displayName
+                }): ` +
+                `${message}`}
             </li>
           );
         })}
