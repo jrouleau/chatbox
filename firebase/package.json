@@ -6,6 +6,7 @@
     "firebase-tools": "^9.10.2"
   },
   "scripts": {
+    "serve": "firebase emulators:start",
     "deploy": "firebase deploy"
   }
 }
