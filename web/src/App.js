@@ -7,10 +7,13 @@ export function App() {
   console.log('App');
 
   return (
-    <AuthRouter>
-      <NewUserRouter>
-        <ChatRouter />
-      </NewUserRouter>
-    </AuthRouter>
+    <>
+      <p>App</p>
+      <AuthRouter>
+        <NewUserRouter>
+          <ChatRouter />
+        </NewUserRouter>
+      </AuthRouter>
+    </>
   );
 }

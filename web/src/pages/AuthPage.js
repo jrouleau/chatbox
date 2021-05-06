@@ -14,6 +14,7 @@ export function AuthPage() {
 
   return (
     <>
+      <p>AuthPage</p>
       <button onClick={anonymousLogin}>Continue Anonymously</button>
     </>
   );

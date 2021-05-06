@@ -17,6 +17,7 @@ export function NewUserPage({ onSave }) {
 
   return (
     <>
+      <p>NewUserPage</p>
       <p>{`Please enter a name:`}</p>
       <form onSubmit={save}>
         <input ref={inputRef} type="text" />

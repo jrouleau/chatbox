@@ -15,6 +15,7 @@ export function HomePage() {
 
   return (
     <>
+      <p>HomePage</p>
       <p>{`Please enter a chat id:`}</p>
       <form onSubmit={enter}>
         <input ref={inputRef} type="text" />

@@ -53,6 +53,7 @@ export function ChatPage({ id }) {
 
   return (
     <>
+      <p>ChatPage</p>
       <ol>
         {messages.map((doc) => {
           const { author, message, time } = doc.data({
