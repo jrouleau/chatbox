@@ -1,6 +1,7 @@
 import * as React from 'react';
-import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { ChatPage } from '../pages/ChatPage';
+import { HomePage } from '../pages/HomePage';
 
 export function ChatRouter({ children }) {
   console.log('ChatRouter');
@@ -8,6 +9,7 @@ export function ChatRouter({ children }) {
   return (
     <BrowserRouter>
       <Switch>
+        <Route path="/" exact component={HomePage} />
         <Route
           path="/:chatId"
           exact
@@ -15,7 +17,6 @@ export function ChatRouter({ children }) {
             return <ChatPage id={match.params.chatId} />;
           }}
         />
-        <Route render={() => <Redirect to={`/TODO`} />} />
       </Switch>
     </BrowserRouter>
   );

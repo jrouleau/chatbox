@@ -1,11 +1,13 @@
 import firebase, { auth, db } from '../firebase';
 import * as React from 'react';
+import * as ReactRouter from 'react-router-dom';
 
 export function ChatPage({ id }) {
   console.log('ChatPage');
 
   const inputRef = React.useRef();
   const [messages, setMessages] = React.useState([]);
+  const history = ReactRouter.useHistory();
 
   React.useEffect(
     () =>
@@ -40,10 +42,12 @@ export function ChatPage({ id }) {
   };
 
   const logout = () => {
+    history.push('/');
     auth.signOut();
   };
 
   const deleteAccount = () => {
+    history.push('/');
     auth.currentUser?.delete();
   };
 
@@ -71,7 +75,7 @@ export function ChatPage({ id }) {
         <input ref={inputRef} type="text" />
         <button type="submit">Send</button>
       </form>
-      <button disabled={auth.currentUser.isAnonymous} onClick={logout}>
+      <button disabled={auth.currentUser?.isAnonymous} onClick={logout}>
         Logout
       </button>
       <button onClick={deleteAccount}>Delete Account</button>
