@@ -59,7 +59,9 @@ export function ChatPage() {
         <input ref={inputRef} type="text" />
         <button type="submit">Send</button>
       </form>
-      <button onClick={logout}>Logout</button>
+      <button disabled={auth.currentUser.isAnonymous} onClick={logout}>
+        Logout
+      </button>
       <button onClick={deleteAccount}>Delete Account</button>
     </>
   );
