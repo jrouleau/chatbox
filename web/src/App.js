@@ -1,6 +1,6 @@
 import * as React from 'react';
+import { DashboardPage } from './pages/DashboardPage';
 import { AuthRouter } from './routers/AuthRouter';
-import { ChatRouter } from './routers/ChatRouter';
 import { NewUserRouter } from './routers/NewUserRouter';
 
 export function App() {
@@ -11,7 +11,7 @@ export function App() {
       <p>App</p>
       <AuthRouter>
         <NewUserRouter>
-          <ChatRouter />
+          <DashboardPage />
         </NewUserRouter>
       </AuthRouter>
     </>

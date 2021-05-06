@@ -2,8 +2,8 @@ import firebase, { auth, db } from '../firebase';
 import * as React from 'react';
 import * as ReactRouter from 'react-router-dom';
 
-export function ChatPage({ id }) {
-  console.log('ChatPage');
+export function ChatPane({ chatId }) {
+  console.log('ChatPane');
 
   const inputRef = React.useRef();
   const [messages, setMessages] = React.useState([]);
@@ -13,14 +13,14 @@ export function ChatPage({ id }) {
     () =>
       db
         .collection('chats')
-        .doc(id)
+        .doc(chatId)
         .collection('messages')
         .orderBy('time', 'desc')
         .limit(10)
         .onSnapshot((snap) => {
           setMessages(snap.docs.reverse());
         }),
-    [id],
+    [chatId],
   );
 
   const send = (event) => {
@@ -29,7 +29,7 @@ export function ChatPage({ id }) {
     if (message) inputRef.current.value = '';
 
     db.collection('chats')
-      .doc(id)
+      .doc(chatId)
       .collection('messages')
       .add({
         author: {
@@ -53,7 +53,7 @@ export function ChatPage({ id }) {
 
   return (
     <>
-      <p>ChatPage</p>
+      <p>ChatPane</p>
       <ol>
         {messages.map((doc) => {
           const { author, message, time } = doc.data({

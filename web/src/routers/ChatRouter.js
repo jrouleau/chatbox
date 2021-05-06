@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import { ChatPage } from '../pages/ChatPage';
+import { ChatPane } from '../panes/ChatPane';
 import { HomePage } from '../pages/HomePage';
 
 export function ChatRouter({ children }) {
@@ -14,7 +14,7 @@ export function ChatRouter({ children }) {
           path="/:chatId"
           exact
           render={({ match }) => {
-            return <ChatPage id={match.params.chatId} />;
+            return <ChatPane chatId={match.params.chatId} />;
           }}
         />
       </Switch>
