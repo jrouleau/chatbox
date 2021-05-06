@@ -1,0 +1,11 @@
+{
+  "name": "firebase",
+  "version": "0.1.0",
+  "private": true,
+  "devDependencies": {
+    "firebase-tools": "^9.10.2"
+  },
+  "scripts": {
+    "deploy": "firebase deploy"
+  }
+}
