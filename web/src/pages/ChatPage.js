@@ -27,7 +27,7 @@ export function ChatPage() {
     if (message) inputRef.current.value = '';
 
     db.collection('chats').doc('TODO').collection('messages').add({
-      author: 'TODO',
+      author: auth.currentUser.displayName,
       message,
       time: firebase.firestore.FieldValue.serverTimestamp(),
     });
