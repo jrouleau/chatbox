@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { ChatPage } from './pages/ChatPage';
 import { AuthRouter } from './routers/AuthRouter';
+import { ChatRouter } from './routers/ChatRouter';
 import { NewUserRouter } from './routers/NewUserRouter';
 
 export function App() {
@@ -9,7 +9,7 @@ export function App() {
   return (
     <AuthRouter>
       <NewUserRouter>
-        <ChatPage />
+        <ChatRouter />
       </NewUserRouter>
     </AuthRouter>
   );

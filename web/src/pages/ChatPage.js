@@ -1,7 +1,7 @@
 import firebase, { auth, db } from '../firebase';
 import * as React from 'react';
 
-export function ChatPage() {
+export function ChatPage({ id }) {
   console.log('ChatPage');
 
   const inputRef = React.useRef();
@@ -11,14 +11,14 @@ export function ChatPage() {
     () =>
       db
         .collection('chats')
-        .doc('TODO')
+        .doc(id)
         .collection('messages')
         .orderBy('time', 'desc')
         .limit(10)
         .onSnapshot((snap) => {
           setMessages(snap.docs.reverse());
         }),
-    [],
+    [id],
   );
 
   const send = (event) => {
@@ -27,7 +27,7 @@ export function ChatPage() {
     if (message) inputRef.current.value = '';
 
     db.collection('chats')
-      .doc('TODO')
+      .doc(id)
       .collection('messages')
       .add({
         author: {
