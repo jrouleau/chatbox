@@ -28,17 +28,11 @@ export function ChatPane({ chatId }) {
     const message = inputRef.current?.value;
     if (message) inputRef.current.value = '';
 
-    db.collection('chats')
-      .doc(chatId)
-      .collection('messages')
-      .add({
-        author: {
-          displayName: auth.currentUser.displayName,
-          uid: auth.currentUser.uid,
-        },
-        message,
-        time: firebase.firestore.FieldValue.serverTimestamp(),
-      });
+    db.collection('chats').doc(chatId).collection('messages').add({
+      author: auth.currentUser.uid,
+      message,
+      time: firebase.firestore.FieldValue.serverTimestamp(),
+    });
   };
 
   return (
@@ -53,11 +47,7 @@ export function ChatPane({ chatId }) {
           return (
             <li key={doc.id}>
               {`${time.toDate().toLocaleString()} ` +
-                `(${
-                  author.uid === auth.currentUser.uid
-                    ? 'me'
-                    : author.displayName
-                }): ` +
+                `(${author.slice(0, 4)}): ` +
                 `${message}`}
             </li>
           );

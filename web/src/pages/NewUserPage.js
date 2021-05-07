@@ -1,4 +1,4 @@
-import { auth } from '../firebase';
+import { auth, db } from '../firebase';
 import * as React from 'react';
 
 export function NewUserPage({ onSave }) {
@@ -9,9 +9,14 @@ export function NewUserPage({ onSave }) {
   const save = async (event) => {
     event.preventDefault();
     const name = inputRef.current?.value;
-    await auth.currentUser.updateProfile({
-      displayName: name,
-    });
+    if (auth.currentUser) {
+      await db.collection('users').doc(auth.currentUser.uid).set(
+        {
+          displayName: name,
+        },
+        { merge: true },
+      );
+    }
     if (typeof onSave === 'function') onSave();
   };
 
