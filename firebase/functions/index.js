@@ -104,11 +104,11 @@ const leaveChat = async (data, context) => {
 };
 exports.leaveChat = functions.https.onCall(leaveChat);
 
-exports.deleteUser = functions
+exports.onDeleteAuth = functions
     .auth
     .user()
-    .onDelete((auth) => Promise.all([
-      db
+    .onDelete(async (auth) => {
+      await db
           .collection("chats")
           .where(`users.${auth.uid}`, "==", true)
           .get()
@@ -118,10 +118,38 @@ exports.deleteUser = functions
               p.push(leaveChat({chatId: chat.id}, {auth})),
             );
             return Promise.all(p);
-          }),
-      db
+          });
+      await
+      await db
           .collection("users")
           .doc(auth.uid)
-          .delete(),
-      // TODO: delete messages
-    ]));
+          .delete();
+    });
+
+exports.onDeleteUser = functions
+    .firestore
+    .document("/users/{uid}")
+    .onDelete(async (user) => {
+      db
+          .collection("users")
+          .doc(user.id)
+          .collection("chats")
+          .get()
+          .then((chats) => {
+            const p = [];
+            chats.forEach((chat) => p.push(chat.ref.delete()));
+            return Promise.all(p);
+          });
+    });
+
+exports.onDeleteUserChat = functions
+    .firestore
+    .document("/users/{uid}/chats/{chatId}")
+    .onDelete(async (chat) => {
+      const messages = await chat.ref.collection("messages").get();
+      const p = [];
+      messages.forEach((message) => {
+        p.push(message.ref.delete());
+      });
+      return Promise.all(p);
+    });
