@@ -28,4 +28,8 @@ if (window.location.hostname === 'localhost') {
   functions.useEmulator('localhost', 5001);
 }
 
+if (process.env.NODE_ENV === 'development') {
+  auth.setPersistence(firebase.auth.Auth.Persistence.SESSION);
+}
+
 export default firebase;
