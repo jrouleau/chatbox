@@ -30,6 +30,10 @@ if (window.location.hostname === 'localhost') {
 
 if (process.env.NODE_ENV === 'development') {
   auth.setPersistence(firebase.auth.Auth.Persistence.SESSION);
+  global.firebase = firebase;
+  global.auth = auth;
+  global.db = db;
+  global.functions = functions;
 }
 
 export default firebase;
