@@ -12,15 +12,24 @@ const distributeMessage = async ({chatId, messageId, message}) => {
       .then((doc) => doc.data() || {});
   const users = Object.keys(chat.users || {});
 
-  return Promise.all(users.map((userId) => db
-      .collection("users")
-      .doc(userId)
-      .collection("chats")
-      .doc(chatId)
-      .collection("messages")
-      .doc(messageId)
-      .set(message),
-  ));
+  return Promise.all(users.map((userId) => Promise.all([
+    db
+        .collection("users")
+        .doc(userId)
+        .collection("chats")
+        .doc(chatId)
+        .collection("messages")
+        .doc(messageId)
+        .set(message),
+    db
+        .collection("users")
+        .doc(userId)
+        .collection("chats")
+        .doc(chatId)
+        .set({
+          lastMessage: message,
+        }, {merge: true}),
+  ])));
 };
 exports.sendMessage = functions.https.onCall(async (data, context) => {
   const {chatId, messageId, text} = data;
