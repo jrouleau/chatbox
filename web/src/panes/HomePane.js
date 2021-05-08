@@ -2,6 +2,7 @@ import { auth } from '../firebase';
 import * as React from 'react';
 import * as ReactRouter from 'react-router-dom';
 import { EnterChatId } from '../components/EnterChatId';
+import { ChatList } from '../components/ChatList';
 
 export function HomePane() {
   console.log('HomePane');
@@ -26,6 +27,7 @@ export function HomePane() {
       </button>
       <button onClick={deleteAccount}>Delete Account</button>
       <EnterChatId />
+      <ChatList />
     </>
   );
 }
