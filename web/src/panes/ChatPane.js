@@ -1,4 +1,4 @@
-import firebase, { auth, db } from '../firebase';
+import firebase, { auth, db, functions } from '../firebase';
 import * as React from 'react';
 import * as ReactRouter from 'react-router-dom';
 import { Loading } from '../components/Loading';
@@ -73,10 +73,9 @@ export function ChatPane({ chatId }) {
     const text = inputRef.current?.value;
     if (text) {
       inputRef.current.value = '';
-      messagesRef.add({
-        author: auth.currentUser.uid,
+      functions.httpsCallable('sendMessage')({
+        chatId,
         text,
-        time: firebase.firestore.FieldValue.serverTimestamp(),
       });
     }
   };
