@@ -5,14 +5,13 @@ admin.initializeApp();
 const db = admin.firestore();
 
 exports.sendMessage = functions.https.onCall(async (data, context) => {
-  const {chatId, text} = data;
+  const {chatId, messageId, text} = data;
   const {auth} = context;
 
-  const messageId = db.collection("id").doc().id;
   const message = {
     author: auth.uid,
     text,
-    time: admin.firestore.FieldValue.serverTimestamp(),
+    time: admin.firestore.Timestamp.now(),
   };
 
   const chat = await db

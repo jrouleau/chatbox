@@ -38,6 +38,10 @@ export function ChatPane({ chatId }) {
         .orderBy('time', 'desc')
         .limit(10)
         .onSnapshot((snap) => {
+          setSending((prev) => {
+            const ids = snap.docs.map((doc) => doc.id);
+            return prev.filter((msg) => !ids.includes(msg.id));
+          });
           setMessages(
             snap.docs.reverse().map((doc) => ({
               ...doc.data({ serverTimestamps: 'estimate' }),
@@ -68,15 +72,28 @@ export function ChatPane({ chatId }) {
     );
   };
 
+  const [sending, setSending] = React.useState([]);
   const send = (event) => {
     event.preventDefault();
     const text = inputRef.current?.value;
     if (text) {
       inputRef.current.value = '';
+      const messageId = db.collection('id').doc().id;
+
       functions.httpsCallable('sendMessage')({
         chatId,
+        messageId,
         text,
       });
+
+      const message = {
+        id: messageId,
+        author: auth.currentUser.uid,
+        text: `${text} (SENDING)`,
+        time: firebase.firestore.Timestamp.now(),
+      };
+
+      setSending((prev) => [...prev, message]);
     }
   };
 
@@ -92,13 +109,15 @@ export function ChatPane({ chatId }) {
       )}
       <span> ({Object.keys(chat.users || {}).length})</span>
       <ol>
-        {messages.map(({ id, author, text, time }) => (
-          <li key={id}>
-            {`${time.toDate().toLocaleString()} ` +
-              `(${author.slice(0, 4)}) ` +
-              `${text}`}
-          </li>
-        ))}
+        {[...messages, ...sending]
+          .slice(-10)
+          .map(({ id, author, text, time }) => (
+            <li key={id}>
+              {`${time.toDate().toLocaleString()} ` +
+                `(${author.slice(0, 4)}) ` +
+                `${text}`}
+            </li>
+          ))}
       </ol>
       {(chat.users || {})[auth.currentUser.uid] && (
         <form onSubmit={send}>
