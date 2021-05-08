@@ -32,26 +32,54 @@ exports.sendMessage = functions.https.onCall(async (data, context) => {
   ));
 });
 
+const joinChat = async (data, context) => {
+  const {chatId} = data;
+  const {auth} = context;
+
+  db
+      .collection("chats")
+      .doc(chatId)
+      .set({
+        users: {
+          [auth.uid]: true,
+        },
+      }, {merge: true});
+};
+exports.joinChat = functions.https.onCall(joinChat);
+
+const leaveChat = async (data, context) => {
+  const {chatId} = data;
+  const {auth} = context;
+
+  db
+      .collection("chats")
+      .doc(chatId)
+      .set({
+        users: {
+          [auth.uid]: admin.firestore.FieldValue.delete(),
+        },
+      }, {merge: true});
+};
+exports.leaveChat = functions.https.onCall(leaveChat);
+
 exports.deleteUser = functions
     .auth
     .user()
-    .onDelete(({uid}) => Promise.all([
+    .onDelete((auth) => Promise.all([
       db
           .collection("chats")
-          .where(`users.${uid}`, "==", true)
+          .where(`users.${auth.uid}`, "==", true)
           .get()
-          .then((snap) => {
+          .then((chats) => {
             const p = [];
-            snap.forEach((doc) => p.push(doc.ref.set({
-              users: {
-                [uid]: admin.firestore.FieldValue.delete(),
-              },
-            }, {merge: true})));
+            chats.forEach((chat) =>
+              p.push(leaveChat({chatId: chat.id}, {auth})),
+            );
             return Promise.all(p);
           }),
       db
           .collection("users")
-          .doc(uid)
+          .doc(auth.uid)
           .delete(),
       // TODO: delete messages
     ]));

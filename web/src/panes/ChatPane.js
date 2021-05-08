@@ -52,24 +52,16 @@ export function ChatPane({ chatId }) {
     [messagesRef],
   );
 
-  const join = () => {
-    chatRef.set(
-      {
-        users: { [auth.currentUser.uid]: true },
-      },
-      { merge: true },
-    );
+  const join = async (event) => {
+    event.target.disabled = true;
+    await functions.httpsCallable('joinChat')({ chatId });
+    event.target.disabled = false;
   };
 
-  const leave = () => {
-    chatRef.set(
-      {
-        users: {
-          [auth.currentUser.uid]: firebase.firestore.FieldValue.delete(),
-        },
-      },
-      { merge: true },
-    );
+  const leave = async (event) => {
+    event.target.disabled = true;
+    await functions.httpsCallable('leaveChat')({ chatId });
+    event.target.disabled = false;
   };
 
   const [sending, setSending] = React.useState([]);
