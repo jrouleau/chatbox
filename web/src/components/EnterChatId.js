@@ -16,8 +16,21 @@ export function EnterChatId() {
   return (
     <>
       <p>{`Please enter a chat id:`}</p>
-      <form onSubmit={enter}>
-        <input ref={inputRef} type="text" defaultValue="dev" />
+      <form
+        onSubmit={enter}
+        style={{
+          display: 'flex',
+          flexDirection: 'row',
+        }}
+      >
+        <input
+          ref={inputRef}
+          type="text"
+          defaultValue="dev"
+          style={{
+            width: '100%',
+          }}
+        />
         <button type="submit">Enter</button>
       </form>
     </>

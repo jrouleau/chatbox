@@ -4,7 +4,7 @@ import * as ReactRouter from 'react-router-dom';
 import { EnterChatId } from '../components/EnterChatId';
 import { ChatList } from '../components/ChatList';
 
-export function HomePane() {
+export function HomePane({ style }) {
   console.log('HomePane');
 
   const history = ReactRouter.useHistory();
@@ -20,14 +20,27 @@ export function HomePane() {
   };
 
   return (
-    <>
+    <div
+      style={{
+        ...style,
+        display: 'flex',
+        flexDirection: 'column',
+      }}
+    >
       <p>HomePane</p>
-      <button disabled={auth.currentUser?.isAnonymous} onClick={logout}>
-        Logout
-      </button>
-      <button onClick={deleteAccount}>Delete Account</button>
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'row',
+        }}
+      >
+        <button disabled={auth.currentUser?.isAnonymous} onClick={logout}>
+          Logout
+        </button>
+        <button onClick={deleteAccount}>Delete Account</button>
+      </div>
       <EnterChatId />
       <ChatList />
-    </>
+    </div>
   );
 }

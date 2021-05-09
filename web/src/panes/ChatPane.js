@@ -3,7 +3,7 @@ import * as React from 'react';
 import * as ReactRouter from 'react-router-dom';
 import { Loading } from '../components/Loading';
 
-export function ChatPane({ chatId }) {
+export function ChatPane({ style, chatId }) {
   console.log('ChatPane');
 
   const inputRef = React.useRef();
@@ -13,13 +13,12 @@ export function ChatPane({ chatId }) {
   const chatRef = React.useMemo(() => db.collection('chats').doc(chatId), [
     chatId,
   ]);
-  React.useEffect(
-    () =>
-      chatRef.onSnapshot((doc) => {
-        setChat(doc.data() || {});
-      }),
-    [chatRef],
-  );
+  React.useEffect(() => {
+    setChat();
+    return chatRef.onSnapshot((doc) => {
+      setChat(doc.data() || {});
+    });
+  }, [chatRef]);
 
   const [messages, setMessages] = React.useState([]);
   const messagesRef = React.useMemo(
@@ -91,20 +90,38 @@ export function ChatPane({ chatId }) {
 
   if (!chat) return <Loading />;
   return (
-    <>
+    <div
+      style={{
+        ...style,
+        display: 'flex',
+        flexDirection: 'column',
+      }}
+    >
       <p>ChatPane</p>
-      <button onClick={() => history.goBack()}>Back</button>
-      {!(chat.users || {})[auth.currentUser.uid] ? (
-        <button onClick={join}>Join Chat</button>
-      ) : (
-        <button onClick={leave}>Leave Chat</button>
-      )}
-      <span> ({Object.keys(chat.users || {}).length})</span>
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'row',
+        }}
+      >
+        <button onClick={() => history.goBack()}>Back</button>
+        {!(chat.users || {})[auth.currentUser.uid] ? (
+          <button onClick={join}>Join Chat</button>
+        ) : (
+          <button onClick={leave}>Leave Chat</button>
+        )}
+        <span> ({Object.keys(chat.users || {}).length})</span>
+      </div>
       <ol>
         {[...messages, ...sending]
           .slice(-10)
           .map(({ id, author, text, time }) => (
-            <li key={id}>
+            <li
+              key={id}
+              style={{
+                listStyleType: 'none',
+              }}
+            >
               {`${time.toDate().toLocaleString()} ` +
                 `(${author.slice(0, 4)}) ` +
                 `${text}`}
@@ -117,6 +134,6 @@ export function ChatPane({ chatId }) {
           <button type="submit">Send</button>
         </form>
       )}
-    </>
+    </div>
   );
 }
