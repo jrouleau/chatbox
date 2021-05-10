@@ -34,9 +34,12 @@ export function ChatList() {
     <>
       <p>ChatList</p>
       <ol>
-        {chats.map(({ id }) => (
+        {chats.map(({ id, lastMessage }) => (
           <li key={id}>
             <button onClick={() => selectChat(id)}>{id}</button>
+            <span>
+              {` (${lastMessage?.author.slice(0, 4)}) ${lastMessage?.text}`}
+            </span>
           </li>
         ))}
       </ol>
