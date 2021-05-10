@@ -10,30 +10,25 @@ export function ChatPane({ style, chatId }) {
   const history = ReactRouter.useHistory();
 
   const [chat, setChat] = React.useState();
-  const chatRef = React.useMemo(() => db.collection('chats').doc(chatId), [
-    chatId,
-  ]);
   React.useEffect(() => {
     setChat();
-    return chatRef.onSnapshot((doc) => {
-      setChat(doc.data() || {});
-    });
-  }, [chatRef]);
+    return db
+      .collection('chats')
+      .doc(chatId)
+      .onSnapshot((doc) => {
+        setChat(doc.data() || {});
+      });
+  }, [chatId]);
 
   const [messages, setMessages] = React.useState([]);
-  const messagesRef = React.useMemo(
+  React.useEffect(
     () =>
       db
         .collection('users')
         .doc(auth.currentUser.uid)
         .collection('chats')
         .doc(chatId)
-        .collection('messages'),
-    [chatId],
-  );
-  React.useEffect(
-    () =>
-      messagesRef
+        .collection('messages')
         .orderBy('time', 'desc')
         .limit(10)
         .onSnapshot((snap) => {
@@ -48,7 +43,7 @@ export function ChatPane({ style, chatId }) {
             })),
           );
         }),
-    [messagesRef],
+    [chatId],
   );
 
   const join = async (event) => {
