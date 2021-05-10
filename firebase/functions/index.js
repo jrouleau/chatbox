@@ -27,6 +27,7 @@ const distributeMessage = async ({chatId, messageId, message}) => {
         .collection("chats")
         .doc(chatId)
         .set({
+          unread: {[messageId]: true},
           lastMessage: message,
         }, {merge: true}),
   ])));

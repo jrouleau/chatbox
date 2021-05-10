@@ -20,6 +20,27 @@ export function ChatPane({ style, chatId }) {
       });
   }, [chatId]);
 
+  // const [userChat, setUserChat] = React.useState();
+  React.useEffect(() => {
+    // setUserChat();
+    const chatRef = db
+      .collection('users')
+      .doc(auth.currentUser.uid)
+      .collection('chats')
+      .doc(chatId);
+
+    return chatRef.onSnapshot((doc) => {
+      const data = doc.data() || {};
+      // setUserChat(data);
+      if (Object.keys(data.unread || {}).length > 0) {
+        chatRef.set(
+          { unread: firebase.firestore.FieldValue.delete() },
+          { merge: true },
+        );
+      }
+    });
+  }, [chatId]);
+
   const [messages, setMessages] = React.useState([]);
   React.useEffect(
     () =>
