@@ -1,13 +1,13 @@
 import * as React from 'react';
 import { EnterChatId } from '../components/EnterChatId';
 
-export function HomePage() {
-  console.log('HomePage');
+export function IndexPage({ style }) {
+  console.log('IndexPage');
 
   return (
-    <>
-      <p>HomePage</p>
+    <div style={style}>
+      <p>IndexPage</p>
       <EnterChatId />
-    </>
+    </div>
   );
 }

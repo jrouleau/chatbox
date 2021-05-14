@@ -9,7 +9,7 @@ const distributeMessage = async ({chatId, messageId, message}) => {
       .collection("chats")
       .doc(chatId)
       .get()
-      .then((doc) => doc.data() || {});
+      .then((d) => d.data() || {});
   const users = Object.keys(chat.users || {});
 
   return Promise.all(users.map((userId) => Promise.all([

@@ -1,23 +1,15 @@
-import { auth, db } from '../firebase';
 import * as React from 'react';
+import { useMe } from '../contexts/MeCtx';
 
-export function NewUserPage({ onSave }) {
+export function NewUserPage({ style }) {
   console.log('NewUserPage');
 
-  const inputRef = React.useRef();
+  const me = useMe();
 
-  const save = async (event) => {
-    event.preventDefault();
-    const name = inputRef.current?.value;
-    if (auth.currentUser) {
-      await db.collection('users').doc(auth.currentUser.uid).set(
-        {
-          displayName: name,
-        },
-        { merge: true },
-      );
-    }
-    if (typeof onSave === 'function') onSave();
+  const displayNameRef = React.useRef();
+  const save = async (e) => {
+    e.preventDefault();
+    await me.set('displayName', displayNameRef.current?.value);
   };
 
   return (
@@ -25,7 +17,7 @@ export function NewUserPage({ onSave }) {
       <p>NewUserPage</p>
       <p>{`Please enter a name:`}</p>
       <form onSubmit={save}>
-        <input ref={inputRef} type="text" />
+        <input ref={displayNameRef} type="text" />
         <button type="submit">Save</button>
       </form>
     </>

@@ -10,7 +10,7 @@ export function EnterChatId() {
   const enter = (event) => {
     event.preventDefault();
     const id = inputRef.current?.value;
-    history.push(`/${id}`);
+    history.replace(`/${id}`);
   };
 
   return (
