@@ -10,7 +10,7 @@ export function ChatListItem({ chat }) {
     <li>
       <button onClick={() => history.replace(`/${chat.id}`)}>
         {`${chat.id}:` +
-          ` (${chat.lastMessage?.author.slice(0, 4)})` +
+          ` (${chat.lastMessage?.author.displayName})` +
           ` ${chat.lastMessage?.text}` +
           ` (${Object.keys(chat.unread || {}).length})`}
       </button>

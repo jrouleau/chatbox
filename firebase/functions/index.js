@@ -36,8 +36,17 @@ exports.sendMessage = functions.https.onCall(async (data, context) => {
   const {chatId, messageId, text} = data;
   const {auth} = context;
 
+  const user = await db
+      .collection("users")
+      .doc(auth.uid)
+      .get()
+      .then((d) => d.data());
+
   const message = {
-    author: auth.uid,
+    author: {
+      id: auth.uid,
+      displayName: user.displayName,
+    },
     text,
     time: admin.firestore.Timestamp.now(),
   };
@@ -53,22 +62,33 @@ const joinChat = async (data, context) => {
   const {chatId} = data;
   const {auth} = context;
 
-  const messageId = db.collection("id").doc().id;
-  const message = {
-    author: auth.uid,
-    text: "has joined.",
-    time: admin.firestore.Timestamp.now(),
-  };
+  const user = await db
+      .collection("users")
+      .doc(auth.uid)
+      .get()
+      .then((d) => d.data());
 
   await db
       .collection("chats")
       .doc(chatId)
       .set({
         users: {
-          [auth.uid]: true,
+          [auth.uid]: {
+            displayName: user.displayName,
+            time: admin.firestore.Timestamp.now(),
+          },
         },
       }, {merge: true});
 
+  const messageId = db.collection("id").doc().id;
+  const message = {
+    author: {
+      id: auth.uid,
+      displayName: user.displayName,
+    },
+    text: "has joined.",
+    time: admin.firestore.Timestamp.now(),
+  };
   return distributeMessage({
     chatId,
     messageId,
@@ -81,13 +101,21 @@ const leaveChat = async (data, context) => {
   const {chatId} = data;
   const {auth} = context;
 
+  const user = await db
+      .collection("users")
+      .doc(auth.uid)
+      .get()
+      .then((d) => d.data());
+
   const messageId = db.collection("id").doc().id;
   const message = {
-    author: auth.uid,
+    author: {
+      id: auth.uid,
+      displayName: user.displayName,
+    },
     text: "has left.",
     time: admin.firestore.Timestamp.now(),
   };
-
   await distributeMessage({
     chatId,
     messageId,
@@ -111,7 +139,7 @@ exports.onDeleteAuth = functions
     .onDelete(async (auth) => {
       await db
           .collection("chats")
-          .where(`users.${auth.uid}`, "==", true)
+          .where(`users.${auth.uid}`, "!=", false)
           .get()
           .then((chats) => {
             const p = [];
@@ -120,7 +148,6 @@ exports.onDeleteAuth = functions
             );
             return Promise.all(p);
           });
-      await
       await db
           .collection("users")
           .doc(auth.uid)

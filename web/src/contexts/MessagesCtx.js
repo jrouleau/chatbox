@@ -50,7 +50,10 @@ export const ProvideMessages = ({ children }) => {
           ...p,
           {
             id,
-            author: me.id,
+            author: {
+              id: me.id,
+              displayName: me.displayName,
+            },
             text,
             time: firebase.firestore.Timestamp.now(),
             isSending: true,
@@ -58,7 +61,7 @@ export const ProvideMessages = ({ children }) => {
         ]);
       }
     },
-    [me.id, chat.id],
+    [me.id, me.displayName, chat.id],
   );
 
   const iface = React.useMemo(
