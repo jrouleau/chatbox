@@ -5,10 +5,19 @@ export function MessageListItem({ message }) {
 
   return (
     <li style={{ listStyleType: 'none' }}>
-      {`${message.time.toDate().toLocaleString()}` +
-        ` (${message.author.displayName})` +
-        ` ${message.text}` +
-        `${message.isSending ? ' (SENDING)' : ''}`}
+      {message.misc === 'join' ? (
+        <span>{`${message.author.displayName} has enterred the chat.`}</span>
+      ) : message.misc === 'leave' ? (
+        <span>{`${message.author.displayName} has left the chat.`}</span>
+      ) : message.text ? (
+        <span>
+          {`${message.time.toDate().toLocaleString()}` +
+            ` (${message.author.displayName})` +
+            ` ${message.text}`}
+        </span>
+      ) : (
+        <span>{`Invalid message.`}</span>
+      )}
     </li>
   );
 }

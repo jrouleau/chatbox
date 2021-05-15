@@ -21,15 +21,17 @@ const distributeMessage = async ({chatId, messageId, message}) => {
         .collection("messages")
         .doc(messageId)
         .set(message),
-    db
-        .collection("users")
-        .doc(userId)
-        .collection("chats")
-        .doc(chatId)
-        .set({
-          unread: {[messageId]: true},
-          lastMessage: message,
-        }, {merge: true}),
+    !message.misc && (
+      db
+          .collection("users")
+          .doc(userId)
+          .collection("chats")
+          .doc(chatId)
+          .set({
+            unread: {[messageId]: true},
+            lastMessage: message,
+          }, {merge: true})
+    ),
   ])));
 };
 exports.sendMessage = functions.https.onCall(async (data, context) => {
@@ -86,7 +88,7 @@ const joinChat = async (data, context) => {
       id: auth.uid,
       displayName: user.displayName,
     },
-    text: "has joined.",
+    misc: "join",
     time: admin.firestore.Timestamp.now(),
   };
   return distributeMessage({
@@ -113,7 +115,7 @@ const leaveChat = async (data, context) => {
       id: auth.uid,
       displayName: user.displayName,
     },
-    text: "has left.",
+    misc: "leave",
     time: admin.firestore.Timestamp.now(),
   };
   await distributeMessage({
