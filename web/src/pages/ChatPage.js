@@ -2,6 +2,7 @@ import * as React from 'react';
 import * as ReactRouter from 'react-router-dom';
 import { MessageList } from '../components/MessageList';
 import { useChat } from '../contexts/ChatCtx';
+import { useMe } from '../contexts/MeCtx';
 import { useMessages } from '../contexts/MessagesCtx';
 import { LoadingPage } from './LoadingPage';
 
@@ -9,12 +10,17 @@ export function ChatPage({ style }) {
   console.log('ChatPage');
 
   const history = ReactRouter.useHistory();
+  const me = useMe();
   const chat = useChat();
   const messages = useMessages();
 
   const join = async (e) => {
     e.target.disabled = true;
-    await chat.join();
+    if (me.isAuth) {
+      await chat.join();
+    } else {
+      history.push('/login');
+    }
     e.target.disabled = false;
   };
 
@@ -41,6 +47,7 @@ export function ChatPage({ style }) {
   return (
     <div style={{ ...style, display: 'flex', flexDirection: 'column' }}>
       <p>ChatPage</p>
+      <p>{`chat: ${chat.id}`}</p>
       <div style={{ display: 'flex', flexDirection: 'row' }}>
         <button onClick={() => history.replace('/')}>Back</button>
         {!chat.isJoined ? (

@@ -7,5 +7,5 @@ export function NewUserRouter({ children }) {
 
   const me = useMe();
 
-  return !me.displayName ? <NewUserPage /> : children;
+  return me.isAuth && !me.displayName ? <NewUserPage /> : children;
 }

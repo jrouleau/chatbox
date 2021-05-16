@@ -23,13 +23,19 @@ export function ChatListPage({ style }) {
   return (
     <div style={{ ...style, display: 'flex', flexDirection: 'column' }}>
       <p>ChatListPage</p>
-      <p>{`Me: ${me.displayName}`}</p>
-      <div style={{ display: 'flex', flexDirection: 'row' }}>
-        <button disabled={me.isAnonymous} onClick={logout}>
-          Logout
-        </button>
-        <button onClick={deleteAccount}>Delete Account</button>
-      </div>
+      {!me.isAuth ? (
+        <button onClick={() => history.push('/login')}>Login</button>
+      ) : (
+        <>
+          <p>{`Me: ${me.displayName}`}</p>
+          <div style={{ display: 'flex', flexDirection: 'row' }}>
+            <button disabled={me.isAnonymous} onClick={logout}>
+              Logout
+            </button>
+            <button onClick={deleteAccount}>Delete Account</button>
+          </div>
+        </>
+      )}
       <EnterChatId />
       <ChatList />
     </div>
