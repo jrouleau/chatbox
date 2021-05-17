@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { BrowserRouter, Switch } from 'react-router-dom';
 import { ProvideMe } from './contexts/MeCtx';
-import { ChatRoute } from './routes/ChatRoute';
-import { ChatListRoute } from './routes/ChatListRoute';
-import { NotFoundRoute } from './routes/NotFoundRoute';
+import { ChatRoute } from './pages/ChatPage';
+import { ChatListRoute } from './pages/ChatListPage';
+import { NotFoundRoute } from './pages/NotFoundPage';
 import { AuthRouter } from './routers/AuthRouter';
 import { NewUserRouter } from './routers/NewUserRouter';
 

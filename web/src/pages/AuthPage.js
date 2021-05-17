@@ -1,7 +1,18 @@
 import * as React from 'react';
+import { Route } from 'react-router-dom';
 import { useMe } from '../contexts/MeCtx';
 
-export function AuthPage({ style }) {
+export function AuthRoute({ style, ...props }) {
+  console.log('AuthRoute');
+
+  return (
+    <Route {...props}>
+      <AuthPage style={style} />
+    </Route>
+  );
+}
+
+function AuthPage({ style }) {
   console.log('AuthPage');
 
   const me = useMe();

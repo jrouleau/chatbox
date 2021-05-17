@@ -1,8 +1,19 @@
 import * as React from 'react';
 import * as ReactRouter from 'react-router-dom';
+import { Route } from 'react-router-dom';
 import { EnterChatId } from '../components/EnterChatId';
 
-export function IndexPage({ style }) {
+export function IndexRoute({ style, ...props }) {
+  console.log('IndexRoute');
+
+  return (
+    <Route {...props}>
+      <IndexPage style={style} />
+    </Route>
+  );
+}
+
+function IndexPage({ style }) {
   console.log('IndexPage');
 
   const history = ReactRouter.useHistory();

@@ -1,10 +1,24 @@
 import * as React from 'react';
 import * as ReactRouter from 'react-router-dom';
+import { Route } from 'react-router-dom';
+import { ProvideChats } from '../contexts/ChatsCtx';
 import { EnterChatId } from '../components/EnterChatId';
 import { ChatList } from '../components/ChatList';
 import { useMe } from '../contexts/MeCtx';
 
-export function ChatListPage({ style }) {
+export function ChatListRoute({ style, ...props }) {
+  console.log('ChatListRoute');
+
+  return (
+    <Route {...props}>
+      <ProvideChats>
+        <ChatListPage style={style} />
+      </ProvideChats>
+    </Route>
+  );
+}
+
+function ChatListPage({ style }) {
   console.log('ChatListPage');
 
   const history = ReactRouter.useHistory();

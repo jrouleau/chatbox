@@ -1,12 +1,30 @@
 import * as React from 'react';
 import * as ReactRouter from 'react-router-dom';
+import { Route } from 'react-router-dom';
 import { MessageList } from '../components/MessageList';
-import { useChat } from '../contexts/ChatCtx';
+import { ProvideChat, useChat } from '../contexts/ChatCtx';
 import { useMe } from '../contexts/MeCtx';
-import { useMessages } from '../contexts/MessagesCtx';
+import { ProvideMessages, useMessages } from '../contexts/MessagesCtx';
 import { LoadingPage } from './LoadingPage';
 
-export function ChatPage({ style }) {
+export function ChatRoute({ style, ...props }) {
+  console.log('ChatRoute');
+
+  return (
+    <Route
+      {...props}
+      render={({ match }) => (
+        <ProvideChat chatId={match.params.chatId}>
+          <ProvideMessages>
+            <ChatPage style={style} />
+          </ProvideMessages>
+        </ProvideChat>
+      )}
+    />
+  );
+}
+
+function ChatPage({ style }) {
   console.log('ChatPage');
 
   const history = ReactRouter.useHistory();

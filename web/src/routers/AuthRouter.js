@@ -2,9 +2,9 @@ import * as React from 'react';
 import * as ReactRouter from 'react-router-dom';
 import { Route, Switch } from 'react-router-dom';
 import { useMe } from '../contexts/MeCtx';
-import { AuthRoute } from '../routes/AuthRoute';
-import { IndexRoute } from '../routes/IndexRoute';
-import { LoadingRoute } from '../routes/LoadingRoute';
+import { AuthRoute } from '../pages/AuthPage';
+import { IndexRoute } from '../pages/IndexPage';
+import { LoadingRoute } from '../pages/LoadingPage';
 
 export function AuthRouter({ children }) {
   console.log('AuthRouter');
