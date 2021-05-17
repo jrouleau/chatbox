@@ -38,6 +38,8 @@ exports.sendMessage = functions.https.onCall(async (data, context) => {
   const {chatId, messageId, text} = data;
   const {auth} = context;
 
+  const time = admin.firestore.Timestamp.now();
+
   const user = await db
       .collection("users")
       .doc(auth.uid)
@@ -50,7 +52,7 @@ exports.sendMessage = functions.https.onCall(async (data, context) => {
       displayName: user.displayName,
     },
     text,
-    time: admin.firestore.Timestamp.now(),
+    time,
   };
 
   return distributeMessage({
@@ -64,23 +66,13 @@ const joinChat = async (data, context) => {
   const {chatId} = data;
   const {auth} = context;
 
+  const time = admin.firestore.Timestamp.now();
+
   const user = await db
       .collection("users")
       .doc(auth.uid)
       .get()
       .then((d) => d.data());
-
-  await db
-      .collection("chats")
-      .doc(chatId)
-      .set({
-        users: {
-          [auth.uid]: {
-            displayName: user.displayName,
-            time: admin.firestore.Timestamp.now(),
-          },
-        },
-      }, {merge: true});
 
   const messageId = db.collection("id").doc().id;
   const message = {
@@ -89,8 +81,32 @@ const joinChat = async (data, context) => {
       displayName: user.displayName,
     },
     misc: "join",
-    time: admin.firestore.Timestamp.now(),
+    time,
   };
+
+  await Promise.all([
+    db
+        .collection("chats")
+        .doc(chatId)
+        .set({
+          users: {
+            [auth.uid]: {
+              displayName: user.displayName,
+              time,
+            },
+          },
+        }, {merge: true}),
+    db
+        .collection("users")
+        .doc(auth.uid)
+        .collection("chats")
+        .doc(chatId)
+        .set({
+          lastMessage: message,
+          joined: true,
+        }, {merge: true}),
+  ]);
+
   return distributeMessage({
     chatId,
     messageId,
@@ -102,6 +118,8 @@ exports.joinChat = functions.https.onCall(joinChat);
 const leaveChat = async (data, context) => {
   const {chatId} = data;
   const {auth} = context;
+
+  const time = admin.firestore.Timestamp.now();
 
   const user = await db
       .collection("users")
@@ -116,8 +134,19 @@ const leaveChat = async (data, context) => {
       displayName: user.displayName,
     },
     misc: "leave",
-    time: admin.firestore.Timestamp.now(),
+    time,
   };
+
+  await db
+      .collection("users")
+      .doc(auth.uid)
+      .collection("chats")
+      .doc(chatId)
+      .set({
+        lastMessage: message,
+        joined: false,
+      }, {merge: true});
+
   await distributeMessage({
     chatId,
     messageId,
