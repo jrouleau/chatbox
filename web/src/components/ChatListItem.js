@@ -12,7 +12,8 @@ export function ChatListItem({ chat }) {
         {`${chat.id}:` +
           ` (${chat.lastMessage?.author.displayName})` +
           ` ${chat.lastMessage?.text}` +
-          ` (${Object.keys(chat.unread || {}).length})`}
+          ` (${Object.keys(chat.unread || {}).length})` +
+          `${chat.selected ? ' *' : ''}`}
       </button>
     </li>
   );
