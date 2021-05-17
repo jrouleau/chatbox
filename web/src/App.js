@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { BrowserRouter, Switch } from 'react-router-dom';
-import { ProvideMe } from './contexts/MeCtx';
+import { MeProvider } from './contexts/MeCtx';
 import { ChatRoute } from './pages/ChatPage';
 import { ChatListRoute } from './pages/ChatListPage';
 import { NotFoundRoute } from './pages/NotFoundPage';
@@ -21,7 +21,7 @@ export function App() {
     <>
       <p>App</p>
       <BrowserRouter>
-        <ProvideMe>
+        <MeProvider>
           <AuthRouter>
             <NewUserRouter>
               {width > 640 ? (
@@ -49,7 +49,7 @@ export function App() {
               )}
             </NewUserRouter>
           </AuthRouter>
-        </ProvideMe>
+        </MeProvider>
       </BrowserRouter>
     </>
   );

@@ -4,7 +4,7 @@ import { useMe } from './MeCtx';
 
 export const ChatCtx = React.createContext();
 
-export const ProvideChat = ({ children, chatId }) => {
+export const ChatProvider = ({ children, chatId }) => {
   const me = useMe();
 
   const [chat, setChat] = React.useState();

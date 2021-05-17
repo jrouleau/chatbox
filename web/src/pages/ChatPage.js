@@ -2,9 +2,9 @@ import * as React from 'react';
 import * as ReactRouter from 'react-router-dom';
 import { Route } from 'react-router-dom';
 import { MessageList } from '../components/MessageList';
-import { ProvideChat, useChat } from '../contexts/ChatCtx';
+import { ChatProvider, useChat } from '../contexts/ChatCtx';
 import { useMe } from '../contexts/MeCtx';
-import { ProvideMessages, useMessages } from '../contexts/MessagesCtx';
+import { MessagesProvider, useMessages } from '../contexts/MessagesCtx';
 import { LoadingPage } from './LoadingPage';
 
 export function ChatRoute({ style, ...props }) {
@@ -14,11 +14,11 @@ export function ChatRoute({ style, ...props }) {
     <Route
       {...props}
       render={({ match }) => (
-        <ProvideChat chatId={match.params.chatId}>
-          <ProvideMessages>
+        <ChatProvider chatId={match.params.chatId}>
+          <MessagesProvider>
             <ChatPage style={style} />
-          </ProvideMessages>
-        </ProvideChat>
+          </MessagesProvider>
+        </ChatProvider>
       )}
     />
   );

@@ -3,7 +3,7 @@ import * as React from 'react';
 
 export const MeCtx = React.createContext();
 
-export const ProvideMe = ({ children }) => {
+export const MeProvider = ({ children }) => {
   const [authUser, setAuthUser] = React.useState(undefined);
   React.useEffect(() => auth.onAuthStateChanged((u) => setAuthUser(u)));
 
