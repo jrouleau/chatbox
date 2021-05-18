@@ -1,3 +1,4 @@
+import { db } from '../firebase';
 import * as React from 'react';
 import * as ReactRouter from 'react-router-dom';
 
@@ -9,7 +10,7 @@ export function EnterChatId() {
 
   const enter = (event) => {
     event.preventDefault();
-    const id = inputRef.current?.value;
+    const id = inputRef.current?.value || db.collection('id').doc().id;
     history.replace(`/${id}`);
   };
 
@@ -26,13 +27,17 @@ export function EnterChatId() {
         <input
           ref={inputRef}
           type="text"
-          defaultValue="dev"
           style={{
             width: '100%',
           }}
         />
         <button type="submit">Enter</button>
       </form>
+      <button
+        onClick={() => history.replace(`/${db.collection('id').doc().id}`)}
+      >
+        +
+      </button>
     </>
   );
 }
