@@ -27,6 +27,15 @@ export const ChatProvider = ({ children, chatId }) => {
       .onSnapshot((s) => setUserChat(s.data() || {}));
   }, [chatId, me.id]);
 
+  const del = React.useCallback(() => {
+    return db
+      .collection('users')
+      .doc(me.id)
+      .collection('chats')
+      .doc(chatId)
+      .delete();
+  }, [chatId, me.id]);
+
   const markRead = React.useCallback(() => {
     return db
       .collection('users')
@@ -45,9 +54,10 @@ export const ChatProvider = ({ children, chatId }) => {
       isJoined: !!(chat?.users && chat.users[me.id]),
       join: async () => functions.httpsCallable('joinChat')({ chatId }),
       leave: async () => functions.httpsCallable('leaveChat')({ chatId }),
+      delete: del,
       markRead,
     }),
-    [chatId, me.id, chat, userChat, markRead],
+    [chatId, me.id, chat, userChat, del, markRead],
   );
 
   return <ChatCtx.Provider value={iface}>{children}</ChatCtx.Provider>;

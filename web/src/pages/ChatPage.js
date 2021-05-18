@@ -48,6 +48,12 @@ function ChatPage({ style }) {
     e.target.disabled = false;
   };
 
+  const del = async (e) => {
+    e.target.disabled = true;
+    await chat.delete();
+    e.target.disabled = false;
+  };
+
   const messageRef = React.useRef();
   const sendMessage = (e) => {
     e.preventDefault();
@@ -73,6 +79,9 @@ function ChatPage({ style }) {
         ) : (
           <button onClick={leave}>Leave Chat</button>
         )}
+        <button onClick={del} disabled={chat.isJoined || !chat.lastMessage}>
+          Delete Chat
+        </button>
         <span> ({Object.keys(chat.users || {}).length})</span>
       </div>
       <MessageList />
