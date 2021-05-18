@@ -1,8 +1,6 @@
 import * as React from 'react';
 import * as ReactRouter from 'react-router-dom';
 import { Route } from 'react-router-dom';
-import { ChatsProvider } from '../contexts/ChatsCtx';
-import { EnterChatId } from '../components/EnterChatId';
 import { ChatList } from '../components/ChatList';
 import { useMe } from '../contexts/MeCtx';
 
@@ -11,9 +9,7 @@ export function ChatListRoute({ style, ...props }) {
 
   return (
     <Route {...props}>
-      <ChatsProvider>
-        <ChatListPage style={style} />
-      </ChatsProvider>
+      <ChatListPage style={style} />
     </Route>
   );
 }
@@ -50,7 +46,7 @@ function ChatListPage({ style }) {
           </div>
         </>
       )}
-      <EnterChatId />
+      <button onClick={() => history.replace('/new')}>+</button>
       <ChatList />
     </div>
   );

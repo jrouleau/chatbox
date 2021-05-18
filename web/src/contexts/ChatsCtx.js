@@ -52,7 +52,7 @@ export const ChatsProvider = ({ children }) => {
         selected: c.id === chatId,
       })),
     ];
-    if (chatId && !a.find((c) => c.id === chatId)) {
+    if (chatId && chatId !== 'new' && !a.find((c) => c.id === chatId)) {
       a.unshift({
         ...(chat || {}),
         id: chatId,
