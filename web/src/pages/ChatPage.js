@@ -2,9 +2,9 @@ import * as React from 'react';
 import * as ReactRouter from 'react-router-dom';
 import styled from 'styled-components';
 import { MessageList } from '../components/MessageList';
-import { ChatProvider, useChat } from '../contexts/ChatCtx';
+import { useChat } from '../contexts/ChatCtx';
 import { useMe } from '../contexts/MeCtx';
-import { MessagesProvider, useMessages } from '../contexts/MessagesCtx';
+import { useMessages } from '../contexts/MessagesCtx';
 import { LoadingPage } from './LoadingPage';
 
 const Styles = styled.div`
@@ -13,24 +13,7 @@ const Styles = styled.div`
   flex-direction: column;
 `;
 
-export function ChatRoute({ style, ...props }) {
-  console.log('ChatRoute');
-
-  return (
-    <ReactRouter.Route
-      {...props}
-      render={({ match }) => (
-        <ChatProvider chatId={match.params.chatId}>
-          <MessagesProvider>
-            <ChatPage style={style} />
-          </MessagesProvider>
-        </ChatProvider>
-      )}
-    />
-  );
-}
-
-function ChatPage({ style }) {
+export function ChatPage({ style }) {
   console.log('ChatPage');
 
   const history = ReactRouter.useHistory();

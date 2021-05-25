@@ -7,17 +7,7 @@ const Styles = styled.div`
   width: 100%;
 `;
 
-export function IndexRoute({ style, ...props }) {
-  console.log('IndexRoute');
-
-  return (
-    <ReactRouter.Route {...props}>
-      <IndexPage style={style} />
-    </ReactRouter.Route>
-  );
-}
-
-function IndexPage({ style }) {
+export function IndexPage({ style }) {
   console.log('IndexPage');
 
   const history = ReactRouter.useHistory();

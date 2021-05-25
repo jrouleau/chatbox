@@ -11,17 +11,7 @@ const Styles = styled.div`
   flex-direction: column;
 `;
 
-export function ChatListRoute({ style, ...props }) {
-  console.log('ChatListRoute');
-
-  return (
-    <ReactRouter.Route {...props}>
-      <ChatListPage style={style} />
-    </ReactRouter.Route>
-  );
-}
-
-function ChatListPage({ style }) {
+export function ChatListPage({ style }) {
   console.log('ChatListPage');
 
   const history = ReactRouter.useHistory();

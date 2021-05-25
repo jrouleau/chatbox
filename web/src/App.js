@@ -1,12 +1,14 @@
 import * as React from 'react';
 import * as ReactRouter from 'react-router-dom';
 import styled from 'styled-components';
+import { ChatProvider } from './contexts/ChatCtx';
 import { ChatsProvider } from './contexts/ChatsCtx';
 import { MeProvider } from './contexts/MeCtx';
-import { ChatRoute } from './pages/ChatPage';
-import { ChatListRoute } from './pages/ChatListPage';
-import { NewChatRoute } from './pages/NewChatPage';
-import { NotFoundRoute } from './pages/NotFoundPage';
+import { MessagesProvider } from './contexts/MessagesCtx';
+import { ChatPage } from './pages/ChatPage';
+import { ChatListPage } from './pages/ChatListPage';
+import { NewChatPage } from './pages/NewChatPage';
+import { NotFoundPage } from './pages/NotFoundPage';
 import { AuthRouter } from './routers/AuthRouter';
 import { NewUserRouter } from './routers/NewUserRouter';
 
@@ -28,6 +30,25 @@ export function App() {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  const routes = React.useMemo(
+    () =>
+      [
+        {
+          path: '/:chatId',
+          exact: true,
+          render: ({ match }) => (
+            <ChatProvider chatId={match.params.chatId}>
+              <MessagesProvider>
+                <ChatPage />
+              </MessagesProvider>
+            </ChatProvider>
+          ),
+        },
+        { component: NotFoundPage },
+      ].map((route, i) => <ReactRouter.Route key={i} {...route} />),
+    [],
+  );
+
   return (
     <Styles>
       <ReactRouter.BrowserRouter>
@@ -37,22 +58,26 @@ export function App() {
               <NewUserRouter>
                 {width > 640 ? (
                   <>
-                    <ChatListRoute style={{ maxWidth: 'min(37%, 48rem)' }} />
+                    <ChatListPage style={{ maxWidth: 'min(37%, 48rem)' }} />
                     <ReactRouter.Switch>
-                      <NewChatRoute path="/" exact />
-                      <NewChatRoute path="/new" exact />
-                      <ChatRoute path="/:chatId" exact />
-                      <NotFoundRoute />
+                      <ReactRouter.Route
+                        path="/"
+                        exact
+                        component={NewChatPage}
+                      />
+                      {routes}
                     </ReactRouter.Switch>
                   </>
                 ) : (
                   <>
-                    <div /> {/* keeps alignment with other layout */}
+                    <div />
                     <ReactRouter.Switch>
-                      <ChatListRoute path="/" exact />
-                      <NewChatRoute path="/new" exact />
-                      <ChatRoute path="/:chatId" exact />
-                      <NotFoundRoute />
+                      <ReactRouter.Route
+                        path="/"
+                        exact
+                        component={ChatListPage}
+                      />
+                      {routes}
                     </ReactRouter.Switch>
                   </>
                 )}

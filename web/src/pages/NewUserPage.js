@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as ReactRouter from 'react-router-dom';
 import styled from 'styled-components';
 import { useMe } from '../contexts/MeCtx';
 
@@ -7,17 +6,7 @@ const Styles = styled.div`
   width: 100%;
 `;
 
-export function NewUserRoute({ style, ...props }) {
-  console.log('NewUserRoute');
-
-  return (
-    <ReactRouter.Route {...props}>
-      <NewUserPage style={style} />
-    </ReactRouter.Route>
-  );
-}
-
-function NewUserPage({ style }) {
+export function NewUserPage({ style }) {
   console.log('NewUserPage');
 
   const me = useMe();

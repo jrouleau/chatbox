@@ -1,9 +1,9 @@
 import * as React from 'react';
 import * as ReactRouter from 'react-router-dom';
 import { useMe } from '../contexts/MeCtx';
-import { AuthRoute } from '../pages/AuthPage';
-import { IndexRoute } from '../pages/IndexPage';
-import { LoadingRoute } from '../pages/LoadingPage';
+import { AuthPage } from '../pages/AuthPage';
+import { IndexPage } from '../pages/IndexPage';
+import { LoadingPage } from '../pages/LoadingPage';
 
 export function AuthRouter({ children }) {
   console.log('AuthRouter');
@@ -12,11 +12,11 @@ export function AuthRouter({ children }) {
   const me = useMe();
 
   return me.isLoading ? (
-    <LoadingRoute />
+    <LoadingPage />
   ) : !me.isAuth ? (
     <ReactRouter.Switch>
-      <IndexRoute path="/" exact />
-      <AuthRoute path="/login" exact />
+      <ReactRouter.Route path="/" exact component={IndexPage} />
+      <ReactRouter.Route path="/login" exact component={AuthPage} />
       <ReactRouter.Route>{children}</ReactRouter.Route>
     </ReactRouter.Switch>
   ) : (
