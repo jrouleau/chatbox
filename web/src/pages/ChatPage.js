@@ -5,7 +5,6 @@ import { MessageList } from '../components/MessageList';
 import { useChat } from '../contexts/ChatCtx';
 import { useMe } from '../contexts/MeCtx';
 import { useMessages } from '../contexts/MessagesCtx';
-import { LoadingPage } from './LoadingPage';
 
 const Styles = styled.div`
   width: 100%;
@@ -56,7 +55,6 @@ export function ChatPage({ style }) {
     }
   }, [chat]);
 
-  if (chat.isLoading) return <LoadingPage />;
   return (
     <Styles style={style}>
       <p>ChatPage</p>
@@ -64,11 +62,15 @@ export function ChatPage({ style }) {
       <div style={{ display: 'flex', flexDirection: 'row' }}>
         <button onClick={() => history.replace('/')}>Back</button>
         {!chat.isJoined ? (
-          <button onClick={join}>Join Chat</button>
+          <button onClick={join} disabled={chat.isLoading}>
+            Join Chat
+          </button>
         ) : (
-          <button onClick={leave}>Leave Chat</button>
+          <button onClick={leave} disabled={chat.isLoading}>
+            Leave Chat
+          </button>
         )}
-        <button onClick={del} disabled={chat.isJoined || !chat.lastMessage}>
+        <button onClick={del} disabled={chat.isLoading || !chat.lastMessage}>
           Delete Chat
         </button>
         <span> ({Object.keys(chat.users || {}).length})</span>
