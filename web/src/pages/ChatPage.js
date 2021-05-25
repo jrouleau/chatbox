@@ -1,6 +1,5 @@
 import * as React from 'react';
 import * as ReactRouter from 'react-router-dom';
-import { Route } from 'react-router-dom';
 import { MessageList } from '../components/MessageList';
 import { ChatProvider, useChat } from '../contexts/ChatCtx';
 import { useMe } from '../contexts/MeCtx';
@@ -11,7 +10,7 @@ export function ChatRoute({ style, ...props }) {
   console.log('ChatRoute');
 
   return (
-    <Route
+    <ReactRouter.Route
       {...props}
       render={({ match }) => (
         <ChatProvider chatId={match.params.chatId}>

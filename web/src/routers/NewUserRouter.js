@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Switch } from 'react-router';
+import * as ReactRouter from 'react-router-dom';
 import { useMe } from '../contexts/MeCtx';
 import { NewUserRoute } from '../pages/NewUserPage';
 
@@ -9,9 +9,9 @@ export function NewUserRouter({ children }) {
   const me = useMe();
 
   return me.isAuth && !me.displayName ? (
-    <Switch>
+    <ReactRouter.Switch>
       <NewUserRoute />
-    </Switch>
+    </ReactRouter.Switch>
   ) : (
     children
   );

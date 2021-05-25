@@ -1,13 +1,13 @@
 import * as React from 'react';
-import { Route } from 'react-router-dom';
+import * as ReactRouter from 'react-router-dom';
 
 export function NotFoundRoute({ style, ...props }) {
   console.log('NotFoundRoute');
 
   return (
-    <Route {...props}>
+    <ReactRouter.Route {...props}>
       <NotFoundPage style={style} />
-    </Route>
+    </ReactRouter.Route>
   );
 }
 

@@ -1,13 +1,13 @@
 import * as React from 'react';
-import { Route } from 'react-router-dom';
+import * as ReactRouter from 'react-router-dom';
 
 export function LoadingRoute({ style, ...props }) {
   console.log('LoadingRoute');
 
   return (
-    <Route {...props}>
+    <ReactRouter.Route {...props}>
       <LoadingPage style={style} />
-    </Route>
+    </ReactRouter.Route>
   );
 }
 

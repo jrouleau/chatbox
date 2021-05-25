@@ -1,15 +1,14 @@
 import * as React from 'react';
 import * as ReactRouter from 'react-router-dom';
-import { Route } from 'react-router-dom';
 import { EnterChatId } from '../components/EnterChatId';
 
 export function IndexRoute({ style, ...props }) {
   console.log('IndexRoute');
 
   return (
-    <Route {...props}>
+    <ReactRouter.Route {...props}>
       <IndexPage style={style} />
-    </Route>
+    </ReactRouter.Route>
   );
 }
 

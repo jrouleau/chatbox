@@ -1,15 +1,14 @@
 import * as React from 'react';
 import * as ReactRouter from 'react-router-dom';
-import { Route } from 'react-router-dom';
 import { EnterChatId } from '../components/EnterChatId';
 
 export function NewChatRoute({ style, ...props }) {
   console.log('NewChatRoute');
 
   return (
-    <Route {...props}>
+    <ReactRouter.Route {...props}>
       <NewChatPage style={style} />
-    </Route>
+    </ReactRouter.Route>
   );
 }
 

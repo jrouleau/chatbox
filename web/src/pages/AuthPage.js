@@ -1,14 +1,14 @@
 import * as React from 'react';
-import { Route } from 'react-router-dom';
+import * as ReactRouter from 'react-router-dom';
 import { useMe } from '../contexts/MeCtx';
 
 export function AuthRoute({ style, ...props }) {
   console.log('AuthRoute');
 
   return (
-    <Route {...props}>
+    <ReactRouter.Route {...props}>
       <AuthPage style={style} />
-    </Route>
+    </ReactRouter.Route>
   );
 }
 

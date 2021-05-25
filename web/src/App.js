@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { BrowserRouter, Switch } from 'react-router-dom';
+import * as ReactRouter from 'react-router-dom';
 import { ChatsProvider } from './contexts/ChatsCtx';
 import { MeProvider } from './contexts/MeCtx';
 import { ChatRoute } from './pages/ChatPage';
@@ -22,7 +22,7 @@ export function App() {
   return (
     <>
       <p>App</p>
-      <BrowserRouter>
+      <ReactRouter.BrowserRouter>
         <MeProvider>
           <ChatsProvider>
             <AuthRouter>
@@ -38,29 +38,29 @@ export function App() {
                     <ChatListRoute
                       style={{ width: '30%', maxWidth: '48rem' }}
                     />
-                    <Switch>
+                    <ReactRouter.Switch>
                       <NewChatRoute path="/" exact />
                       <NewChatRoute path="/new" exact />
                       <ChatRoute path="/:chatId" exact />
                       <NotFoundRoute />
-                    </Switch>
+                    </ReactRouter.Switch>
                   </div>
                 ) : (
                   <div>
                     <div /> {/* keeps alignment with other layout */}
-                    <Switch>
+                    <ReactRouter.Switch>
                       <ChatListRoute path="/" exact />
                       <NewChatRoute path="/new" exact />
                       <ChatRoute path="/:chatId" exact />
                       <NotFoundRoute />
-                    </Switch>
+                    </ReactRouter.Switch>
                   </div>
                 )}
               </NewUserRouter>
             </AuthRouter>
           </ChatsProvider>
         </MeProvider>
-      </BrowserRouter>
+      </ReactRouter.BrowserRouter>
     </>
   );
 }

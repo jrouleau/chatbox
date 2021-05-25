@@ -1,6 +1,5 @@
 import * as React from 'react';
 import * as ReactRouter from 'react-router-dom';
-import { Route, Switch } from 'react-router-dom';
 import { useMe } from '../contexts/MeCtx';
 import { AuthRoute } from '../pages/AuthPage';
 import { IndexRoute } from '../pages/IndexPage';
@@ -15,21 +14,21 @@ export function AuthRouter({ children }) {
   return me.isLoading ? (
     <LoadingRoute />
   ) : !me.isAuth ? (
-    <Switch>
+    <ReactRouter.Switch>
       <IndexRoute path="/" exact />
       <AuthRoute path="/login" exact />
-      <Route>{children}</Route>
-    </Switch>
+      <ReactRouter.Route>{children}</ReactRouter.Route>
+    </ReactRouter.Switch>
   ) : (
-    <Switch>
-      <Route
+    <ReactRouter.Switch>
+      <ReactRouter.Route
         path="/login"
         exact
         render={() => {
           history.goBack();
         }}
       />
-      <Route>{children}</Route>
-    </Switch>
+      <ReactRouter.Route>{children}</ReactRouter.Route>
+    </ReactRouter.Switch>
   );
 }

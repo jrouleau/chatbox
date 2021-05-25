@@ -1,6 +1,5 @@
 import * as React from 'react';
 import * as ReactRouter from 'react-router-dom';
-import { Route } from 'react-router-dom';
 import { ChatList } from '../components/ChatList';
 import { EnterChatId } from '../components/EnterChatId';
 import { useMe } from '../contexts/MeCtx';
@@ -9,9 +8,9 @@ export function ChatListRoute({ style, ...props }) {
   console.log('ChatListRoute');
 
   return (
-    <Route {...props}>
+    <ReactRouter.Route {...props}>
       <ChatListPage style={style} />
-    </Route>
+    </ReactRouter.Route>
   );
 }
 
