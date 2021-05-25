@@ -1,8 +1,11 @@
 import { db } from '../firebase';
 import * as React from 'react';
 import * as ReactRouter from 'react-router-dom';
+import styled from 'styled-components';
 
-export function EnterChatId() {
+const Styles = styled.div``;
+
+export function EnterChatId({ style }) {
   console.log('EnterChatId');
 
   const inputRef = React.useRef();
@@ -15,7 +18,7 @@ export function EnterChatId() {
   };
 
   return (
-    <>
+    <Styles style={style}>
       <p>{`Please enter a chat id:`}</p>
       <form
         onSubmit={enter}
@@ -38,6 +41,6 @@ export function EnterChatId() {
       >
         +
       </button>
-    </>
+    </Styles>
   );
 }

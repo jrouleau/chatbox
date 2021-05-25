@@ -1,5 +1,6 @@
 import * as React from 'react';
 import * as ReactRouter from 'react-router-dom';
+import styled from 'styled-components';
 import { ChatsProvider } from './contexts/ChatsCtx';
 import { MeProvider } from './contexts/MeCtx';
 import { ChatRoute } from './pages/ChatPage';
@@ -8,6 +9,14 @@ import { NewChatRoute } from './pages/NewChatPage';
 import { NotFoundRoute } from './pages/NotFoundPage';
 import { AuthRouter } from './routers/AuthRouter';
 import { NewUserRouter } from './routers/NewUserRouter';
+
+const Styles = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+`;
 
 export function App() {
   console.log('App');
@@ -20,33 +29,24 @@ export function App() {
   }, []);
 
   return (
-    <>
-      <p>App</p>
+    <Styles>
       <ReactRouter.BrowserRouter>
         <MeProvider>
           <ChatsProvider>
             <AuthRouter>
               <NewUserRouter>
                 {width > 640 ? (
-                  <div
-                    style={{
-                      display: 'flex',
-                      flexDirection: 'row',
-                      width: '100%',
-                    }}
-                  >
-                    <ChatListRoute
-                      style={{ width: '30%', maxWidth: '48rem' }}
-                    />
+                  <>
+                    <ChatListRoute style={{ maxWidth: 'min(37%, 48rem)' }} />
                     <ReactRouter.Switch>
                       <NewChatRoute path="/" exact />
                       <NewChatRoute path="/new" exact />
                       <ChatRoute path="/:chatId" exact />
                       <NotFoundRoute />
                     </ReactRouter.Switch>
-                  </div>
+                  </>
                 ) : (
-                  <div>
+                  <>
                     <div /> {/* keeps alignment with other layout */}
                     <ReactRouter.Switch>
                       <ChatListRoute path="/" exact />
@@ -54,13 +54,13 @@ export function App() {
                       <ChatRoute path="/:chatId" exact />
                       <NotFoundRoute />
                     </ReactRouter.Switch>
-                  </div>
+                  </>
                 )}
               </NewUserRouter>
             </AuthRouter>
           </ChatsProvider>
         </MeProvider>
       </ReactRouter.BrowserRouter>
-    </>
+    </Styles>
   );
 }

@@ -1,8 +1,15 @@
 import * as React from 'react';
 import * as ReactRouter from 'react-router-dom';
+import styled from 'styled-components';
 import { ChatList } from '../components/ChatList';
 import { EnterChatId } from '../components/EnterChatId';
 import { useMe } from '../contexts/MeCtx';
+
+const Styles = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+`;
 
 export function ChatListRoute({ style, ...props }) {
   console.log('ChatListRoute');
@@ -31,7 +38,7 @@ function ChatListPage({ style }) {
   };
 
   return (
-    <div style={{ ...style, display: 'flex', flexDirection: 'column' }}>
+    <Styles style={style}>
       <p>ChatListPage</p>
       {!me.isAuth ? (
         <button onClick={() => history.push('/login')}>Login</button>
@@ -48,6 +55,6 @@ function ChatListPage({ style }) {
       )}
       <EnterChatId />
       <ChatList />
-    </div>
+    </Styles>
   );
 }

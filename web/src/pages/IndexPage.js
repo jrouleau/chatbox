@@ -1,6 +1,11 @@
 import * as React from 'react';
 import * as ReactRouter from 'react-router-dom';
+import styled from 'styled-components';
 import { EnterChatId } from '../components/EnterChatId';
+
+const Styles = styled.div`
+  width: 100%;
+`;
 
 export function IndexRoute({ style, ...props }) {
   console.log('IndexRoute');
@@ -18,10 +23,10 @@ function IndexPage({ style }) {
   const history = ReactRouter.useHistory();
 
   return (
-    <div style={style}>
+    <Styles style={style}>
       <p>IndexPage</p>
       <button onClick={() => history.push('/login')}>Login</button>
       <EnterChatId />
-    </div>
+    </Styles>
   );
 }

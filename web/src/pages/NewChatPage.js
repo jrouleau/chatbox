@@ -1,6 +1,11 @@
 import * as React from 'react';
 import * as ReactRouter from 'react-router-dom';
+import styled from 'styled-components';
 import { EnterChatId } from '../components/EnterChatId';
+
+const Styles = styled.div`
+  width: 100%;
+`;
 
 export function NewChatRoute({ style, ...props }) {
   console.log('NewChatRoute');
@@ -22,10 +27,10 @@ export function NewChatPage({ style }) {
   });
 
   return (
-    <div style={style}>
+    <Styles style={style}>
       <p>NewChatPage</p>
       {match && <button onClick={() => history.replace('/')}>Back</button>}
       <EnterChatId />
-    </div>
+    </Styles>
   );
 }

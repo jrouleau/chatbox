@@ -1,6 +1,11 @@
 import * as React from 'react';
 import * as ReactRouter from 'react-router-dom';
+import styled from 'styled-components';
 import { useMe } from '../contexts/MeCtx';
+
+const Styles = styled.div`
+  width: 100%;
+`;
 
 export function AuthRoute({ style, ...props }) {
   console.log('AuthRoute');
@@ -26,9 +31,9 @@ function AuthPage({ style }) {
   };
 
   return (
-    <div style={style}>
+    <Styles style={style}>
       <p>AuthPage</p>
       <button onClick={anonymousLogin}>Continue Anonymously</button>
-    </div>
+    </Styles>
   );
 }

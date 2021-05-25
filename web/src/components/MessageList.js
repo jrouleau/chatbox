@@ -1,8 +1,11 @@
 import * as React from 'react';
+import styled from 'styled-components';
 import { useMessages } from '../contexts/MessagesCtx';
 import { MessageListItem } from './MessageListItem';
 
-export function MessageList() {
+const Styles = styled.ol``;
+
+export function MessageList({ style }) {
   console.log('MessageList');
 
   const messages = useMessages();
@@ -10,10 +13,10 @@ export function MessageList() {
   return messages.isLoading ? (
     <p>Loading...</p>
   ) : (
-    <ol>
+    <Styles style={style}>
       {messages.list.slice(-10).map((m) => (
         <MessageListItem key={m.id} message={m} />
       ))}
-    </ol>
+    </Styles>
   );
 }

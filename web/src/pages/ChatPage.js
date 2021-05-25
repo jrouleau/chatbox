@@ -1,10 +1,17 @@
 import * as React from 'react';
 import * as ReactRouter from 'react-router-dom';
+import styled from 'styled-components';
 import { MessageList } from '../components/MessageList';
 import { ChatProvider, useChat } from '../contexts/ChatCtx';
 import { useMe } from '../contexts/MeCtx';
 import { MessagesProvider, useMessages } from '../contexts/MessagesCtx';
 import { LoadingPage } from './LoadingPage';
+
+const Styles = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+`;
 
 export function ChatRoute({ style, ...props }) {
   console.log('ChatRoute');
@@ -68,7 +75,7 @@ function ChatPage({ style }) {
 
   if (chat.isLoading) return <LoadingPage />;
   return (
-    <div style={{ ...style, display: 'flex', flexDirection: 'column' }}>
+    <Styles style={style}>
       <p>ChatPage</p>
       <p>{`chat: ${chat.id}`}</p>
       <div style={{ display: 'flex', flexDirection: 'row' }}>
@@ -90,6 +97,6 @@ function ChatPage({ style }) {
           <button type="submit">Send</button>
         </form>
       )}
-    </div>
+    </Styles>
   );
 }

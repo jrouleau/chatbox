@@ -1,13 +1,18 @@
 import * as React from 'react';
 import * as ReactRouter from 'react-router-dom';
+import styled from 'styled-components';
 
-export function ChatListItem({ chat }) {
+const Styles = styled.li`
+  list-style-type: none;
+`;
+
+export function ChatListItem({ style, chat }) {
   console.log('ChatListItem');
 
   const history = ReactRouter.useHistory();
 
   return (
-    <li>
+    <Styles style={style}>
       <button onClick={() => history.replace(`/${chat.id}`)}>
         {`${chat.id}:` +
           ` (${chat.lastMessage?.author.displayName})` +
@@ -15,6 +20,6 @@ export function ChatListItem({ chat }) {
           ` (${Object.keys(chat.unread || {}).length})` +
           `${chat.selected ? ' *' : ''}`}
       </button>
-    </li>
+    </Styles>
   );
 }

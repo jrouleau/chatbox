@@ -1,14 +1,19 @@
 import * as React from 'react';
+import styled from 'styled-components';
 import { useMe } from '../contexts/MeCtx';
 
-export function MessageListItem({ message }) {
+const Styles = styled.li`
+  list-style-type: none;
+`;
+
+export function MessageListItem({ style, message }) {
   console.log('MessageListItem');
 
   const me = useMe();
   const isMe = message.author.id === me.id;
 
   return (
-    <li style={{ listStyleType: 'none' }}>
+    <Styles style={style}>
       {message.misc === 'join' ? (
         isMe ? (
           <span>{`You have entered the chat.`}</span>
@@ -39,6 +44,6 @@ export function MessageListItem({ message }) {
       ) : (
         <span>{`Invalid message.`}</span>
       )}
-    </li>
+    </Styles>
   );
 }
