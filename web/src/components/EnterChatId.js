@@ -1,45 +1,38 @@
-import { db } from '../firebase';
 import * as React from 'react';
 import * as ReactRouter from 'react-router-dom';
 import styled from 'styled-components';
 
-const Styles = styled.div``;
+const Styles = styled.form`
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+
+  & > input {
+    width: 100%;
+  }
+`;
 
 export function EnterChatId({ style }) {
   console.log('EnterChatId');
 
-  const inputRef = React.useRef();
   const history = ReactRouter.useHistory();
 
-  const enter = (event) => {
-    event.preventDefault();
-    const id = inputRef.current?.value || db.collection('id').doc().id;
-    history.replace(`/${id}`);
+  const [chatId, setChatId] = React.useState('');
+  const enterChat = (e) => {
+    e.preventDefault();
+    if (chatId.length === 20) {
+      history.replace(`/${chatId}`);
+    }
   };
-
   return (
-    <Styles style={style}>
-      <p>{`Please enter a chat id:`}</p>
-      <form
-        onSubmit={enter}
-        style={{
-          display: 'flex',
-          flexDirection: 'row',
-        }}
-      >
-        <input
-          ref={inputRef}
-          type="text"
-          style={{
-            width: '100%',
-          }}
-        />
-        <button type="submit">Enter</button>
-      </form>
-      <button
-        onClick={() => history.replace(`/${db.collection('id').doc().id}`)}
-      >
-        +
+    <Styles style={style} onSubmit={enterChat}>
+      <input
+        type="text"
+        placeholder="Enter chat ID"
+        onChange={(e) => setChatId(e.target.value)}
+      />
+      <button type="submit" disabled={chatId.length !== 20}>
+        Go
       </button>
     </Styles>
   );
