@@ -7,14 +7,14 @@ const Styles = styled.div`
   width: 100%;
 `;
 
-export function IndexPage({ style }) {
-  console.log('IndexPage');
+export function LandingPage({ style }) {
+  console.log('LandingPage');
 
   const history = ReactRouter.useHistory();
 
   return (
     <Styles style={style}>
-      <p>IndexPage</p>
+      <p>LandingPage</p>
       <button onClick={() => history.push('/login')}>Login</button>
       <EnterChatId />
     </Styles>
