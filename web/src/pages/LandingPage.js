@@ -3,6 +3,7 @@ import * as React from 'react';
 import * as ReactRouter from 'react-router-dom';
 import styled from 'styled-components';
 import { EnterChatId } from '../components/EnterChatId';
+import { Nav, Spacer } from '../components/Nav';
 
 const Styles = styled.div`
   height: 100%;
@@ -13,17 +14,6 @@ const Styles = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-
-  & > nav {
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    padding: 2.4rem;
-
-    & > .spacer {
-      flex-grow: 1;
-    }
-  }
 
   & > h1 {
     color: #eee;
@@ -56,12 +46,12 @@ export function LandingPage({ style }) {
 
   return (
     <Styles style={style}>
-      <nav>
-        <div className="spacer" />
+      <Nav>
+        <Spacer />
         <button className="inverted" onClick={() => history.push('/login')}>
           Login
         </button>
-      </nav>
+      </Nav>
       <h1>Welcome to Chatbox!</h1>
       <div className="enter-chat">
         <button className="inverted" onClick={newChat}>

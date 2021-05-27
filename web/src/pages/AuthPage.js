@@ -1,6 +1,7 @@
 import * as React from 'react';
 import * as ReactRouter from 'react-router-dom';
 import styled from 'styled-components';
+import { Nav, Spacer } from '../components/Nav';
 import { useMe } from '../contexts/MeCtx';
 
 const Styles = styled.div`
@@ -12,17 +13,6 @@ const Styles = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-
-  & > nav {
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    padding: 2.4rem;
-
-    & > .spacer {
-      flex-grow: 1;
-    }
-  }
 
   & > .buttons {
     width: 38.4rem;
@@ -63,12 +53,12 @@ export function AuthPage({ style }) {
 
   return (
     <Styles style={style}>
-      <nav>
-        <div className="spacer" />
+      <Nav>
+        <Spacer />
         <button className="icon transparent" onClick={() => history.goBack()}>
           close
         </button>
-      </nav>
+      </Nav>
       <div className="buttons">
         <h3>Login with</h3>
         <button disabled>Google</button>
