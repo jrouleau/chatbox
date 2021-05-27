@@ -4,16 +4,10 @@ import * as ReactRouter from 'react-router-dom';
 import styled from 'styled-components';
 import { EnterChatId } from '../components/EnterChatId';
 import { Nav, Spacer } from '../components/Nav';
+import { Page } from '../components/Page';
 
-const Styles = styled.div`
-  height: 100%;
-  width: 100%;
+const Styles = styled(Page)`
   max-width: 124rem;
-  margin: 0 auto;
-  padding: 0 2.4rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
 
   & > h1 {
     color: #eee;

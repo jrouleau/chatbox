@@ -1,10 +1,9 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import { EnterChatId } from '../components/EnterChatId';
+import { Page } from '../components/Page';
 
-const Styles = styled.div`
-  width: 100%;
-`;
+const Styles = styled(Page)``;
 
 export function NewChatPage({ style }) {
   console.log('NewChatPage');

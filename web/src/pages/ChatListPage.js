@@ -3,13 +3,10 @@ import * as ReactRouter from 'react-router-dom';
 import styled from 'styled-components';
 import { ChatList } from '../components/ChatList';
 import { EnterChatId } from '../components/EnterChatId';
+import { Page } from '../components/Page';
 import { useMe } from '../contexts/MeCtx';
 
-const Styles = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-`;
+const Styles = styled(Page)``;
 
 export function ChatListPage({ style }) {
   console.log('ChatListPage');

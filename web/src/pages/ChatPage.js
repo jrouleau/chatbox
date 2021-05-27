@@ -2,15 +2,12 @@ import * as React from 'react';
 import * as ReactRouter from 'react-router-dom';
 import styled from 'styled-components';
 import { MessageList } from '../components/MessageList';
+import { Page } from '../components/Page';
 import { useChat } from '../contexts/ChatCtx';
 import { useMe } from '../contexts/MeCtx';
 import { useMessages } from '../contexts/MessagesCtx';
 
-const Styles = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-`;
+const Styles = styled(Page)``;
 
 export function ChatPage({ style }) {
   console.log('ChatPage');

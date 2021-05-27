@@ -1,9 +1,8 @@
 import * as React from 'react';
 import styled from 'styled-components';
+import { Page } from '../components/Page';
 
-const Styles = styled.div`
-  width: 100%;
-`;
+const Styles = styled(Page)``;
 
 export function LoadingPage({ style }) {
   console.log('LoadingPage');

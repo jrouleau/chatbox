@@ -1,10 +1,9 @@
 import * as React from 'react';
 import styled from 'styled-components';
+import { Page } from '../components/Page';
 import { useMe } from '../contexts/MeCtx';
 
-const Styles = styled.div`
-  width: 100%;
-`;
+const Styles = styled(Page)``;
 
 export function NewUserPage({ style }) {
   console.log('NewUserPage');
