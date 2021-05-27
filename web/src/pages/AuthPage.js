@@ -22,27 +22,6 @@ const Styles = styled.div`
     & > .spacer {
       flex-grow: 1;
     }
-
-    & > .close {
-      width: 4.8rem;
-      height: 4.8rem;
-      background: none;
-      border: 0;
-      border-radius: 50%;
-      color: #eee;
-      cursor: pointer;
-      outline: none;
-      transition: all 0.1s;
-
-      &:hover {
-        background: #eeeeee1a;
-        color: #fff;
-      }
-
-      & > span {
-        font-size: 2.4rem;
-      }
-    }
   }
 
   & > .buttons {
@@ -63,32 +42,7 @@ const Styles = styled.div`
 
     & > button {
       width: 100%;
-      height: 4.8rem;
-      padding: 0 2rem;
       margin: 0.4rem 0;
-      border: 0;
-      border-radius: 0.3rem;
-      cursor: pointer;
-      outline: none;
-      text-transform: uppercase;
-      font-weight: 600;
-      transition: all 0.1s;
-
-      &:disabled {
-        background: #eee;
-        color: #bbb;
-        cursor: auto;
-      }
-
-      &.anonymous {
-        background: #212121;
-        color: #eee;
-
-        &:hover {
-          background: #191919;
-          color: #fff;
-        }
-      }
     }
   }
 `;
@@ -111,26 +65,18 @@ export function AuthPage({ style }) {
     <Styles style={style}>
       <nav>
         <div className="spacer" />
-        <button className="close" onClick={() => history.goBack()}>
-          <span class="material-icons">close</span>
+        <button className="icon transparent" onClick={() => history.goBack()}>
+          close
         </button>
       </nav>
       <div className="buttons">
         <h3>Login with</h3>
-        <button className="google" disabled>
-          Google
-        </button>
-        <button className="facebook" disabled>
-          Facebook
-        </button>
-        <button className="github" disabled>
-          GitHub
-        </button>
-        <button className="email" disabled>
-          Email
-        </button>
+        <button disabled>Google</button>
+        <button disabled>Facebook</button>
+        <button disabled>GitHub</button>
+        <button disabled>Email</button>
         <p className="divider">or</p>
-        <button className="anonymous" onClick={anonymousLogin}>
+        <button className="inverted" onClick={anonymousLogin}>
           Continue Anonymously
         </button>
       </div>

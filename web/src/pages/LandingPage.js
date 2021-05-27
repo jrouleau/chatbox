@@ -23,24 +23,6 @@ const Styles = styled.div`
     & > .spacer {
       flex-grow: 1;
     }
-
-    & > .login {
-      width: 12.8rem;
-      height: 4.8rem;
-      background: #212121;
-      border: 0;
-      border-radius: 0.3rem;
-      font-weight: 600;
-      color: #eee;
-      cursor: pointer;
-      outline: none;
-      transition: all 0.1s;
-
-      &:hover {
-        background: #191919;
-        color: #fff;
-      }
-    }
   }
 
   & > h1 {
@@ -51,30 +33,10 @@ const Styles = styled.div`
   }
 
   & > .enter-chat {
-    height: 4.8rem;
     margin-top: 2.4rem;
     display: flex;
     flex-direction: row;
     align-items: center;
-
-    & > .new {
-      width: 100%;
-      height: 100%;
-      padding: 0 2.4rem;
-      background: #212121;
-      border: 0;
-      border-radius: 0.3rem;
-      font-weight: 600;
-      color: #eee;
-      cursor: pointer;
-      outline: none;
-      transition: all 0.1s;
-
-      &:hover {
-        background: #191919;
-        color: #fff;
-      }
-    }
 
     & > .divider {
       margin: 1.2rem;
@@ -96,13 +58,13 @@ export function LandingPage({ style }) {
     <Styles style={style}>
       <nav>
         <div className="spacer" />
-        <button className="login" onClick={() => history.push('/login')}>
+        <button className="inverted" onClick={() => history.push('/login')}>
           Login
         </button>
       </nav>
       <h1>Welcome to Chatbox!</h1>
       <div className="enter-chat">
-        <button className="new" onClick={newChat}>
+        <button className="inverted" onClick={newChat}>
           New Chat
         </button>
         <span className="divider">or</span>
