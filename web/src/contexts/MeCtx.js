@@ -18,6 +18,13 @@ export const MeProvider = ({ children }) => {
     }
   }, [authUser]);
 
+  const [isDeleting, setIsDeleting] = React.useState(false);
+  const del = React.useCallback(async () => {
+    setIsDeleting(true);
+    await authUser?.delete();
+    setIsDeleting(false);
+  }, [authUser]);
+
   const set = React.useCallback(
     async (k, v) => {
       if (authUser) {
@@ -34,15 +41,15 @@ export const MeProvider = ({ children }) => {
     () => ({
       ...(user || {}),
       id: authUser?.uid || undefined,
-      isLoading: authUser === undefined || (authUser && !user),
+      isLoading: authUser === undefined || (authUser && !user) || isDeleting,
       isAnonymous: !!authUser?.isAnonymous,
       isAuth: !!authUser,
       signInAnonymously: () => auth.signInAnonymously(),
       signOut: () => auth.signOut(),
-      delete: () => authUser?.delete(),
+      delete: del,
       set,
     }),
-    [authUser, user, set],
+    [authUser, user, isDeleting, del, set],
   );
 
   return <MeCtx.Provider value={iface}>{children}</MeCtx.Provider>;
