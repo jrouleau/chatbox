@@ -164,6 +164,20 @@ const leaveChat = async (data, context) => {
 };
 exports.leaveChat = functions.https.onCall(leaveChat);
 
+exports.onChatUpdate = functions
+    .firestore
+    .document("/chats/{chatId}")
+    .onUpdate(async (change, context) => {
+      const {chatId} = context.params;
+      const after = change.after.data() || {};
+      if (Object.keys(after.users || {}).length === 0) {
+        await db
+            .collection("chats")
+            .doc(chatId)
+            .delete();
+      }
+    });
+
 exports.onDeleteAuth = functions
     .auth
     .user()
