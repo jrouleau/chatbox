@@ -2,12 +2,26 @@ import * as React from 'react';
 import * as ReactRouter from 'react-router-dom';
 import styled from 'styled-components';
 import { MessageList } from '../components/MessageList';
+import { Nav, Spacer } from '../components/Nav';
 import { Page } from '../components/Page';
+import { SendMessage } from '../components/SendMessage';
 import { useChat } from '../contexts/ChatCtx';
 import { useMe } from '../contexts/MeCtx';
 import { useMessages } from '../contexts/MessagesCtx';
 
-const Styles = styled(Page)``;
+const Styles = styled(Page)`
+  padding-bottom: 2.4rem;
+  overflow-y: hidden;
+
+  & > nav > .title {
+    margin-left: 0.8rem;
+    flex-grow: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.5;
+  }
+`;
 
 export function ChatPage({ style }) {
   console.log('ChatPage');
@@ -17,33 +31,22 @@ export function ChatPage({ style }) {
   const chat = useChat();
   const messages = useMessages();
 
-  const join = async (e) => {
-    e.target.disabled = true;
+  const join = async () => {
     if (me.isAuth) {
       await chat.join();
     } else {
       history.push('/login');
     }
-    e.target.disabled = false;
   };
 
-  const leave = async (e) => {
-    e.target.disabled = true;
+  const leave = async () => {
     await chat.leave();
-    e.target.disabled = false;
   };
 
-  const del = async (e) => {
-    e.target.disabled = true;
+  const del = async () => {
+    history.replace('/');
+    if (chat.isJoined) await chat.leave();
     await chat.delete();
-    e.target.disabled = false;
-  };
-
-  const messageRef = React.useRef();
-  const sendMessage = (e) => {
-    e.preventDefault();
-    messages.send(messageRef.current?.value);
-    messageRef.current.value = '';
   };
 
   React.useEffect(() => {
@@ -54,30 +57,59 @@ export function ChatPage({ style }) {
 
   return (
     <Styles style={style}>
-      <p>ChatPage</p>
-      <p>{`chat: ${chat.id}`}</p>
-      <div style={{ display: 'flex', flexDirection: 'row' }}>
-        <button onClick={() => history.replace('/')}>Back</button>
-        {!chat.isJoined ? (
-          <button onClick={join} disabled={chat.isLoading}>
-            Join Chat
+      <Nav>
+        <button
+          className="transparent icon"
+          onClick={() => history.replace('/')}
+        >
+          chevron_left
+        </button>
+        <h3 className="title">{chat.id}</h3>
+        <Spacer />
+        <button
+          className="transparent icon"
+          onClick={() => {
+            navigator.clipboard.writeText(chat.id);
+          }}
+        >
+          share
+        </button>
+        {!chat.isLoading && !chat.isJoined ? (
+          <button
+            className="transparent icon"
+            onClick={join}
+            disabled={chat.isLoading}
+          >
+            login
           </button>
         ) : (
-          <button onClick={leave} disabled={chat.isLoading}>
-            Leave Chat
+          <button
+            className="transparent icon"
+            onClick={leave}
+            disabled={chat.isLoading}
+          >
+            logout
           </button>
         )}
-        <button onClick={del} disabled={chat.isLoading || !chat.lastMessage}>
-          Delete Chat
+        <button
+          className="transparent icon"
+          onClick={del}
+          disabled={chat.isLoading || messages.list.length === 0}
+        >
+          delete
         </button>
-        <span> ({Object.keys(chat.users || {}).length})</span>
-      </div>
+      </Nav>
       <MessageList />
-      {chat.isJoined && (
-        <form onSubmit={sendMessage}>
-          <input ref={messageRef} type="text" />
-          <button type="submit">Send</button>
-        </form>
+      {chat.isLoading || chat.isJoined ? (
+        <SendMessage />
+      ) : (
+        <button
+          className="inverted stretch"
+          onClick={join}
+          disabled={chat.isLoading}
+        >
+          Join Chat
+        </button>
       )}
     </Styles>
   );

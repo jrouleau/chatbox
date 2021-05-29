@@ -107,6 +107,11 @@ const Styles = styled.div`
     outline: none;
     color: #212121;
     background: #fff;
+
+    &:disabled {
+      color: #2121218a;
+      background: #ddd;
+    }
   }
 
   input + button {
@@ -150,7 +155,7 @@ export function App() {
           <ChatsProvider>
             <AuthRouter>
               <NewUserRouter>
-                {width > 640 ? (
+                {width >= 768 ? (
                   <>
                     <ChatListPage style={{ maxWidth: 'min(37%, 48rem)' }} />
                     <ReactRouter.Switch>
