@@ -54,7 +54,7 @@ export function ChatListPage({ style }) {
           </>
         ) : (
           <>
-            <h2>{me.displayName}</h2>
+            <h2>{me.displayName || 'Anonymous'}</h2>
             <Spacer />
             {me.isAnonymous ? (
               <button

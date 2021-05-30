@@ -5,5 +5,9 @@ import { NewUserPage } from '../pages/NewUserPage';
 export function NewUserRouter({ children }) {
   const me = useMe();
 
-  return me.isAuth && !me.displayName ? <NewUserPage /> : children;
+  return me.isAuth && typeof me.displayName === 'undefined' ? (
+    <NewUserPage />
+  ) : (
+    children
+  );
 }

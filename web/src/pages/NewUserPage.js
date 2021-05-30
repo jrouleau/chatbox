@@ -23,9 +23,7 @@ export function NewUserPage({ style }) {
   const [displayName, setDisplayName] = React.useState('');
   const save = async (e) => {
     e.preventDefault();
-    if (displayName.length > 0) {
-      await me.update({ displayName });
-    }
+    await me.update({ displayName });
   };
 
   return (
@@ -40,15 +38,11 @@ export function NewUserPage({ style }) {
       <form onSubmit={save}>
         <input
           type="text"
-          placeholder="Enter name"
+          placeholder="Enter name (optional)"
           value={displayName}
           onChange={(e) => setDisplayName(e.target.value)}
         />
-        <button
-          type="submit"
-          className="inverted"
-          disabled={displayName.length === 0}
-        >
+        <button type="submit" className="inverted">
           Continue
         </button>
       </form>
