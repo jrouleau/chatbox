@@ -9,11 +9,9 @@ const Styles = styled.ol`
   flex-grow: 1;
   display: flex;
   flex-direction: column-reverse;
-  overflow-y: scroll;
-
-  padding: 1.8rem;
+  padding: 0.8rem 1.6rem;
   margin-bottom: 1.2rem;
-  border-radius: 0.3rem;
+  border-radius: 0.4rem;
   background: #21212121;
 `;
 
@@ -21,7 +19,7 @@ export function MessageList({ style }) {
   const messages = useMessages();
 
   return (
-    <Styles style={style}>
+    <Styles style={style} className="scroll">
       {messages.isLoading ? (
         <LoadingPage />
       ) : (
