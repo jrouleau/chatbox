@@ -7,28 +7,60 @@ export const ChatCtx = React.createContext();
 export const ChatProvider = ({ children, chatId }) => {
   const me = useMe();
 
+  const [loading, setLoading] = React.useState({});
+  const isLoading = Object.values(loading).includes(true);
+
+  const [isJoined, setIsJoined] = React.useState({});
+
   const [chat, setChat] = React.useState();
   React.useEffect(() => {
+    setLoading((p) => ({ ...p, chat: true }));
     setChat();
     return db
       .collection('chats')
       .doc(chatId)
-      .onSnapshot((s) => setChat(s.data() || {}));
-  }, [chatId]);
+      .onSnapshot((s) => {
+        const data = s.data() || {};
+        const joined = !!(data?.users && data.users[me.id]);
+        setChat(data);
+        setIsJoined(joined);
+        setLoading((p) => ({
+          ...p,
+          chat: false,
+          join: p.join && !joined,
+          leave: p.leave && joined,
+        }));
+      });
+  }, [chatId, me.id]);
 
   const [userChat, setUserChat] = React.useState();
   React.useEffect(() => {
+    setLoading((p) => ({ ...p, userChat: true }));
     setUserChat();
     return db
       .collection('users')
       .doc(me.id)
       .collection('chats')
       .doc(chatId)
-      .onSnapshot((s) => setUserChat(s.data() || {}));
+      .onSnapshot((s) => {
+        setUserChat(s.data() || {});
+        setLoading((p) => ({ ...p, userChat: false }));
+      });
   }, [chatId, me.id]);
 
-  const del = React.useCallback(() => {
-    return db
+  const join = React.useCallback(async () => {
+    setLoading((p) => ({ ...p, join: true }));
+    await functions.httpsCallable('joinChat')({ chatId });
+  }, [chatId]);
+
+  const leave = React.useCallback(async () => {
+    setLoading((p) => ({ ...p, leave: true }));
+    await functions.httpsCallable('leaveChat')({ chatId });
+  }, [chatId]);
+
+  const del = React.useCallback(async () => {
+    setLoading((p) => ({ ...p, delete: true }));
+    await db
       .collection('users')
       .doc(me.id)
       .collection('chats')
@@ -50,14 +82,14 @@ export const ChatProvider = ({ children, chatId }) => {
       ...chat,
       ...userChat,
       id: chatId,
-      isLoading: !(chat && userChat),
-      isJoined: !!(chat?.users && chat.users[me.id]),
-      join: async () => functions.httpsCallable('joinChat')({ chatId }),
-      leave: async () => functions.httpsCallable('leaveChat')({ chatId }),
+      isLoading,
+      isJoined,
+      join,
+      leave,
       delete: del,
       markRead,
     }),
-    [chatId, me.id, chat, userChat, del, markRead],
+    [chat, userChat, chatId, isLoading, isJoined, join, leave, del, markRead],
   );
 
   return <ChatCtx.Provider value={iface}>{children}</ChatCtx.Provider>;
