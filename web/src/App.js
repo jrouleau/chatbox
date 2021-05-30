@@ -121,6 +121,29 @@ const Styles = styled.div`
   input + button {
     margin-left: 0.8rem;
   }
+
+  .scroll {
+    overflow-y: scroll;
+
+    &::-webkit-scrollbar {
+      width: 0.8rem;
+    }
+
+    &::-webkit-scrollbar-track {
+      border-radius: 0.4rem;
+      background: #21212154;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      border-radius: 0.4rem;
+      border-radius: 0.4rem;
+      background: #212121;
+
+      &:hover {
+        background: #191919;
+      }
+    }
+  }
 `;
 
 export function App() {
@@ -161,7 +184,9 @@ export function App() {
               <NewUserRouter>
                 {width >= 768 ? (
                   <>
-                    <ChatListPage style={{ maxWidth: 'min(37%, 48rem)' }} />
+                    <ChatListPage
+                      style={{ maxWidth: 'min(37%, 48rem)', paddingRight: 0 }}
+                    />
                     <ReactRouter.Switch>
                       <ReactRouter.Route
                         path="/"

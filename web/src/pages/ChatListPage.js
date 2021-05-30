@@ -1,12 +1,26 @@
 import * as React from 'react';
 import * as ReactRouter from 'react-router-dom';
 import styled from 'styled-components';
+import { useMe } from '../contexts/MeCtx';
 import { ChatList } from '../components/ChatList';
 import { EnterChatId } from '../components/EnterChatId';
+import { Nav, Spacer } from '../components/Nav';
 import { Page } from '../components/Page';
-import { useMe } from '../contexts/MeCtx';
 
-const Styles = styled(Page)``;
+const Styles = styled(Page)`
+  padding-bottom: 2.4rem;
+  overflow: hidden;
+
+  & > nav {
+    margin-top: 1.2rem;
+    margin-bottom: 1.6rem;
+
+    & > h2 {
+      font-size: 2.8rem;
+      margin-left: 1.6rem;
+    }
+  }
+`;
 
 export function ChatListPage({ style }) {
   console.log('ChatListPage');
@@ -26,21 +40,40 @@ export function ChatListPage({ style }) {
 
   return (
     <Styles style={style}>
-      <p>ChatListPage</p>
-      {!me.isAuth ? (
-        <button onClick={() => history.push('/login')}>Login</button>
-      ) : (
-        <>
-          <p>{`Me: ${me.displayName}`}</p>
-          <div style={{ display: 'flex', flexDirection: 'row' }}>
-            <button disabled={me.isAnonymous} onClick={logout}>
-              Logout
+      <Nav>
+        {!me.isAuth ? (
+          <>
+            <button className="icon" onClick={() => history.replace('/')}>
+              home
             </button>
-            <button onClick={deleteAccount}>Delete Account</button>
-          </div>
-        </>
-      )}
-      <EnterChatId />
+            <button
+              className="stretch"
+              style={{ marginLeft: '0.8rem' }}
+              onClick={() => history.push('/login')}
+            >
+              Login
+            </button>
+          </>
+        ) : (
+          <>
+            <h2>{me.displayName}</h2>
+            <Spacer />
+            {me.isAnonymous ? (
+              <button
+                className="transparent circle icon"
+                onClick={deleteAccount}
+              >
+                delete
+              </button>
+            ) : (
+              <button className="transparent circle icon" onClick={logout}>
+                logout
+              </button>
+            )}
+          </>
+        )}
+      </Nav>
+      <EnterChatId withNew />
       <ChatList />
     </Styles>
   );
