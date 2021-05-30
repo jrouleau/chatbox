@@ -5,9 +5,15 @@
     ],
     "source": "functions"
   },
+  "database": {
+    "rules": "database.rules.json"
+  },
   "emulators": {
     "auth": {
       "port": 9099
+    },
+    "database": {
+      "port": 9000
     },
     "functions": {
       "port": 5001

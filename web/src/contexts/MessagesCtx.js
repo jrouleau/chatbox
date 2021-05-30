@@ -1,4 +1,4 @@
-import firebase, { db, functions } from '../firebase';
+import firebase, { firestore, functions } from '../firebase';
 import * as React from 'react';
 import { useChat } from './ChatCtx';
 import { useMe } from './MeCtx';
@@ -14,7 +14,7 @@ export const MessagesProvider = ({ children }) => {
   React.useEffect(() => {
     setSending();
     setMessages();
-    return db
+    return firestore
       .collection('users')
       .doc(me.id)
       .collection('chats')
@@ -38,7 +38,7 @@ export const MessagesProvider = ({ children }) => {
   const send = React.useCallback(
     (text) => {
       if (text) {
-        const { id } = db.collection('id').doc();
+        const { id } = firestore.collection('id').doc();
 
         functions.httpsCallable('sendMessage')({
           chatId: chat.id,

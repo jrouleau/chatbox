@@ -1,4 +1,4 @@
-import firebase, { db, functions } from '../firebase';
+import firebase, { firestore, functions } from '../firebase';
 import * as React from 'react';
 import { useMe } from './MeCtx';
 
@@ -16,7 +16,7 @@ export const ChatProvider = ({ children, chatId }) => {
   React.useEffect(() => {
     setLoading((p) => ({ ...p, chat: true }));
     setChat();
-    return db
+    return firestore
       .collection('chats')
       .doc(chatId)
       .onSnapshot((s) => {
@@ -37,7 +37,7 @@ export const ChatProvider = ({ children, chatId }) => {
   React.useEffect(() => {
     setLoading((p) => ({ ...p, userChat: true }));
     setUserChat();
-    return db
+    return firestore
       .collection('users')
       .doc(me.id)
       .collection('chats')
@@ -60,7 +60,7 @@ export const ChatProvider = ({ children, chatId }) => {
 
   const del = React.useCallback(async () => {
     setLoading((p) => ({ ...p, delete: true }));
-    await db
+    await firestore
       .collection('users')
       .doc(me.id)
       .collection('chats')
@@ -69,7 +69,7 @@ export const ChatProvider = ({ children, chatId }) => {
   }, [chatId, me.id]);
 
   const markRead = React.useCallback(() => {
-    return db
+    return firestore
       .collection('users')
       .doc(me.id)
       .collection('chats')

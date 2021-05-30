@@ -1,4 +1,4 @@
-import { db } from '../firebase';
+import { firestore } from '../firebase';
 import * as React from 'react';
 import * as ReactRouter from 'react-router-dom';
 import { useMe } from './MeCtx';
@@ -17,7 +17,7 @@ export const ChatsProvider = ({ children }) => {
   const [chats, setChats] = React.useState();
   React.useEffect(() => {
     setChats();
-    return db
+    return firestore
       .collection('users')
       .doc(me.id)
       .collection('chats')
@@ -36,7 +36,7 @@ export const ChatsProvider = ({ children }) => {
   React.useEffect(() => {
     setChat();
     if (chatId) {
-      return db
+      return firestore
         .collection('chats')
         .doc(chatId)
         .onSnapshot((s) => {

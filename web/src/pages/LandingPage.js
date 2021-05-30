@@ -1,4 +1,4 @@
-import { db } from '../firebase';
+import { firestore } from '../firebase';
 import * as React from 'react';
 import * as ReactRouter from 'react-router-dom';
 import styled from 'styled-components';
@@ -33,7 +33,7 @@ export function LandingPage({ style }) {
   const history = ReactRouter.useHistory();
 
   const newChat = () => {
-    history.replace(`/${db.collection('id').doc().id}`);
+    history.replace(`/${firestore.collection('id').doc().id}`);
   };
 
   return (
