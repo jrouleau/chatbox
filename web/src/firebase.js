@@ -28,6 +28,15 @@ if (window.location.hostname === 'localhost') {
   auth.useEmulator('http://localhost:9099');
   db.useEmulator('localhost', 9000);
   functions.useEmulator('localhost', 5001);
+
+  // Disable emulator warning banner
+  const styleEl = document.createElement('style');
+  styleEl.appendChild(
+    document.createTextNode(
+      '.firebase-emulator-warning { display: none !important; }',
+    ),
+  );
+  document.getElementsByTagName('head')[0].appendChild(styleEl);
 }
 
 if (process.env.NODE_ENV === 'development') {
