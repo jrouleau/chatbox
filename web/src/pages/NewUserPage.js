@@ -24,7 +24,7 @@ export function NewUserPage({ style }) {
   const save = async (e) => {
     e.preventDefault();
     if (displayName.length > 0) {
-      await me.set('displayName', displayName);
+      await me.update({ displayName });
     }
   };
 

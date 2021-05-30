@@ -25,13 +25,13 @@ export const MeProvider = ({ children }) => {
     setIsDeleting(false);
   }, [authUser]);
 
-  const set = React.useCallback(
-    async (k, v) => {
+  const update = React.useCallback(
+    async (data) => {
       if (authUser) {
         return firestore
           .collection('users')
           .doc(authUser.uid)
-          .set({ [k]: v }, { merge: true });
+          .set(data, { merge: true });
       }
     },
     [authUser],
@@ -47,9 +47,9 @@ export const MeProvider = ({ children }) => {
       signInAnonymously: () => auth.signInAnonymously(),
       signOut: () => auth.signOut(),
       delete: del,
-      set,
+      update,
     }),
-    [authUser, user, isDeleting, del, set],
+    [authUser, user, isDeleting, del, update],
   );
 
   return <MeCtx.Provider value={iface}>{children}</MeCtx.Provider>;
