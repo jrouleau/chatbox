@@ -105,11 +105,13 @@ export function ChatListItem({ style, chat }) {
 
   const unread = Object.keys(chat.unread || {}).length;
   const message = chat.lastMessage;
-  const time = message?.time?.toDate().toLocaleTimeString([], {
-    hour: '2-digit',
-    minute: '2-digit',
-  });
-  const author = message?.author?.displayName || 'Anonymous';
+  const time =
+    message?.time &&
+    new Date(message.time).toLocaleTimeString([], {
+      hour: '2-digit',
+      minute: '2-digit',
+    });
+  const author = message?.author;
 
   return (
     <Styles
@@ -120,16 +122,16 @@ export function ChatListItem({ style, chat }) {
       <div className="content">
         <span className="title">{chat.id}</span>
         <div className="message">
-          {message?.text || message?.misc ? (
+          {message ? (
             <>
               <span className="time">{time}</span>
               <span className="author">{author}</span>
               <span className="text">
-                {message?.text ? (
+                {message.type === 'text' ? (
                   message.text
-                ) : message?.misc === 'join' ? (
+                ) : message.type === 'join' ? (
                   <i>{'has entered the chat.'}</i>
-                ) : message?.misc === 'leave' ? (
+                ) : message.type === 'leave' ? (
                   <i>{'has left the chat.'}</i>
                 ) : (
                   <i>{'*internal error*'}</i>

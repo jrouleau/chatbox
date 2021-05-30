@@ -1,4 +1,4 @@
-import { firestore } from '../firebase';
+import { db } from '../firebase';
 import * as React from 'react';
 import * as ReactRouter from 'react-router-dom';
 import { useMe } from './MeCtx';
@@ -8,66 +8,36 @@ export const ChatsCtx = React.createContext();
 export const ChatsProvider = ({ children }) => {
   const me = useMe();
 
-  const match = ReactRouter.useRouteMatch({
-    path: '/:chatId',
-    exact: true,
-  });
-  const chatId = match?.params?.chatId;
+  const [userChats, userChatsLoading] = db.useListVals(
+    db.ref(`/user-chats/${me.id}`).orderByChild('lastMessage/time'),
+    { keyField: 'id' },
+  );
+  const isLoading = userChatsLoading;
 
-  const [chats, setChats] = React.useState();
-  React.useEffect(() => {
-    setChats();
-    return firestore
-      .collection('users')
-      .doc(me.id)
-      .collection('chats')
-      .orderBy('lastMessage.time', 'desc')
-      .onSnapshot((s) => {
-        setChats(
-          s.docs.map((d) => ({
-            ...(d.data() || {}),
-            id: d.id,
-          })),
-        );
-      });
-  }, [me.id]);
-
-  const [chat, setChat] = React.useState();
-  React.useEffect(() => {
-    setChat();
-    if (chatId) {
-      return firestore
-        .collection('chats')
-        .doc(chatId)
-        .onSnapshot((s) => {
-          setChat(s.data() || {});
-        });
-    }
-  }, [chatId]);
-
+  const match = ReactRouter.useRouteMatch({ path: '/:chatId', exact: true });
+  const selectedChatId = match?.params?.chatId;
   const list = React.useMemo(() => {
     const a = [
-      ...(chats || []).map((c) => ({
+      ...(userChats.slice().reverse() || []).map((c) => ({
         ...c,
-        selected: c.id === chatId,
+        selected: c.id === selectedChatId,
       })),
     ];
-    if (chatId && !a.find((c) => c.id === chatId)) {
+    if (selectedChatId && !a.find((c) => c.id === selectedChatId)) {
       a.unshift({
-        ...(chat || {}),
-        id: chatId,
+        id: selectedChatId,
         selected: true,
       });
     }
     return a;
-  }, [chatId, chats, chat]);
+  }, [selectedChatId, userChats]);
 
   const iface = React.useMemo(
     () => ({
       list,
-      isLoading: !chats,
+      isLoading,
     }),
-    [list, chats],
+    [list, isLoading],
   );
 
   return <ChatsCtx.Provider value={iface}>{children}</ChatsCtx.Provider>;
