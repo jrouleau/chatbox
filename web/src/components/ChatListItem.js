@@ -101,8 +101,6 @@ const Styles = styled.li`
 `;
 
 export function ChatListItem({ style, chat }) {
-  console.log('ChatListItem');
-
   const history = ReactRouter.useHistory();
 
   const unread = Object.keys(chat.unread || {}).length;

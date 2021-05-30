@@ -32,8 +32,6 @@ const Styles = styled(Page)`
 `;
 
 export function AuthPage({ style }) {
-  console.log('AuthPage');
-
   const history = ReactRouter.useHistory();
   const me = useMe();
 

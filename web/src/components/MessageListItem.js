@@ -7,8 +7,6 @@ const Styles = styled.li`
 `;
 
 export function MessageListItem({ style, message }) {
-  console.log('MessageListItem');
-
   const me = useMe();
   const isMe = message.author.id === me.id;
 

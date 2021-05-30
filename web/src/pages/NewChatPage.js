@@ -5,7 +5,5 @@ import { Page } from '../components/Page';
 const Styles = styled(Page)``;
 
 export function NewChatPage({ style }) {
-  console.log('NewChatPage');
-
   return <Styles style={style}></Styles>;
 }

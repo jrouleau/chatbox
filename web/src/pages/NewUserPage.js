@@ -14,8 +14,6 @@ const Styles = styled(Page)`
 `;
 
 export function NewUserPage({ style }) {
-  console.log('NewUserPage');
-
   const me = useMe();
 
   const cancel = async () => {

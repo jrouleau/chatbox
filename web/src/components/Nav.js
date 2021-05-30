@@ -14,8 +14,6 @@ const Styles = styled.nav`
 `;
 
 export function Nav({ children, style }) {
-  console.log('Nav');
-
   return <Styles style={style}>{children}</Styles>;
 }
 

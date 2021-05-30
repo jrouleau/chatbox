@@ -23,8 +23,6 @@ const Styles = styled(Page)`
 `;
 
 export function ChatListPage({ style }) {
-  console.log('ChatListPage');
-
   const history = ReactRouter.useHistory();
   const me = useMe();
 

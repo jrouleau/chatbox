@@ -17,8 +17,6 @@ const Styles = styled.div`
 `;
 
 export function SendMessage({ style }) {
-  console.log('SendMessage');
-
   const chat = useChat();
   const messages = useMessages();
 

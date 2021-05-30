@@ -147,8 +147,6 @@ const Styles = styled.div`
 `;
 
 export function App() {
-  console.log('App');
-
   const [width, setWidth] = React.useState(window.innerWidth);
   React.useEffect(() => {
     const handleResize = (e) => setWidth(window.innerWidth);

@@ -30,8 +30,6 @@ const Styles = styled(Page)`
 `;
 
 export function LandingPage({ style }) {
-  console.log('LandingPage');
-
   const history = ReactRouter.useHistory();
 
   const newChat = () => {

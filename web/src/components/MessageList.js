@@ -18,8 +18,6 @@ const Styles = styled.ol`
 `;
 
 export function MessageList({ style }) {
-  console.log('MessageList');
-
   const messages = useMessages();
 
   return (

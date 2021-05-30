@@ -6,8 +6,6 @@ import { LandingPage } from '../pages/LandingPage';
 import { LoadingPage } from '../pages/LoadingPage';
 
 export function AuthRouter({ children }) {
-  console.log('AuthRouter');
-
   const history = ReactRouter.useHistory();
   const me = useMe();
 

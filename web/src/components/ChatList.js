@@ -23,8 +23,6 @@ const Styles = styled.ol`
 `;
 
 export function ChatList({ style }) {
-  console.log('ChatList');
-
   const chats = useChats();
 
   return (

@@ -24,8 +24,6 @@ const Styles = styled.div`
 `;
 
 export function EnterChatId({ style, withNew }) {
-  console.log('EnterChatId');
-
   const history = ReactRouter.useHistory();
 
   const [chatId, setChatId] = React.useState('');

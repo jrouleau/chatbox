@@ -47,8 +47,6 @@ const Styles = styled(Page)`
 `;
 
 export function LoadingPage({ style }) {
-  console.log('LoadingPage');
-
   return (
     <Styles style={style}>
       <div className="loading">

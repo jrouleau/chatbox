@@ -24,8 +24,6 @@ const Styles = styled(Page)`
 `;
 
 export function ChatPage({ style }) {
-  console.log('ChatPage');
-
   const history = ReactRouter.useHistory();
   const me = useMe();
   const chat = useChat();
