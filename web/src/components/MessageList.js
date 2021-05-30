@@ -1,7 +1,7 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import { useMessages } from '../contexts/MessagesCtx';
-import { LoadingPage } from '../pages/LoadingPage';
+import { Loading } from './Loading';
 import { MessageListItem } from './MessageListItem';
 
 const Styles = styled.ol`
@@ -21,7 +21,7 @@ export function MessageList({ style }) {
   return (
     <Styles style={style} className="scroll">
       {messages.isLoading ? (
-        <LoadingPage />
+        <Loading />
       ) : (
         (messages.list.slice().reverse() || []).map((m) => (
           <MessageListItem key={m.id} message={m} />

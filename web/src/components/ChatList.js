@@ -1,8 +1,8 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import { useChats } from '../contexts/ChatsCtx';
-import { LoadingPage } from '../pages/LoadingPage';
 import { ChatListItem } from './ChatListItem';
+import { Loading } from './Loading';
 
 const Styles = styled.ol`
   width: 100%;
@@ -28,7 +28,7 @@ export function ChatList({ style }) {
   return (
     <Styles style={style} className="scroll">
       {chats.isLoading ? (
-        <LoadingPage />
+        <Loading />
       ) : (
         <>
           {chats.list.map((c) => (
