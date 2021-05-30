@@ -78,9 +78,13 @@ const Styles = styled.div`
       }
     }
 
-    &.icon {
+    &.circle {
       width: 4.8rem;
       border-radius: 50%;
+    }
+
+    &.icon {
+      width: 4.8rem;
       display: flex;
       align-items: center;
       justify-content: center;

@@ -3,7 +3,9 @@ import styled from 'styled-components';
 import { useChats } from '../contexts/ChatsCtx';
 import { ChatListItem } from './ChatListItem';
 
-const Styles = styled.ol``;
+const Styles = styled.ol`
+  width: 100%;
+`;
 
 export function ChatList({ style }) {
   console.log('ChatList');

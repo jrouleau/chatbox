@@ -49,7 +49,10 @@ export function AuthPage({ style }) {
     <Styles style={style}>
       <Nav>
         <Spacer />
-        <button className="icon transparent" onClick={() => history.goBack()}>
+        <button
+          className="transparent circle icon"
+          onClick={() => history.goBack()}
+        >
           close
         </button>
       </Nav>

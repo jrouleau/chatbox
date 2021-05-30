@@ -34,7 +34,7 @@ export function NewUserPage({ style }) {
     <Styles style={style}>
       <Nav>
         <Spacer />
-        <button className="icon transparent" onClick={cancel}>
+        <button className="transparent circle icon" onClick={cancel}>
           close
         </button>
       </Nav>

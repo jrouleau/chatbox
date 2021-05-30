@@ -59,7 +59,7 @@ export function ChatPage({ style }) {
     <Styles style={style}>
       <Nav>
         <button
-          className="transparent icon"
+          className="transparent circle icon"
           onClick={() => history.replace('/')}
         >
           chevron_left
@@ -67,7 +67,7 @@ export function ChatPage({ style }) {
         <h3 className="title">{chat.id}</h3>
         <Spacer />
         <button
-          className="transparent icon"
+          className="transparent circle icon"
           onClick={() => {
             navigator.clipboard.writeText(chat.id);
           }}
@@ -76,7 +76,7 @@ export function ChatPage({ style }) {
         </button>
         {!chat.isLoading && !chat.isJoined ? (
           <button
-            className="transparent icon"
+            className="transparent circle icon"
             onClick={join}
             disabled={chat.isLoading}
           >
@@ -84,7 +84,7 @@ export function ChatPage({ style }) {
           </button>
         ) : (
           <button
-            className="transparent icon"
+            className="transparent circle icon"
             onClick={leave}
             disabled={chat.isLoading}
           >
@@ -92,7 +92,7 @@ export function ChatPage({ style }) {
           </button>
         )}
         <button
-          className="transparent icon"
+          className="transparent circle icon"
           onClick={del}
           disabled={chat.isLoading || messages.list.length === 0}
         >
