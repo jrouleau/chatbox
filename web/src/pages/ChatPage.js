@@ -29,23 +29,24 @@ export function ChatPage({ style }) {
   const chat = useChat();
   const messages = useMessages();
 
-  const join = async () => {
+  const back = () => history.replace('/');
+
+  const join = React.useCallback(async () => {
     if (me.isAuth) {
       await chat.join();
     } else {
       history.push('/login');
     }
-  };
+  }, [me.isAuth, chat, history]);
 
-  const leave = async () => {
+  const leave = React.useCallback(async () => {
     await chat.leave();
-  };
+  }, [chat]);
 
-  const del = async () => {
+  const _delete = React.useCallback(async () => {
     history.replace('/');
-    if (chat.isJoined) await chat.leave();
     await chat.delete();
-  };
+  }, [history, chat]);
 
   React.useEffect(() => {
     if (Object.keys(chat.unread || {}).length > 0) {
@@ -56,10 +57,7 @@ export function ChatPage({ style }) {
   return (
     <Styles style={style}>
       <Nav>
-        <button
-          className="transparent circle icon"
-          onClick={() => history.replace('/')}
-        >
+        <button className="transparent circle icon" onClick={back}>
           chevron_left
         </button>
         <h3 className="title">{chat.id}</h3>
@@ -72,7 +70,7 @@ export function ChatPage({ style }) {
         >
           share
         </button>
-        {!chat.isLoading && !chat.isJoined ? (
+        {!chat.isLoading && !chat.joined ? (
           <button
             className="transparent circle icon"
             onClick={join}
@@ -91,14 +89,14 @@ export function ChatPage({ style }) {
         )}
         <button
           className="transparent circle icon"
-          onClick={del}
+          onClick={_delete}
           disabled={chat.isLoading || messages.list.length === 0}
         >
           delete
         </button>
       </Nav>
       <MessageList />
-      {chat.isLoading || chat.isJoined ? (
+      {chat.isLoading || chat.joined ? (
         <SendMessage />
       ) : (
         <button

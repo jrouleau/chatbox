@@ -34,14 +34,14 @@ export function SendMessage({ style }) {
       <form onSubmit={sendMessage}>
         <input
           type="text"
-          disabled={!chat.isJoined}
+          disabled={!chat.joined}
           value={message}
           onChange={(e) => setMessage(e.target.value)}
         />
         <button
           type="submit"
           className="inverted"
-          disabled={!chat.isJoined || !message}
+          disabled={!chat.joined || !message}
         >
           Send
         </button>

@@ -1,4 +1,4 @@
-import firebase, { firestore, functions } from '../firebase';
+import { db } from '../firebase';
 import * as React from 'react';
 import { useMe } from './MeCtx';
 
@@ -7,90 +7,28 @@ export const ChatCtx = React.createContext();
 export const ChatProvider = ({ children, chatId }) => {
   const me = useMe();
 
-  const [loading, setLoading] = React.useState({});
-  const isLoading = Object.values(loading).includes(true);
+  const chatRef = React.useMemo(() => db.ref(`/chats/${chatId}`), [chatId]);
+  const userChatRef = React.useMemo(
+    () => db.ref(`/user-chats/${me.id}/${chatId}`),
+    [me.id, chatId],
+  );
 
-  const [isJoined, setIsJoined] = React.useState({});
+  const [chat, chatLoading] = db.useObjectVal(chatRef);
+  const [userChat, userChatLoading] = db.useObjectVal(userChatRef);
+  const isLoading = chatLoading || userChatLoading;
 
-  const [chat, setChat] = React.useState();
-  React.useEffect(() => {
-    setLoading((p) => ({ ...p, chat: true }));
-    setChat();
-    return firestore
-      .collection('chats')
-      .doc(chatId)
-      .onSnapshot((s) => {
-        const data = s.data() || {};
-        const joined = !!(data?.users && data.users[me.id]);
-        setChat(data);
-        setIsJoined(joined);
-        setLoading((p) => ({
-          ...p,
-          chat: false,
-          join: p.join && !joined,
-          leave: p.leave && joined,
-        }));
-      });
-  }, [chatId, me.id]);
-
-  const [userChat, setUserChat] = React.useState();
-  React.useEffect(() => {
-    setLoading((p) => ({ ...p, userChat: true }));
-    setUserChat();
-    return firestore
-      .collection('users')
-      .doc(me.id)
-      .collection('chats')
-      .doc(chatId)
-      .onSnapshot((s) => {
-        setUserChat(s.data() || {});
-        setLoading((p) => ({ ...p, userChat: false }));
-      });
-  }, [chatId, me.id]);
-
-  const join = React.useCallback(async () => {
-    setLoading((p) => ({ ...p, join: true }));
-    await functions.httpsCallable('joinChat')({ chatId });
-  }, [chatId]);
-
-  const leave = React.useCallback(async () => {
-    setLoading((p) => ({ ...p, leave: true }));
-    await functions.httpsCallable('leaveChat')({ chatId });
-  }, [chatId]);
-
-  const del = React.useCallback(async () => {
-    setLoading((p) => ({ ...p, delete: true }));
-    await firestore
-      .collection('users')
-      .doc(me.id)
-      .collection('chats')
-      .doc(chatId)
-      .delete();
-  }, [chatId, me.id]);
-
-  const markRead = React.useCallback(() => {
-    return firestore
-      .collection('users')
-      .doc(me.id)
-      .collection('chats')
-      .doc(chatId)
-      .set({ unread: firebase.firestore.FieldValue.delete() }, { merge: true });
-  }, [chatId, me.id]);
-
-  const iface = React.useMemo(
-    () => ({
+  const iface = React.useMemo(() => {
+    return {
       ...chat,
       ...userChat,
       id: chatId,
       isLoading,
-      isJoined,
-      join,
-      leave,
-      delete: del,
-      markRead,
-    }),
-    [chat, userChat, chatId, isLoading, isJoined, join, leave, del, markRead],
-  );
+      join: () => userChatRef.update({ joined: true }),
+      leave: () => userChatRef.update({ joined: false }),
+      delete: () => userChatRef.remove(),
+      markRead: () => userChatRef.child('unread').set(null),
+    };
+  }, [userChatRef, chat, userChat, chatId, isLoading]);
 
   return <ChatCtx.Provider value={iface}>{children}</ChatCtx.Provider>;
 };
