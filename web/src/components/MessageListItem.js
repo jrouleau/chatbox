@@ -29,11 +29,13 @@ const Styles = styled.li`
 `;
 
 export function MessageListItem({ style, message }) {
-  const time = message.time?.toDate().toLocaleTimeString([], {
-    hour: '2-digit',
-    minute: '2-digit',
-  });
-  const author = message.author?.displayName || 'Anonymous';
+  const time =
+    message.time &&
+    new Date(message.time).toLocaleTimeString([], {
+      hour: '2-digit',
+      minute: '2-digit',
+    });
+  const author = message.author;
 
   return (
     <Styles style={style}>
@@ -41,11 +43,11 @@ export function MessageListItem({ style, message }) {
         <span className="time">{time}</span>
         <span className="author">{author}</span>
         <span className="text">
-          {message.text ? (
+          {message.type === 'text' ? (
             message.text
-          ) : message.misc === 'join' ? (
+          ) : message.type === 'join' ? (
             <i>{'has entered the chat.'}</i>
-          ) : message.misc === 'leave' ? (
+          ) : message.type === 'leave' ? (
             <i>{'has left the chat.'}</i>
           ) : (
             <i>{'*internal error*'}</i>

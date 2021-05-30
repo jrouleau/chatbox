@@ -1,4 +1,4 @@
-import firebase, { firestore, functions } from '../firebase';
+import firebase, { db } from '../firebase';
 import * as React from 'react';
 import { useChat } from './ChatCtx';
 import { useMe } from './MeCtx';
@@ -9,68 +9,36 @@ export const MessagesProvider = ({ children }) => {
   const me = useMe();
   const chat = useChat();
 
-  const [sending, setSending] = React.useState();
-  const [messages, setMessages] = React.useState();
-  React.useEffect(() => {
-    setSending();
-    setMessages();
-    return firestore
-      .collection('users')
-      .doc(me.id)
-      .collection('chats')
-      .doc(chat.id)
-      .collection('messages')
-      .orderBy('time', 'desc')
-      .onSnapshot((s) => {
-        setSending((p = []) => {
-          const ids = s.docs.map((d) => d.id);
-          return p.filter((msg) => !ids.includes(msg.id));
-        });
-        setMessages(
-          s.docs.reverse().map((d) => ({
-            ...(d.data() || {}),
-            id: d.id,
-          })),
-        );
-      });
-  }, [me.id, chat.id]);
+  const messagesRef = React.useMemo(
+    () => db.ref(`/user-messages/${me.id}/${chat.id}`),
+    [me.id, chat.id],
+  );
+
+  const [messages, messagesLoading] = db.useListVals(
+    messagesRef.orderByChild('time'),
+    { keyField: 'id' },
+  );
+  const isLoading = messagesLoading;
 
   const send = React.useCallback(
-    (text) => {
-      if (text) {
-        const { id } = firestore.collection('id').doc();
-
-        functions.httpsCallable('sendMessage')({
-          chatId: chat.id,
-          messageId: id,
-          text,
-        });
-
-        setSending((p) => [
-          ...p,
-          {
-            id,
-            author: {
-              id: me.id,
-              displayName: me.displayName,
-            },
-            text,
-            time: firebase.firestore.Timestamp.now(),
-            isSending: true,
-          },
-        ]);
-      }
+    async (text) => {
+      await messagesRef.push({
+        author: me.id,
+        type: 'text',
+        text,
+        time: firebase.database.ServerValue.TIMESTAMP,
+      });
     },
-    [me.id, me.displayName, chat.id],
+    [messagesRef, me.id],
   );
 
   const iface = React.useMemo(
     () => ({
-      list: [...(messages || []), ...(sending || [])],
-      isLoading: !messages,
+      list: messages,
+      isLoading,
       send,
     }),
-    [messages, sending, send],
+    [messages, isLoading, send],
   );
 
   return <MessagesCtx.Provider value={iface}>{children}</MessagesCtx.Provider>;
