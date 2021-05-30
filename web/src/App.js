@@ -150,9 +150,9 @@ export function App() {
     <Styles>
       <ReactRouter.BrowserRouter>
         <MeProvider>
-          <ChatsProvider>
-            <AuthRouter>
-              <NewUserRouter>
+          <AuthRouter>
+            <NewUserRouter>
+              <ChatsProvider>
                 <WidthRouter>
                   <ReactRouter.Route
                     path="/:chatId"
@@ -167,9 +167,9 @@ export function App() {
                   />
                   <ReactRouter.Route component={NotFoundPage} />
                 </WidthRouter>
-              </NewUserRouter>
-            </AuthRouter>
-          </ChatsProvider>
+              </ChatsProvider>
+            </NewUserRouter>
+          </AuthRouter>
         </MeProvider>
       </ReactRouter.BrowserRouter>
     </Styles>
