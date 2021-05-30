@@ -1,4 +1,4 @@
-import { firestore, auth } from '../firebase';
+import { db, auth } from '../firebase';
 import * as React from 'react';
 
 export const MeCtx = React.createContext();
@@ -11,10 +11,13 @@ export const MeProvider = ({ children }) => {
   React.useEffect(() => {
     setUser();
     if (authUser) {
-      return firestore
-        .collection('users')
-        .doc(authUser.uid)
-        .onSnapshot((s) => setUser(s.data() || {}));
+      const ref = `/users/${authUser.uid}`;
+      const listener = (s) => {
+        setUser(s.val() || {});
+      };
+
+      db.ref(ref).on('value', listener);
+      return () => db.ref(ref).off('value', listener);
     }
   }, [authUser]);
 
@@ -28,10 +31,7 @@ export const MeProvider = ({ children }) => {
   const update = React.useCallback(
     async (data) => {
       if (authUser) {
-        return firestore
-          .collection('users')
-          .doc(authUser.uid)
-          .set(data, { merge: true });
+        return db.ref(`/users/${authUser.uid}`).update(data);
       }
     },
     [authUser],
