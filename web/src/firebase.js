@@ -1,7 +1,6 @@
 import firebase from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/database';
-import 'firebase/firestore';
 import 'firebase/functions';
 import * as dbHooks from 'react-firebase-hooks/database';
 
@@ -23,13 +22,11 @@ if (!firebase.apps.length) {
 
 export const auth = firebase.auth();
 export const db = Object.assign(firebase.database(), dbHooks);
-export const firestore = firebase.firestore();
 export const functions = firebase.functions();
 
 if (window.location.hostname === 'localhost') {
   auth.useEmulator('http://localhost:9099');
   db.useEmulator('localhost', 9000);
-  firestore.useEmulator('localhost', 8080);
   functions.useEmulator('localhost', 5001);
 }
 
@@ -38,7 +35,6 @@ if (process.env.NODE_ENV === 'development') {
   global.firebase = firebase;
   global.auth = auth;
   global.db = db;
-  global.firestore = firestore;
   global.functions = functions;
 }
 
