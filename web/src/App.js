@@ -5,6 +5,7 @@ import { ChatProvider } from './contexts/ChatCtx';
 import { ChatsProvider } from './contexts/ChatsCtx';
 import { MeProvider } from './contexts/MeCtx';
 import { MessagesProvider } from './contexts/MessagesCtx';
+import { UsersProvider } from './contexts/UsersCtx';
 import { ChatPage } from './pages/ChatPage';
 import { NotFoundPage } from './pages/NotFoundPage';
 import { AuthRouter } from './routers/AuthRouter';
@@ -149,28 +150,30 @@ export function App() {
   return (
     <Styles>
       <ReactRouter.BrowserRouter>
-        <MeProvider>
-          <AuthRouter>
-            <NewUserRouter>
-              <ChatsProvider>
-                <WidthRouter>
-                  <ReactRouter.Route
-                    path="/:chatId"
-                    exact
-                    render={({ match }) => (
-                      <ChatProvider chatId={match.params.chatId}>
-                        <MessagesProvider>
-                          <ChatPage />
-                        </MessagesProvider>
-                      </ChatProvider>
-                    )}
-                  />
-                  <ReactRouter.Route component={NotFoundPage} />
-                </WidthRouter>
-              </ChatsProvider>
-            </NewUserRouter>
-          </AuthRouter>
-        </MeProvider>
+        <UsersProvider>
+          <MeProvider>
+            <AuthRouter>
+              <NewUserRouter>
+                <ChatsProvider>
+                  <WidthRouter>
+                    <ReactRouter.Route
+                      path="/:chatId"
+                      exact
+                      render={({ match }) => (
+                        <ChatProvider chatId={match.params.chatId}>
+                          <MessagesProvider>
+                            <ChatPage />
+                          </MessagesProvider>
+                        </ChatProvider>
+                      )}
+                    />
+                    <ReactRouter.Route component={NotFoundPage} />
+                  </WidthRouter>
+                </ChatsProvider>
+              </NewUserRouter>
+            </AuthRouter>
+          </MeProvider>
+        </UsersProvider>
       </ReactRouter.BrowserRouter>
     </Styles>
   );
