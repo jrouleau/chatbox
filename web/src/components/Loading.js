@@ -8,6 +8,19 @@ const Styles = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  animation: fadeIn 400ms;
+
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+    }
+    50% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
 
   & > div {
     width: 12rem;
