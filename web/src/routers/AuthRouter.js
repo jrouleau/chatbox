@@ -23,7 +23,14 @@ export function AuthRouter({ children }) {
         path="/login"
         exact
         render={() => {
-          history.goBack();
+          const state = history.location?.state || {};
+          const action = state.action;
+          const pathname = state.pathname || '/';
+          if (action) {
+            history.replace(pathname, { action });
+          } else {
+            history.replace(pathname);
+          }
         }}
       />
       <ReactRouter.Route>{children}</ReactRouter.Route>

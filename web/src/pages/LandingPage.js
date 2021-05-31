@@ -40,7 +40,14 @@ export function LandingPage({ style }) {
     <Styles style={style}>
       <Nav>
         <Spacer />
-        <button className="inverted" onClick={() => history.push('/login')}>
+        <button
+          className="inverted"
+          onClick={() =>
+            history.replace('/login', {
+              pathname: history.location.pathname,
+            })
+          }
+        >
           Login
         </button>
       </Nav>

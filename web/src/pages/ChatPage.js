@@ -35,9 +35,22 @@ export function ChatPage({ style }) {
     if (me.isAuth) {
       await chat.join();
     } else {
-      history.push('/login');
+      history.replace('/login', {
+        pathname: history.location.pathname,
+        action: 'joinChat',
+      });
     }
   }, [me.isAuth, chat, history]);
+
+  React.useEffect(() => {
+    const pathname = history.location?.pathname || `/c/${chat.id}`;
+    const state = history.location?.state || {};
+    const action = state.action;
+    if (action === 'joinChat') {
+      join();
+      history.replace(pathname);
+    }
+  });
 
   const leave = React.useCallback(async () => {
     await chat.leave();

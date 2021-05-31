@@ -47,7 +47,11 @@ export function ChatListPage({ style }) {
             <button
               className="stretch"
               style={{ marginLeft: '0.8rem' }}
-              onClick={() => history.push('/login')}
+              onClick={() =>
+                history.replace('/login', {
+                  pathname: history.location.pathname,
+                })
+              }
             >
               Login
             </button>
