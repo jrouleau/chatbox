@@ -1,5 +1,6 @@
 import * as React from 'react';
 import styled from 'styled-components';
+import { Anchorme } from 'react-anchorme';
 import { useUsers } from '../contexts/UsersCtx';
 
 const Styles = styled.div`
@@ -44,7 +45,9 @@ export function ChatMessage({ style, message }) {
       <span className="author">{author.displayName || 'Anonymous'}</span>
       <span className="text">
         {message.type === 'text' ? (
-          message.text
+          <Anchorme target="_blank" rel="noreferrer noopener">
+            {message.text}
+          </Anchorme>
         ) : message.type === 'join' ? (
           <i>{'has entered the chat.'}</i>
         ) : message.type === 'leave' ? (

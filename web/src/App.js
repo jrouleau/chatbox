@@ -19,6 +19,15 @@ const Styles = styled.div`
   flex-direction: row;
   align-items: stretch;
 
+  a {
+    color: inherit;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
   button {
     height: 4.8rem;
     padding: 0 2.4rem;
