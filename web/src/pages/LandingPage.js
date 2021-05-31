@@ -22,6 +22,10 @@ const Styles = styled(Page)`
     flex-direction: row;
     align-items: center;
 
+    @media (max-width: 768px) {
+      flex-direction: column-reverse;
+    }
+
     & > .divider {
       margin: 1.2rem;
       font-weight: 600;

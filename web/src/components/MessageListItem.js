@@ -25,6 +25,10 @@ const Styles = styled.li`
 
     & > .text {
       line-height: 1.2;
+
+      & > i {
+        margin-left: -0.2rem;
+      }
     }
   }
 `;

@@ -11,6 +11,26 @@ const Styles = styled(Page)`
     margin-bottom: 1.8rem;
     font-size: 2.4rem;
   }
+
+  & > form {
+    width: 100%;
+    max-width: 36rem;
+    display: flex;
+    flex-direction: row;
+
+    @media (max-width: 480px) {
+      flex-direction: column;
+
+      & > button {
+        width: 100%;
+        margin: 1.2rem 0 0 0 !important;
+      }
+    }
+
+    & > input {
+      width: 100%;
+    }
+  }
 `;
 
 export function NewUserPage({ style }) {

@@ -9,7 +9,8 @@ const Styles = styled(Page)`
   max-width: 124rem;
 
   & > .buttons {
-    width: 38.4rem;
+    width: 100%;
+    max-width: 38.4rem;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -27,6 +28,7 @@ const Styles = styled(Page)`
     & > button {
       width: 100%;
       margin: 0.4rem 0;
+      white-space: initial;
     }
   }
 `;

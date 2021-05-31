@@ -4,6 +4,7 @@ import styled from 'styled-components';
 const Styles = styled.nav`
   width: 100%;
   height: 7.2rem;
+  flex-shrink: 0;
   display: flex;
   flex-direction: row;
   align-items: center;
