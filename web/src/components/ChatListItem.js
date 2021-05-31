@@ -119,7 +119,7 @@ export function ChatListItem({ style, chat }) {
     <Styles
       style={style}
       className={chat.selected ? 'selected' : unread ? 'unread' : ''}
-      onClick={() => history.replace(`/${chat.id}`)}
+      onClick={() => history.replace(`/c/${chat.id}`)}
     >
       <div className="content">
         <span className="title">{chat.id}</span>

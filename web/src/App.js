@@ -157,7 +157,7 @@ export function App() {
                 <ChatsProvider>
                   <WidthRouter>
                     <ReactRouter.Route
-                      path="/:chatId"
+                      path="/c/:chatId"
                       exact
                       render={({ match }) => (
                         <ChatProvider chatId={match.params.chatId}>

@@ -33,7 +33,7 @@ export function LandingPage({ style }) {
   const history = ReactRouter.useHistory();
 
   const newChat = () => {
-    history.replace(`/${uid(20)}`);
+    history.replace(`/c/${uid(20)}`);
   };
 
   return (

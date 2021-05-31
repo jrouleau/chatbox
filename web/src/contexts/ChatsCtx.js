@@ -14,7 +14,7 @@ export const ChatsProvider = ({ children }) => {
   );
   const isLoading = userChatsLoading;
 
-  const match = ReactRouter.useRouteMatch({ path: '/:chatId', exact: true });
+  const match = ReactRouter.useRouteMatch({ path: '/c/:chatId', exact: true });
   const selectedChatId = match?.params?.chatId;
   const list = React.useMemo(() => {
     const a = [
