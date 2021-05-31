@@ -1,7 +1,7 @@
-import { firestore } from '../firebase';
 import * as React from 'react';
 import * as ReactRouter from 'react-router-dom';
 import styled from 'styled-components';
+import { uid } from 'uid/secure';
 import { EnterChatId } from '../components/EnterChatId';
 import { Nav, Spacer } from '../components/Nav';
 import { Page } from '../components/Page';
@@ -33,7 +33,7 @@ export function LandingPage({ style }) {
   const history = ReactRouter.useHistory();
 
   const newChat = () => {
-    history.replace(`/${firestore.collection('id').doc().id}`);
+    history.replace(`/${uid(20)}`);
   };
 
   return (
