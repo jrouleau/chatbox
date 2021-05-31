@@ -2,227 +2,116 @@ const admin = require("firebase-admin");
 const functions = require("firebase-functions");
 
 admin.initializeApp();
-const db = admin.firestore();
+const db = admin.database();
+const TIMESTAMP = admin.database.ServerValue.TIMESTAMP;
 
-const distributeMessage = async ({chatId, messageId, message}) => {
-  const chat = await db
-      .collection("chats")
-      .doc(chatId)
-      .get()
-      .then((d) => d.data() || {});
-  const users = Object.keys(chat.users || {});
-
-  return Promise.all(users.map((userId) => Promise.all([
-    db
-        .collection("users")
-        .doc(userId)
-        .collection("chats")
-        .doc(chatId)
-        .collection("messages")
-        .doc(messageId)
-        .set(message),
-    !message.misc && (
-      db
-          .collection("users")
-          .doc(userId)
-          .collection("chats")
-          .doc(chatId)
-          .set({
-            unread: {[messageId]: true},
-            lastMessage: message,
-          }, {merge: true})
-    ),
-  ])));
-};
-exports.sendMessage = functions.https.onCall(async (data, context) => {
-  const {chatId, messageId, text} = data;
-  const {auth} = context;
-
-  const time = admin.firestore.Timestamp.now();
-
-  const user = await db
-      .collection("users")
-      .doc(auth.uid)
-      .get()
-      .then((d) => d.data());
-
-  const message = {
-    author: {
-      id: auth.uid,
-      displayName: user.displayName,
-    },
-    text,
-    time,
-  };
-
-  return distributeMessage({
-    chatId,
-    messageId,
-    message,
-  });
-});
-
-const joinChat = async (data, context) => {
-  const {chatId} = data;
-  const {auth} = context;
-
-  const time = admin.firestore.Timestamp.now();
-
-  const user = await db
-      .collection("users")
-      .doc(auth.uid)
-      .get()
-      .then((d) => d.data());
-
-  const messageId = db.collection("id").doc().id;
-  const message = {
-    author: {
-      id: auth.uid,
-      displayName: user.displayName,
-    },
-    misc: "join",
-    time,
-  };
-
-  await Promise.all([
-    db
-        .collection("chats")
-        .doc(chatId)
-        .set({
-          users: {
-            [auth.uid]: {
-              displayName: user.displayName,
-              time,
-            },
-          },
-        }, {merge: true}),
-    db
-        .collection("users")
-        .doc(auth.uid)
-        .collection("chats")
-        .doc(chatId)
-        .set({
-          lastMessage: message,
-          joined: true,
-        }, {merge: true}),
-  ]);
-
-  return distributeMessage({
-    chatId,
-    messageId,
-    message,
-  });
-};
-exports.joinChat = functions.https.onCall(joinChat);
-
-const leaveChat = async (data, context) => {
-  const {chatId} = data;
-  const {auth} = context;
-
-  const time = admin.firestore.Timestamp.now();
-
-  const user = await db
-      .collection("users")
-      .doc(auth.uid)
-      .get()
-      .then((d) => d.data());
-
-  const messageId = db.collection("id").doc().id;
-  const message = {
-    author: {
-      id: auth.uid,
-      displayName: user.displayName,
-    },
-    misc: "leave",
-    time,
-  };
-
-  await db
-      .collection("users")
-      .doc(auth.uid)
-      .collection("chats")
-      .doc(chatId)
-      .set({
-        lastMessage: message,
-        joined: false,
-      }, {merge: true});
-
-  await distributeMessage({
-    chatId,
-    messageId,
-    message,
-  });
-
-  return db
-      .collection("chats")
-      .doc(chatId)
-      .set({
-        users: {
-          [auth.uid]: admin.firestore.FieldValue.delete(),
-        },
-      }, {merge: true});
-};
-exports.leaveChat = functions.https.onCall(leaveChat);
-
-exports.onChatUpdate = functions
-    .firestore
-    .document("/chats/{chatId}")
-    .onUpdate(async (change, context) => {
-      const {chatId} = context.params;
-      const after = change.after.data() || {};
-      if (Object.keys(after.users || {}).length === 0) {
-        await db
-            .collection("chats")
-            .doc(chatId)
-            .delete();
-      }
-    });
-
+/*
+ * Auth
+ */
 exports.onDeleteAuth = functions
     .auth
     .user()
     .onDelete(async (auth) => {
-      await db
-          .collection("chats")
-          .where(`users.${auth.uid}`, "!=", false)
-          .get()
-          .then((chats) => {
-            const p = [];
-            chats.forEach((chat) =>
-              p.push(leaveChat({chatId: chat.id}, {auth})),
-            );
-            return Promise.all(p);
-          });
-      await db
-          .collection("users")
-          .doc(auth.uid)
-          .delete();
+      const updates = {};
+      updates[`/users/${auth.uid}`] = null;
+      await db.ref().update(updates);
     });
 
+/*
+ * User
+ */
 exports.onDeleteUser = functions
-    .firestore
-    .document("/users/{uid}")
-    .onDelete(async (user) => {
-      db
-          .collection("users")
-          .doc(user.id)
-          .collection("chats")
-          .get()
-          .then((chats) => {
-            const p = [];
-            chats.forEach((chat) => p.push(chat.ref.delete()));
-            return Promise.all(p);
-          });
+    .database
+    .ref("/users/{userId}")
+    .onDelete(async (_, context) => {
+      const {userId} = context.params;
+      const updates = {};
+      updates[`/user-chats/${userId}`] = null;
+      updates[`/user-messages/${userId}`] = null;
+      await db.ref().update(updates);
     });
 
+/*
+ * UserChat
+ */
 exports.onDeleteUserChat = functions
-    .firestore
-    .document("/users/{uid}/chats/{chatId}")
-    .onDelete(async (chat) => {
-      const messages = await chat.ref.collection("messages").get();
-      const p = [];
-      messages.forEach((message) => {
-        p.push(message.ref.delete());
+    .database
+    .ref("/user-chats/{userId}/{chatId}")
+    .onDelete(async (_, context) => {
+      const {userId, chatId} = context.params;
+      const updates = {};
+      updates[`/user-messages/${userId}/${chatId}`] = null;
+      await db.ref().update(updates);
+    });
+
+exports.onWriteUserChatJoined = functions
+    .database
+    .ref("/user-chats/{userId}/{chatId}/joined")
+    .onWrite(async (change, context) => {
+      const {userId, chatId} = context.params;
+      const updates = {};
+      if (change.after.val()) {
+        // join
+        updates[`/chats/${chatId}/users/${userId}`] = TIMESTAMP;
+      } else {
+        // leave
+        updates[`/chats/${chatId}/users/${userId}`] = null;
+      }
+      await db.ref().update(updates);
+    });
+
+/*
+ * Chat
+ */
+exports.onWriteChat = functions
+    .database
+    .ref("/chats/{chatId}/users/{userId}")
+    .onWrite(async (change, context) => {
+      const {chatId, userId} = context.params;
+      const updates = {};
+
+      const chat = await db.ref(`/chats/${chatId}`).get();
+      const userChat = await db.ref(`/user-chats/${userId}/${chatId}`).get();
+      const users = Object.keys((chat.val() || {}).users || {});
+
+      const messageId = db.ref().push().key;
+      const message = {
+        author: userId,
+        time: TIMESTAMP,
+      };
+      if (change.after.val()) {
+        message.type = "join";
+      } else {
+        message.type = "leave";
+        if (userChat.exists()) users.unshift(userId);
+      }
+
+      users.forEach((id) => {
+        updates[`/user-messages/${id}/${chatId}/${messageId}`] = message;
       });
-      return Promise.all(p);
+
+      await db.ref().update(updates);
+    });
+
+/*
+ * Message
+ */
+exports.onCreateMessage = functions
+    .database
+    .ref("/user-messages/{userId}/{chatId}/{messageId}")
+    .onCreate(async (snap, context) => {
+      const {userId, chatId, messageId} = context.params;
+      const message = snap.val();
+      const updates = {};
+      updates[`/user-chats/${userId}/${chatId}/lastMessage`] = message;
+      updates[`/user-chats/${userId}/${chatId}/unread/${messageId}`] = true;
+      if (message.type === "text" && message.author === userId) {
+        const chat = await db.ref(`/chats/${chatId}`).get();
+        const users = Object.keys((chat.val() || {}).users || {});
+        users.forEach((id) => {
+          if (id === userId) return;
+          updates[`/user-messages/${id}/${chatId}/${messageId}`] = message;
+        });
+      }
+      await db.ref().update(updates);
     });
