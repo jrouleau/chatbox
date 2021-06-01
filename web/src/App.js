@@ -11,6 +11,7 @@ import { NotFoundPage } from './pages/NotFoundPage';
 import { AuthRouter } from './routers/AuthRouter';
 import { NewUserRouter } from './routers/NewUserRouter';
 import { WidthRouter } from './routers/WidthRouter';
+import { compose } from './utils/compose';
 
 const Styles = styled.div`
   width: 100%;
@@ -53,34 +54,30 @@ const Styles = styled.div`
 `;
 
 export function App() {
-  return (
-    <Styles>
-      <ReactRouter.BrowserRouter>
-        <UsersProvider>
-          <MeProvider>
-            <AuthRouter>
-              <NewUserRouter>
-                <ChatsProvider>
-                  <WidthRouter>
-                    <ReactRouter.Route
-                      path="/c/:chatId"
-                      exact
-                      render={({ match }) => (
-                        <ChatProvider chatId={match.params.chatId}>
-                          <MessagesProvider>
-                            <ChatPage />
-                          </MessagesProvider>
-                        </ChatProvider>
-                      )}
-                    />
-                    <ReactRouter.Route component={NotFoundPage} />
-                  </WidthRouter>
-                </ChatsProvider>
-              </NewUserRouter>
-            </AuthRouter>
-          </MeProvider>
-        </UsersProvider>
-      </ReactRouter.BrowserRouter>
-    </Styles>
-  );
+  return compose([
+    (c) => <Styles>{c}</Styles>,
+    (c) => <ReactRouter.BrowserRouter>{c}</ReactRouter.BrowserRouter>,
+    (c) => <UsersProvider>{c}</UsersProvider>,
+    (c) => <MeProvider>{c}</MeProvider>,
+    (c) => <AuthRouter>{c}</AuthRouter>,
+    (c) => <NewUserRouter>{c}</NewUserRouter>,
+    (c) => <ChatsProvider>{c}</ChatsProvider>,
+    (c) => <WidthRouter>{c}</WidthRouter>,
+    () => (
+      <ReactRouter.Switch>
+        <ReactRouter.Route
+          path="/c/:chatId"
+          exact
+          render={({ match }) => (
+            <ChatProvider chatId={match.params.chatId}>
+              <MessagesProvider>
+                <ChatPage />
+              </MessagesProvider>
+            </ChatProvider>
+          )}
+        />
+        <ReactRouter.Route component={NotFoundPage} />
+      </ReactRouter.Switch>
+    ),
+  ]);
 }
