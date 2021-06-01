@@ -1,5 +1,6 @@
 import * as React from 'react';
 import styled from 'styled-components';
+import { useChat } from '../contexts/ChatCtx';
 import { useMessages } from '../contexts/MessagesCtx';
 import { Loading } from './Loading';
 import { MessageListItem } from './MessageListItem';
@@ -16,11 +17,14 @@ const Styles = styled.ol`
 `;
 
 export function MessageList({ style }) {
+  const chat = useChat();
   const messages = useMessages();
 
   return (
     <Styles style={style} className="scroll">
-      {messages.isLoading ? (
+      {chat.isLoading ||
+      messages.isLoading ||
+      (chat.joined && messages.list.length === 0) ? (
         <Loading />
       ) : (
         (messages.list.slice().reverse() || []).map((m) => (

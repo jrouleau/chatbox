@@ -109,7 +109,7 @@ export function ChatPage({ style }) {
         </button>
       </Nav>
       <MessageList />
-      {chat.isLoading || chat.joined ? (
+      {me.isAuth && (chat.isLoading || chat.joined) ? (
         <SendMessage />
       ) : (
         <button
