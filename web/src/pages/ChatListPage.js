@@ -27,12 +27,12 @@ export function ChatListPage({ style }) {
   const me = useMe();
 
   const logout = () => {
-    history.replace('/');
+    history.push('/');
     me.signOut();
   };
 
   const deleteAccount = () => {
-    history.replace('/');
+    history.push('/');
     me.delete();
   };
 
@@ -41,17 +41,13 @@ export function ChatListPage({ style }) {
       <Nav>
         {!me.isAuth ? (
           <>
-            <button className="icon" onClick={() => history.replace('/')}>
+            <button className="icon" onClick={() => history.push('/')}>
               home
             </button>
             <button
               className="stretch"
               style={{ marginLeft: '0.8rem' }}
-              onClick={() =>
-                history.replace('/login', {
-                  pathname: history.location.pathname,
-                })
-              }
+              onClick={() => history.push('/login')}
             >
               Login
             </button>

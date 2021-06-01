@@ -25,30 +25,31 @@ const Styles = styled(Page)`
 
 export function ChatPage({ style }) {
   const history = ReactRouter.useHistory();
+  const location = ReactRouter.useLocation();
   const me = useMe();
   const chat = useChat();
   const messages = useMessages();
 
-  const back = () => history.replace('/');
-
-  const join = React.useCallback(async () => {
-    if (me.isAuth) {
-      await chat.join();
-    } else {
-      history.replace('/login', {
-        pathname: history.location.pathname,
-        action: 'joinChat',
+  const join = React.useCallback(() => {
+    if (!me.isAuth) {
+      history.push('/login', {
+        redirectTo: {
+          ...location,
+          state: {
+            action: 'joinChat',
+          },
+        },
       });
+    } else {
+      chat.join();
     }
-  }, [me.isAuth, chat, history]);
+  }, [me.isAuth, history, location, chat]);
 
   React.useEffect(() => {
-    const pathname = history.location?.pathname || `/c/${chat.id}`;
-    const state = history.location?.state || {};
-    const action = state.action;
-    if (action === 'joinChat') {
-      join();
-      history.replace(pathname);
+    const state = location.state || {};
+    if (state.action === 'joinChat') {
+      history.replace({ ...location, state: undefined });
+      if (me.isAuth) join();
     }
   });
 
@@ -57,7 +58,7 @@ export function ChatPage({ style }) {
   }, [chat]);
 
   const _delete = React.useCallback(async () => {
-    history.replace('/');
+    history.push('/');
     await chat.delete();
   }, [history, chat]);
 
@@ -70,7 +71,10 @@ export function ChatPage({ style }) {
   return (
     <Styles style={style}>
       <Nav>
-        <button className="transparent circle icon" onClick={back}>
+        <button
+          className="transparent circle icon"
+          onClick={() => history.goBack()}
+        >
           chevron_left
         </button>
         <h3 className="title">{chat.id}</h3>

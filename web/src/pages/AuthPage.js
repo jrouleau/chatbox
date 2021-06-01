@@ -37,10 +37,8 @@ export function AuthPage({ style }) {
   const history = ReactRouter.useHistory();
   const me = useMe();
 
-  const back = () => {
-    const state = history.location?.state || {};
-    const pathname = state.pathname || '/';
-    history.replace(pathname);
+  const cancel = () => {
+    history.goBack();
   };
 
   const anonymousLogin = (e) => {
@@ -55,7 +53,7 @@ export function AuthPage({ style }) {
     <Styles style={style}>
       <Nav>
         <Spacer />
-        <button className="transparent circle icon" onClick={back}>
+        <button className="transparent circle icon" onClick={cancel}>
           close
         </button>
       </Nav>

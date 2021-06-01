@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as ReactRouter from 'react-router-dom';
 import styled from 'styled-components';
 import { Nav, Spacer } from '../components/Nav';
 import { Page } from '../components/Page';
@@ -34,9 +35,11 @@ const Styles = styled(Page)`
 `;
 
 export function NewUserPage({ style }) {
+  const history = ReactRouter.useHistory();
   const me = useMe();
 
   const cancel = async () => {
+    history.goBack();
     me.delete();
   };
 

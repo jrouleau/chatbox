@@ -7,6 +7,7 @@ import { LoadingPage } from '../pages/LoadingPage';
 
 export function AuthRouter({ children }) {
   const history = ReactRouter.useHistory();
+  const location = ReactRouter.useLocation();
   const me = useMe();
 
   return me.isLoading ? (
@@ -23,14 +24,8 @@ export function AuthRouter({ children }) {
         path="/login"
         exact
         render={() => {
-          const state = history.location?.state || {};
-          const action = state.action;
-          const pathname = state.pathname || '/';
-          if (action) {
-            history.replace(pathname, { action });
-          } else {
-            history.replace(pathname);
-          }
+          const state = location.state || {};
+          history.replace(state.redirectTo || '/');
         }}
       />
       <ReactRouter.Route>{children}</ReactRouter.Route>

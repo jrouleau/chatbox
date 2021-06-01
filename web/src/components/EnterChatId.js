@@ -31,13 +31,13 @@ export function EnterChatId({ style, withNew }) {
   const enterChat = (e) => {
     e.preventDefault();
     if (chatId.length === 20) {
-      history.replace(`/c/${chatId}`);
+      history.push(`/c/${chatId}`);
       setChatId('');
     }
   };
 
   const newChat = () => {
-    history.replace(`/c/${uid(20)}`);
+    history.push(`/c/${uid(20)}`);
   };
 
   return (

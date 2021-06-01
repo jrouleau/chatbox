@@ -36,28 +36,20 @@ const Styles = styled(Page)`
 export function LandingPage({ style }) {
   const history = ReactRouter.useHistory();
 
-  const newChat = () => {
-    history.replace(`/c/${uid(20)}`);
-  };
-
   return (
     <Styles style={style}>
       <Nav>
         <Spacer />
-        <button
-          className="inverted"
-          onClick={() =>
-            history.replace('/login', {
-              pathname: history.location.pathname,
-            })
-          }
-        >
+        <button className="inverted" onClick={() => history.push('/login')}>
           Login
         </button>
       </Nav>
       <h1>Welcome to Chatbox!</h1>
       <div className="enter-chat">
-        <button className="inverted" onClick={newChat}>
+        <button
+          className="inverted"
+          onClick={() => history.push(`/c/${uid(20)}`)}
+        >
           New Chat
         </button>
         <span className="divider">or</span>
