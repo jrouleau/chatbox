@@ -3,6 +3,7 @@ import * as ReactRouter from 'react-router-dom';
 import styled from 'styled-components';
 import { uid } from 'uid/secure';
 import { Button } from './Button';
+import { Input } from './Input';
 
 const Styles = styled.div`
   width: 100%;
@@ -13,10 +14,6 @@ const Styles = styled.div`
     width: 100%;
     display: flex;
     flex-direction: row;
-
-    & > input {
-      width: 100%;
-    }
   }
 
   & > .new-chat {
@@ -44,7 +41,8 @@ export function EnterChatId({ style, withNew }) {
   return (
     <Styles style={style}>
       <form onSubmit={enterChat}>
-        <input
+        <Input
+          className="stretch"
           type="text"
           value={chatId}
           placeholder="Enter chat ID"

@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { useChat } from '../contexts/ChatCtx';
 import { useMessages } from '../contexts/MessagesCtx';
 import { Button } from './Button';
+import { Input } from './Input';
 
 const Styles = styled.div`
   width: 100%;
@@ -10,10 +11,6 @@ const Styles = styled.div`
   & > form {
     display: flex;
     flex-direction: row;
-
-    & > input {
-      width: 100%;
-    }
   }
 `;
 
@@ -33,7 +30,8 @@ export function SendMessage({ style }) {
   return (
     <Styles style={style}>
       <form onSubmit={sendMessage}>
-        <input
+        <Input
+          className="stretch"
           type="text"
           disabled={!chat.joined}
           value={message}

@@ -2,6 +2,7 @@ import * as React from 'react';
 import * as ReactRouter from 'react-router-dom';
 import styled from 'styled-components';
 import { Button } from '../components/Button';
+import { Input } from '../components/Input';
 import { Nav, Spacer } from '../components/Nav';
 import { Page } from '../components/Page';
 import { useMe } from '../contexts/MeCtx';
@@ -27,10 +28,6 @@ const Styles = styled(Page)`
         width: 100%;
         margin: 1.2rem 0 0 0 !important;
       }
-    }
-
-    & > input {
-      width: 100%;
     }
   }
 `;
@@ -60,7 +57,8 @@ export function NewUserPage({ style }) {
       </Nav>
       <h2>Hello, my name is...</h2>
       <form onSubmit={save}>
-        <input
+        <Input
+          className="stretch"
           type="text"
           placeholder="Enter name (optional)"
           value={displayName}

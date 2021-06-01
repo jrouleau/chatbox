@@ -28,25 +28,6 @@ const Styles = styled.div`
     }
   }
 
-  input {
-    height: 4.8rem;
-    padding: 0 1.2rem;
-    border: none;
-    border-radius: 0.4rem;
-    outline: none;
-    color: #212121;
-    background: #fff;
-
-    &:disabled {
-      color: #2121218a;
-      background: #ddd;
-    }
-  }
-
-  input + button {
-    margin-left: 0.8rem;
-  }
-
   .scroll {
     overflow-y: scroll;
 
