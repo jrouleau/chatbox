@@ -1,6 +1,7 @@
 import * as React from 'react';
 import * as ReactRouter from 'react-router-dom';
 import styled from 'styled-components';
+import { Button } from '../components/Button';
 import { Nav, Spacer } from '../components/Nav';
 import { Page } from '../components/Page';
 import { useMe } from '../contexts/MeCtx';
@@ -53,20 +54,20 @@ export function AuthPage({ style }) {
     <Styles style={style}>
       <Nav>
         <Spacer />
-        <button className="transparent circle icon" onClick={cancel}>
+        <Button className="transparent circle icon" onClick={cancel}>
           close
-        </button>
+        </Button>
       </Nav>
       <div className="buttons">
         <h3>Login with</h3>
-        <button disabled>Google</button>
-        <button disabled>Facebook</button>
-        <button disabled>GitHub</button>
-        <button disabled>Email</button>
+        <Button disabled>Google</Button>
+        <Button disabled>Facebook</Button>
+        <Button disabled>GitHub</Button>
+        <Button disabled>Email</Button>
         <p className="divider">or</p>
-        <button className="inverted" onClick={anonymousLogin}>
+        <Button className="inverted" onClick={anonymousLogin}>
           Continue Anonymously
-        </button>
+        </Button>
       </div>
     </Styles>
   );

@@ -6,6 +6,7 @@ import { ChatList } from '../components/ChatList';
 import { EnterChatId } from '../components/EnterChatId';
 import { Nav, Spacer } from '../components/Nav';
 import { Page } from '../components/Page';
+import { Button } from '../components/Button';
 
 const Styles = styled(Page)`
   padding-bottom: 2.4rem;
@@ -41,32 +42,32 @@ export function ChatListPage({ style }) {
       <Nav>
         {!me.isAuth ? (
           <>
-            <button className="icon" onClick={() => history.push('/')}>
+            <Button className="icon" onClick={() => history.push('/')}>
               home
-            </button>
-            <button
+            </Button>
+            <Button
               className="stretch"
               style={{ marginLeft: '0.8rem' }}
               onClick={() => history.push('/login')}
             >
               Login
-            </button>
+            </Button>
           </>
         ) : (
           <>
             <h2>{me.displayName || 'Anonymous'}</h2>
             <Spacer />
             {me.isAnonymous ? (
-              <button
+              <Button
                 className="transparent circle icon"
                 onClick={deleteAccount}
               >
                 delete
-              </button>
+              </Button>
             ) : (
-              <button className="transparent circle icon" onClick={logout}>
+              <Button className="transparent circle icon" onClick={logout}>
                 logout
-              </button>
+              </Button>
             )}
           </>
         )}

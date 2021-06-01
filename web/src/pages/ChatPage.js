@@ -1,6 +1,7 @@
 import * as React from 'react';
 import * as ReactRouter from 'react-router-dom';
 import styled from 'styled-components';
+import { Button } from '../components/Button';
 import { MessageList } from '../components/MessageList';
 import { Nav, Spacer } from '../components/Nav';
 import { Page } from '../components/Page';
@@ -71,58 +72,58 @@ export function ChatPage({ style }) {
   return (
     <Styles style={style}>
       <Nav>
-        <button
+        <Button
           className="transparent circle icon"
           onClick={() => history.goBack()}
         >
           chevron_left
-        </button>
+        </Button>
         <h3 className="title">{chat.id}</h3>
         <Spacer />
-        <button
+        <Button
           className="transparent circle icon"
           onClick={() => {
             navigator.clipboard.writeText(chat.id);
           }}
         >
           share
-        </button>
+        </Button>
         {!chat.isLoading && !chat.joined ? (
-          <button
+          <Button
             className="transparent circle icon"
             onClick={join}
             disabled={chat.isLoading}
           >
             login
-          </button>
+          </Button>
         ) : (
-          <button
+          <Button
             className="transparent circle icon"
             onClick={leave}
             disabled={chat.isLoading}
           >
             logout
-          </button>
+          </Button>
         )}
-        <button
+        <Button
           className="transparent circle icon"
           onClick={_delete}
           disabled={chat.isLoading || messages.list.length === 0}
         >
           delete
-        </button>
+        </Button>
       </Nav>
       <MessageList />
       {me.isAuth && (chat.isLoading || chat.joined) ? (
         <SendMessage />
       ) : (
-        <button
+        <Button
           className="inverted stretch"
           onClick={join}
           disabled={chat.isLoading}
         >
           Join Chat
-        </button>
+        </Button>
       )}
     </Styles>
   );

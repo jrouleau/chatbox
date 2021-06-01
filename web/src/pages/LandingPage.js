@@ -2,6 +2,7 @@ import * as React from 'react';
 import * as ReactRouter from 'react-router-dom';
 import styled from 'styled-components';
 import { uid } from 'uid/secure';
+import { Button } from '../components/Button';
 import { EnterChatId } from '../components/EnterChatId';
 import { Nav, Spacer } from '../components/Nav';
 import { Page } from '../components/Page';
@@ -40,18 +41,18 @@ export function LandingPage({ style }) {
     <Styles style={style}>
       <Nav>
         <Spacer />
-        <button className="inverted" onClick={() => history.push('/login')}>
+        <Button className="inverted" onClick={() => history.push('/login')}>
           Login
-        </button>
+        </Button>
       </Nav>
       <h1>Welcome to Chatbox!</h1>
       <div className="enter-chat">
-        <button
+        <Button
           className="inverted"
           onClick={() => history.push(`/c/${uid(20)}`)}
         >
           New Chat
-        </button>
+        </Button>
         <span className="divider">or</span>
         <EnterChatId style={{ maxWidth: '32rem' }} />
       </div>

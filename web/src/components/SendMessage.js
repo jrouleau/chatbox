@@ -2,6 +2,7 @@ import * as React from 'react';
 import styled from 'styled-components';
 import { useChat } from '../contexts/ChatCtx';
 import { useMessages } from '../contexts/MessagesCtx';
+import { Button } from './Button';
 
 const Styles = styled.div`
   width: 100%;
@@ -38,13 +39,13 @@ export function SendMessage({ style }) {
           value={message}
           onChange={(e) => setMessage(e.target.value)}
         />
-        <button
+        <Button
           type="submit"
           className="inverted"
           disabled={!chat.joined || !message}
         >
           Send
-        </button>
+        </Button>
       </form>
     </Styles>
   );

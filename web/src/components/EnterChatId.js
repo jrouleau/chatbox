@@ -2,6 +2,7 @@ import * as React from 'react';
 import * as ReactRouter from 'react-router-dom';
 import styled from 'styled-components';
 import { uid } from 'uid/secure';
+import { Button } from './Button';
 
 const Styles = styled.div`
   width: 100%;
@@ -49,14 +50,14 @@ export function EnterChatId({ style, withNew }) {
           placeholder="Enter chat ID"
           onChange={(e) => setChatId(e.target.value)}
         />
-        <button type="submit" disabled={chatId.length !== 20}>
+        <Button type="submit" disabled={chatId.length !== 20}>
           Go
-        </button>
+        </Button>
       </form>
       {withNew && (
-        <button className="new-chat inverted icon" onClick={newChat}>
+        <Button className="new-chat inverted icon" onClick={newChat}>
           add
-        </button>
+        </Button>
       )}
     </Styles>
   );

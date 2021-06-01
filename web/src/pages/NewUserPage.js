@@ -1,6 +1,7 @@
 import * as React from 'react';
 import * as ReactRouter from 'react-router-dom';
 import styled from 'styled-components';
+import { Button } from '../components/Button';
 import { Nav, Spacer } from '../components/Nav';
 import { Page } from '../components/Page';
 import { useMe } from '../contexts/MeCtx';
@@ -53,9 +54,9 @@ export function NewUserPage({ style }) {
     <Styles style={style}>
       <Nav>
         <Spacer />
-        <button className="transparent circle icon" onClick={cancel}>
+        <Button className="transparent circle icon" onClick={cancel}>
           close
-        </button>
+        </Button>
       </Nav>
       <h2>Hello, my name is...</h2>
       <form onSubmit={save}>
@@ -65,9 +66,9 @@ export function NewUserPage({ style }) {
           value={displayName}
           onChange={(e) => setDisplayName(e.target.value)}
         />
-        <button type="submit" className="inverted">
+        <Button type="submit" className="inverted">
           Continue
-        </button>
+        </Button>
       </form>
     </Styles>
   );
