@@ -9,6 +9,7 @@ import { SendMessage } from '../components/SendMessage';
 import { useChat } from '../contexts/ChatCtx';
 import { useMe } from '../contexts/MeCtx';
 import { useMessages } from '../contexts/MessagesCtx';
+import { useScreenSize } from '../contexts/ScreenSizeCtx';
 
 const Styles = styled(Page)`
   padding-bottom: 2.4rem;
@@ -31,6 +32,7 @@ const Styles = styled(Page)`
 export function ChatPage({ style }) {
   const history = ReactRouter.useHistory();
   const location = ReactRouter.useLocation();
+  const screenSize = useScreenSize();
   const me = useMe();
   const chat = useChat();
   const messages = useMessages();
@@ -88,6 +90,9 @@ export function ChatPage({ style }) {
           className="transparent circle icon"
           tooltip="Back"
           onClick={() => history.goBack()}
+          style={{
+            visibility: screenSize.isLarge ? 'hidden' : 'initial',
+          }}
         >
           chevron_left
         </Button>
