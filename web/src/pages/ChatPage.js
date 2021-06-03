@@ -31,6 +31,14 @@ export function ChatPage({ style }) {
   const chat = useChat();
   const messages = useMessages();
 
+  const copy = React.useCallback(() => {
+    if (window.location.hostname === 'localhost') {
+      navigator.clipboard.writeText(chat.id);
+    } else {
+      navigator.clipboard.writeText(window.location.href);
+    }
+  }, [chat.id]);
+
   const join = React.useCallback(() => {
     if (!me.isAuth) {
       history.push('/login', {
@@ -80,12 +88,7 @@ export function ChatPage({ style }) {
         </Button>
         <h3 className="title">{chat.id}</h3>
         <Spacer />
-        <Button
-          className="transparent circle icon"
-          onClick={() => {
-            navigator.clipboard.writeText(chat.id);
-          }}
-        >
+        <Button className="transparent circle icon" onClick={copy}>
           share
         </Button>
         {!chat.isLoading && !chat.joined ? (
