@@ -13,7 +13,7 @@ const StyledButton = styled.button`
   font-weight: 600;
   color: #212121;
   background: #eee;
-  transition: all 0.1s;
+  transition: all 100ms;
   position: relative;
 
   &:disabled {
@@ -26,6 +26,10 @@ const StyledButton = styled.button`
     &:hover {
       color: #191919;
       background: #fff;
+    }
+
+    &:active {
+      background: #eee;
     }
   }
 
@@ -42,6 +46,10 @@ const StyledButton = styled.button`
         color: #fff;
         background: #191919;
       }
+
+      &:active {
+        background: #141414;
+      }
     }
   }
 
@@ -57,6 +65,10 @@ const StyledButton = styled.button`
       &:hover {
         color: #fff;
         background: #ffffff1a;
+      }
+
+      &:active {
+        background: #ffffff10;
       }
     }
   }
