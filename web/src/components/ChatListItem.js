@@ -154,7 +154,9 @@ export function ChatListItem({ style, chat }) {
         </div>
       </div>
       <div className="details">
-        <span className="selector material-icons">chevron_right</span>
+        <span className="selector material-icons" tooltip="Back">
+          chevron_right
+        </span>
         <span className="unread-count">{unread < 100 ? unread : '99+'}</span>
       </div>
     </Styles>

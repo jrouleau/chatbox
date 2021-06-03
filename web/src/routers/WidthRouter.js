@@ -13,7 +13,13 @@ export function WidthRouter({ children }) {
 
   return width >= 768 ? (
     <>
-      <ChatListPage style={{ maxWidth: 'min(37%, 48rem)', paddingRight: 0 }} />
+      <ChatListPage
+        style={{
+          maxWidth: 'min(37%, 48rem)',
+          paddingRight: 0,
+          overflow: 'initial',
+        }}
+      />
       <ReactRouter.Switch>
         <ReactRouter.Route path="/" exact component={NewChatPage} />
         {children}

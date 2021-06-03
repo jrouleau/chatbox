@@ -10,7 +10,6 @@ import { Button } from '../components/Button';
 
 const Styles = styled(Page)`
   padding-bottom: 2.4rem;
-  overflow: hidden;
 
   & > nav {
     margin-top: 1.2rem;
@@ -60,12 +59,17 @@ export function ChatListPage({ style }) {
             {me.isAnonymous ? (
               <Button
                 className="transparent circle icon"
+                tooltip="Delete Account"
                 onClick={deleteAccount}
               >
                 delete
               </Button>
             ) : (
-              <Button className="transparent circle icon" onClick={logout}>
+              <Button
+                className="transparent circle icon"
+                tooltip="Logout"
+                onClick={logout}
+              >
                 logout
               </Button>
             )}

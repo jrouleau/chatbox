@@ -14,6 +14,7 @@ const StyledButton = styled.button`
   color: #212121;
   background: #eee;
   transition: all 0.1s;
+  position: relative;
 
   &:disabled {
     cursor: auto;
@@ -83,8 +84,43 @@ const StyledButton = styled.button`
   &.stretch {
     width: 100%;
   }
+
+  & > .tooltip {
+    display: none;
+    top: 100%;
+    margin-top: -0.4rem;
+    position: absolute;
+    background: #212121d4;
+    color: #eee;
+    border-radius: 0.8rem;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 1.6rem;
+    font-weight: 600;
+    padding: 0.6rem 1.2rem;
+    z-index: 9999;
+  }
+
+  &:not(:disabled):hover {
+    & > .tooltip {
+      display: block;
+    }
+  }
 `;
 
-export function Button({ children, ...props }) {
-  return <StyledButton {...props}>{children}</StyledButton>;
+export function Button({ children, tooltip, ...props }) {
+  return (
+    <StyledButton {...props}>
+      {tooltip && (
+        <div
+          className="tooltip"
+          ref={(el) => {
+            if (!el) return;
+          }}
+        >
+          {tooltip}
+        </div>
+      )}
+      {children}
+    </StyledButton>
+  );
 }

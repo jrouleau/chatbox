@@ -53,7 +53,11 @@ export function EnterChatId({ style, withNew }) {
         </Button>
       </form>
       {withNew && (
-        <Button className="new-chat inverted icon" onClick={newChat}>
+        <Button
+          className="new-chat inverted icon"
+          tooltip="New Chat"
+          onClick={newChat}
+        >
           add
         </Button>
       )}

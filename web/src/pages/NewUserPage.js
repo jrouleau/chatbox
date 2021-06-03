@@ -51,7 +51,11 @@ export function NewUserPage({ style }) {
     <Styles style={style}>
       <Nav>
         <Spacer />
-        <Button className="transparent circle icon" onClick={cancel}>
+        <Button
+          className="transparent circle icon"
+          tooltip="Cancel"
+          onClick={cancel}
+        >
           close
         </Button>
       </Nav>

@@ -14,13 +14,17 @@ const Styles = styled(Page)`
   padding-bottom: 2.4rem;
   overflow-y: hidden;
 
-  & > nav > .title {
-    margin-left: 0.8rem;
-    flex-grow: 1;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    line-height: 1.5;
+  & > nav {
+    padding-right: 0.6rem;
+
+    & > .title {
+      margin-left: 0.8rem;
+      flex-grow: 1;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      line-height: 1.5;
+    }
   }
 `;
 
@@ -82,18 +86,24 @@ export function ChatPage({ style }) {
       <Nav>
         <Button
           className="transparent circle icon"
+          tooltip="Back"
           onClick={() => history.goBack()}
         >
           chevron_left
         </Button>
         <h3 className="title">{chat.id}</h3>
         <Spacer />
-        <Button className="transparent circle icon" onClick={copy}>
+        <Button
+          className="transparent circle icon"
+          tooltip="Copy Link"
+          onClick={copy}
+        >
           share
         </Button>
         {!chat.isLoading && !chat.joined ? (
           <Button
             className="transparent circle icon"
+            tooltip="Join Chat"
             onClick={join}
             disabled={chat.isLoading}
           >
@@ -102,6 +112,7 @@ export function ChatPage({ style }) {
         ) : (
           <Button
             className="transparent circle icon"
+            tooltip="Leave Chat"
             onClick={leave}
             disabled={chat.isLoading}
           >
@@ -110,6 +121,7 @@ export function ChatPage({ style }) {
         )}
         <Button
           className="transparent circle icon"
+          tooltip="Delete Chat"
           onClick={_delete}
           disabled={chat.isLoading || messages.list.length === 0}
         >
