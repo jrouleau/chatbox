@@ -1,17 +1,13 @@
 import * as React from 'react';
 import * as ReactRouter from 'react-router-dom';
+import { useScreenSize } from '../contexts/ScreenSizeCtx';
 import { ChatListPage } from '../pages/ChatListPage';
 import { NewChatPage } from '../pages/NewChatPage';
 
-export function WidthRouter({ children }) {
-  const [width, setWidth] = React.useState(window.innerWidth);
-  React.useEffect(() => {
-    const handleResize = (e) => setWidth(window.innerWidth);
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
+export function ScreenSizeRouter({ children }) {
+  const screenSize = useScreenSize();
 
-  return width >= 768 ? (
+  return screenSize.isLarge ? (
     <>
       <ChatListPage
         style={{
