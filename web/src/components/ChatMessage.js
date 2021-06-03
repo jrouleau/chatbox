@@ -21,6 +21,7 @@ const Styles = styled.div`
 
   & > .text {
     line-height: 1.2;
+    word-wrap: break-word;
 
     & > i {
       margin-left: -0.2rem;
