@@ -2,10 +2,11 @@
   "name": "firebase",
   "version": "0.1.0",
   "private": true,
-  "devDependencies": {
+  "dependencies": {
     "firebase-tools": "^9.10.2"
   },
   "scripts": {
+    "postinstall": "(cd functions && npm install)",
     "serve": "firebase emulators:start",
     "deploy": "firebase deploy"
   }

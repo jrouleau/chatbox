@@ -1,5 +1,8 @@
 {
   "name": "chatbox",
   "version": "0.1.0",
-  "private": true
+  "private": true,
+  "scripts": {
+    "postinstall": "(cd web && npm install) && (cd firebase && npm install)"
+  }
 }
