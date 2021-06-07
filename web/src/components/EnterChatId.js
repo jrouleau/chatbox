@@ -35,7 +35,9 @@ export function EnterChatId({ style, withNew }) {
   };
 
   const newChat = () => {
-    history.push(`/c/${uid(20)}`);
+    history.push(`/c/${uid(20)}`, {
+      action: 'joinChat',
+    });
   };
 
   return (
