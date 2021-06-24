@@ -1,6 +1,46 @@
 {
   "rules": {
-    ".read": true,
-    ".write": true
+    "chats": {
+      "$chatId": {
+        ".read": true,
+        ".write": false
+      }
+    },
+    "user-chats": {
+      "$userId": {
+        ".read": "auth != null && auth.uid == $userId",
+        "$chatId": {
+          ".write": "auth != null && auth.uid == $userId",
+          "joined": { ".validate": "newData.isBoolean()" },
+          "$other": { ".validate": false }
+        }
+      }
+    },
+    "user-messages": {
+      "$userId": {
+        ".read": "auth != null && auth.uid == $userId",
+        "$chatId": {
+          "$messageId": {
+            ".write": "auth != null && auth.uid == $userId",
+            ".validate": "!data.exists()",
+            "author": { ".validate": "newData.val() === $userId" },
+            "type": { ".validate": "newData.val() === 'text'" },
+            "text": {
+              ".validate": "newData.isString() && newData.val().length > 0"
+            },
+            "time": { ".validate": "newData.val() === now" },
+            "$other": { ".validate": false }
+          }
+        }
+      }
+    },
+    "users": {
+      "$userId": {
+        ".read": true,
+        ".write": "auth != null && auth.uid == $userId",
+        "displayName": { ".validate": "newData.isString()" },
+        "$other": { ".validate": false }
+      }
+    }
   }
 }
