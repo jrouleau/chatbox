@@ -9,16 +9,17 @@ export const ChatsProvider = ({ children }) => {
   const me = useMe();
 
   const [userChats, userChatsLoading] = db.useListVals(
-    db.ref(`/user-chats/${me.id}`).orderByChild('lastMessage/time'),
+    me.isAuth &&
+      db.ref(`/user-chats/${me.id}`).orderByChild('lastMessage/time'),
     { keyField: 'id' },
   );
-  const isLoading = userChatsLoading;
+  const isLoading = me.isAuth && userChatsLoading;
 
   const match = ReactRouter.useRouteMatch({ path: '/c/:chatId', exact: true });
   const selectedChatId = match?.params?.chatId;
   const list = React.useMemo(() => {
     const a = [
-      ...(userChats.slice().reverse() || []).map((c) => ({
+      ...((userChats || []).slice().reverse() || []).map((c) => ({
         ...c,
         selected: c.id === selectedChatId,
       })),

@@ -15,10 +15,10 @@ export const MessagesProvider = ({ children }) => {
   );
 
   const [messages, messagesLoading] = db.useListVals(
-    messagesRef.orderByChild('time'),
+    me.isAuth && messagesRef.orderByChild('time'),
     { keyField: 'id' },
   );
-  const isLoading = messagesLoading;
+  const isLoading = me.isAuth && messagesLoading;
 
   const send = React.useCallback(
     async (text) => {
@@ -34,7 +34,7 @@ export const MessagesProvider = ({ children }) => {
 
   const iface = React.useMemo(
     () => ({
-      list: messages,
+      list: messages || [],
       isLoading,
       send,
     }),

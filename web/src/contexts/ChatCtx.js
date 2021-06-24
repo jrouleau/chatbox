@@ -8,14 +8,15 @@ export const ChatProvider = ({ children, chatId }) => {
   const me = useMe();
 
   const chatRef = React.useMemo(() => db.ref(`/chats/${chatId}`), [chatId]);
+  const [chat, chatLoading] = db.useObjectVal(chatRef);
+
   const userChatRef = React.useMemo(
     () => db.ref(`/user-chats/${me.id}/${chatId}`),
     [me.id, chatId],
   );
+  const [userChat, userChatLoading] = db.useObjectVal(me.isAuth && userChatRef);
 
-  const [chat, chatLoading] = db.useObjectVal(chatRef);
-  const [userChat, userChatLoading] = db.useObjectVal(userChatRef);
-  const isLoading = chatLoading || userChatLoading;
+  const isLoading = chatLoading || (me.isAuth && userChatLoading);
 
   const iface = React.useMemo(() => {
     return {
