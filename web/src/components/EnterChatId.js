@@ -21,6 +21,11 @@ const Styles = styled.div`
   }
 `;
 
+const extractChatId = (str) => {
+  const pieces = str.split('/');
+  return pieces[pieces.length - 1];
+};
+
 export function EnterChatId({ style, withNew }) {
   const history = ReactRouter.useHistory();
 
@@ -48,7 +53,7 @@ export function EnterChatId({ style, withNew }) {
           type="text"
           value={chatId}
           placeholder="Enter chat ID"
-          onChange={(e) => setChatId(e.target.value)}
+          onChange={(e) => setChatId(extractChatId(e.target.value))}
         />
         <Button type="submit" disabled={chatId.length !== 20}>
           Go
