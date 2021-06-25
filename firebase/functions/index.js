@@ -72,6 +72,7 @@ exports.onWriteChatUser = functions
       }
 
       users.forEach((id) => {
+        updates[`/user-chats/${id}/${chatId}/lastMessage`] = message;
         updates[`/user-messages/${id}/${chatId}/${messageId}`] = message;
       });
 
@@ -87,16 +88,17 @@ exports.onCreateMessage = functions
     .onCreate(async (snap, context) => {
       const {userId, chatId, messageId} = context.params;
       const message = snap.val();
-      const updates = {};
-      updates[`/user-chats/${userId}/${chatId}/lastMessage`] = message;
-      updates[`/user-chats/${userId}/${chatId}/unread/${messageId}`] = true;
-      if (message.type === "text" && message.author === userId) {
+      if (message.author === userId) {
+        const updates = {};
         const chat = await db.ref(`/chats/${chatId}`).get();
         const users = Object.keys((chat.val() || {}).users || {});
         users.forEach((id) => {
-          if (id === userId) return;
-          updates[`/user-messages/${id}/${chatId}/${messageId}`] = message;
+          updates[`/user-chats/${id}/${chatId}/lastMessage`] = message;
+          if (id !== userId) {
+            updates[`/user-chats/${id}/${chatId}/unread/${messageId}`] = true;
+            updates[`/user-messages/${id}/${chatId}/${messageId}`] = message;
+          }
         });
+        await db.ref().update(updates);
       }
-      await db.ref().update(updates);
     });
