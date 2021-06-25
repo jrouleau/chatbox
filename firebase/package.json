@@ -7,7 +7,7 @@
   },
   "scripts": {
     "postinstall": "(cd functions && npm install)",
-    "serve": "firebase emulators:start",
+    "start": "firebase emulators:start",
     "deploy": "firebase deploy"
   }
 }
