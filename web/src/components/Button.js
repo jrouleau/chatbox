@@ -8,6 +8,7 @@ const StyledButton = styled.button`
   border-radius: 0.4rem;
   cursor: pointer;
   outline: none;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
   white-space: nowrap;
   text-transform: uppercase;
   font-weight: 600;
