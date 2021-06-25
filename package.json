@@ -3,6 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "postinstall": "(cd web && npm install) && (cd firebase && npm install)"
+    "postinstall": "concurrently --names firebase,web \"cd firebase && npm install\" \"cd web && npm install\"",
+    "start": "concurrently --kill-others --names firebase,web \"cd firebase && npm start\" \"cd web && npm start\""
+  },
+  "dependencies": {
+    "concurrently": "^6.2.0"
   }
 }
