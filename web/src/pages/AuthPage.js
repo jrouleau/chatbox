@@ -5,6 +5,7 @@ import { Button } from '../components/Button';
 import { Nav, Spacer } from '../components/Nav';
 import { Page } from '../components/Page';
 import { useMe } from '../contexts/MeCtx';
+import { useOnEsc } from '../hooks/useOnEsc';
 
 const Styles = styled(Page)`
   max-width: 124rem;
@@ -38,9 +39,10 @@ export function AuthPage({ style }) {
   const history = ReactRouter.useHistory();
   const me = useMe();
 
-  const cancel = () => {
+  const cancel = React.useCallback(() => {
     history.goBack();
-  };
+  }, [history]);
+  useOnEsc(cancel);
 
   const anonymousLogin = (e) => {
     e.target.disabled = true;

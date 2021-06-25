@@ -6,6 +6,7 @@ import { Input } from '../components/Input';
 import { Nav, Spacer } from '../components/Nav';
 import { Page } from '../components/Page';
 import { useMe } from '../contexts/MeCtx';
+import { useOnEsc } from '../hooks/useOnEsc';
 
 const Styles = styled(Page)`
   max-width: 124rem;
@@ -36,10 +37,11 @@ export function NewUserPage({ style }) {
   const history = ReactRouter.useHistory();
   const me = useMe();
 
-  const cancel = async () => {
+  const cancel = React.useCallback(async () => {
     history.goBack();
     me.delete();
-  };
+  }, [history, me]);
+  useOnEsc(cancel);
 
   const [displayName, setDisplayName] = React.useState('');
   const save = async (e) => {
