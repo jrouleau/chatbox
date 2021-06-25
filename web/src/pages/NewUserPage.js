@@ -10,6 +10,7 @@ import { useOnEsc } from '../hooks/useOnEsc';
 
 const Styles = styled(Page)`
   max-width: 124rem;
+  overflow-y: auto;
 
   & > h2 {
     margin-bottom: 1.8rem;

@@ -9,6 +9,7 @@ import { useOnEsc } from '../hooks/useOnEsc';
 
 const Styles = styled(Page)`
   max-width: 124rem;
+  overflow-y: auto;
 
   & > .buttons {
     width: 100%;

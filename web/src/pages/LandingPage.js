@@ -9,6 +9,7 @@ import { Page } from '../components/Page';
 
 const Styles = styled(Page)`
   max-width: 124rem;
+  overflow-y: auto;
 
   & > h1 {
     color: #eee;
