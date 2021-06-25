@@ -26,6 +26,23 @@ const Styles = styled(Page)`
       text-overflow: ellipsis;
       line-height: 1.5;
     }
+
+    & > #users {
+      position: 'relative';
+
+      & > .users-count {
+        position: absolute;
+        top: 0;
+        right: 0;
+        color: #fff;
+        font-family: 'Open Sans', sans-serif;
+        font-weight: 600;
+        font-size: 1.2rem;
+        background: #212121a0;
+        border-radius: 0.4rem;
+        padding: 0.2rem 0.4rem;
+      }
+    }
   }
 `;
 
@@ -36,6 +53,9 @@ export function ChatPage({ style }) {
   const me = useMe();
   const chat = useChat();
   const messages = useMessages();
+
+  let usersCount = Object.keys(chat.users || {}).length;
+  if (usersCount > 1000) usersCount = '1000+';
 
   const copy = React.useCallback(() => {
     if (window.location.hostname === 'localhost') {
@@ -98,6 +118,16 @@ export function ChatPage({ style }) {
         </Button>
         <h3 className="title">{chat.id}</h3>
         <Spacer />
+        <Button
+          id="users"
+          className="transparent circle icon"
+          tooltip="Users"
+          onClick={null}
+          disabled
+        >
+          people
+          <span className="users-count">{usersCount}</span>
+        </Button>
         <Button
           className="transparent circle icon"
           tooltip="Copy Link"
