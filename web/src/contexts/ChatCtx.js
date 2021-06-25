@@ -1,4 +1,4 @@
-import { db } from '../firebase';
+import firebase, { db } from '../firebase';
 import * as React from 'react';
 import { useMe } from './MeCtx';
 
@@ -22,14 +22,18 @@ export const ChatProvider = ({ children, chatId }) => {
     return {
       ...chat,
       ...userChat,
+      joined: !!((chat || {}).users || {})[me.id],
       id: chatId,
       isLoading,
-      join: () => userChatRef.update({ joined: true }),
-      leave: () => userChatRef.update({ joined: false }),
+      join: () =>
+        chatRef
+          .child(`users/${me.id}`)
+          .set(firebase.database.ServerValue.TIMESTAMP),
+      leave: () => chatRef.child('users').child(me.id).remove(),
       delete: () => userChatRef.remove(),
       markRead: () => userChatRef.child('unread').set(null),
     };
-  }, [userChatRef, chat, userChat, chatId, isLoading]);
+  }, [me.id, chatId, chatRef, userChatRef, chat, userChat, isLoading]);
 
   return <ChatCtx.Provider value={iface}>{children}</ChatCtx.Provider>;
 };

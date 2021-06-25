@@ -3,7 +3,12 @@
     "chats": {
       "$chatId": {
         ".read": true,
-        ".write": false
+        "users": {
+          "$userId": {
+            ".write": "auth != null && auth.uid == $userId",
+            ".validate": "!newData.exists() || (!data.exists() && newData.val() === now)"
+          }
+        }
       }
     },
     "user-chats": {
@@ -11,7 +16,6 @@
         ".read": "auth != null && auth.uid == $userId",
         "$chatId": {
           ".write": "auth != null && auth.uid == $userId",
-          "joined": { ".validate": "newData.isBoolean()" },
           "$other": { ".validate": false }
         }
       }

@@ -44,26 +44,10 @@ exports.onDeleteUserChat = functions
       await db.ref().update(updates);
     });
 
-exports.onWriteUserChatJoined = functions
-    .database
-    .ref("/user-chats/{userId}/{chatId}/joined")
-    .onWrite(async (change, context) => {
-      const {userId, chatId} = context.params;
-      const updates = {};
-      if (change.after.val()) {
-        // join
-        updates[`/chats/${chatId}/users/${userId}`] = TIMESTAMP;
-      } else {
-        // leave
-        updates[`/chats/${chatId}/users/${userId}`] = null;
-      }
-      await db.ref().update(updates);
-    });
-
 /*
  * Chat
  */
-exports.onWriteChat = functions
+exports.onWriteChatUser = functions
     .database
     .ref("/chats/{chatId}/users/{userId}")
     .onWrite(async (change, context) => {

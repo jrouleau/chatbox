@@ -147,9 +147,7 @@ export function ChatListItem({ style, chat }) {
               </span>
             </>
           ) : (
-            <span className="text">
-              <i>{'Send a message'}</i>
-            </span>
+            <span className="text">{'\u00A0'}</span>
           )}
         </div>
       </div>
