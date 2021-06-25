@@ -7,15 +7,10 @@ export const ChatCtx = React.createContext();
 export const ChatProvider = ({ children, chatId }) => {
   const me = useMe();
 
-  const chatRef = React.useMemo(() => db.ref(`/chats/${chatId}`), [chatId]);
-  const [chat, chatLoading] = db.useObjectVal(chatRef);
-
-  const userChatRef = React.useMemo(
-    () => db.ref(`/user-chats/${me.id}/${chatId}`),
-    [me.id, chatId],
+  const [chat, chatLoading] = db.useObjectVal(db.ref(`/chats/${chatId}`));
+  const [userChat, userChatLoading] = db.useObjectVal(
+    me.isAuth && db.ref(`/user-chats/${me.id}/${chatId}`),
   );
-  const [userChat, userChatLoading] = db.useObjectVal(me.isAuth && userChatRef);
-
   const isLoading = chatLoading || (me.isAuth && userChatLoading);
 
   const iface = React.useMemo(() => {
@@ -26,14 +21,25 @@ export const ChatProvider = ({ children, chatId }) => {
       id: chatId,
       isLoading,
       join: () =>
-        chatRef
-          .child(`users/${me.id}`)
-          .set(firebase.database.ServerValue.TIMESTAMP),
-      leave: () => chatRef.child('users').child(me.id).remove(),
-      delete: () => userChatRef.remove(),
-      markRead: () => userChatRef.child('unread').set(null),
+        db.ref().update({
+          [`/chats/${chatId}/users/${me.id}`]: firebase.database.ServerValue
+            .TIMESTAMP,
+        }),
+      leave: () =>
+        db.ref().update({
+          [`/chats/${chatId}/users/${me.id}`]: null,
+        }),
+      delete: () =>
+        db.ref().update({
+          [`/chats/${chatId}/users/${me.id}`]: null,
+          [`/user-chats/${me.id}/${chatId}`]: null,
+        }),
+      markRead: () =>
+        db.ref().update({
+          [`/user-chats/${me.id}/${chatId}/unread`]: null,
+        }),
     };
-  }, [me.id, chatId, chatRef, userChatRef, chat, userChat, isLoading]);
+  }, [me.id, chatId, chat, userChat, isLoading]);
 
   return <ChatCtx.Provider value={iface}>{children}</ChatCtx.Provider>;
 };

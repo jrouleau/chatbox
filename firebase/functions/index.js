@@ -40,6 +40,7 @@ exports.onDeleteUserChat = functions
     .onDelete(async (_, context) => {
       const {userId, chatId} = context.params;
       const updates = {};
+      updates[`/chats/${chatId}/users/${userId}`] = null;
       updates[`/user-messages/${userId}/${chatId}`] = null;
       await db.ref().update(updates);
     });
