@@ -15,9 +15,24 @@ const Styles = styled(Page)`
     margin-top: 1.2rem;
     margin-bottom: 1.6rem;
 
-    & > h2 {
+    & > #name {
+      height: 4.8rem;
+      line-height: 4.8rem;
+      padding-left: 1.6rem;
+      padding-right: 0.4rem;
       font-size: 2.8rem;
-      margin-left: 1.6rem;
+      font-weight: bold;
+      color: #fff;
+    }
+
+    & > input#name {
+      width: 100%;
+      padding-right: 1.6rem;
+      margin-right: 0.4rem;
+      background: #21212180;
+      outline: none;
+      border: none;
+      border-radius: 0.4rem;
     }
   }
 `;
@@ -26,11 +41,33 @@ export function ChatListPage({ style }) {
   const history = ReactRouter.useHistory();
   const me = useMe();
 
+  /* Name */
+  const [isEdittingName, setIsEdittingName] = React.useState(false);
+  const [name, setName] = React.useState(me.displayName);
+  const editName = React.useCallback(() => {
+    setIsEdittingName(true);
+
+    // const el = document.getElementById('name');
+    // if (el) el.focus();
+  }, []);
+
+  const cancelEdittingName = React.useCallback(() => {
+    setIsEdittingName(false);
+    setName(me.displayName);
+  }, [me.displayName]);
+
+  const saveName = async () => {
+    await me.update({ displayName: name });
+    setIsEdittingName(false);
+  };
+
+  /* Logout */
   const logout = () => {
     history.push('/');
     me.signOut();
   };
 
+  /* Delete Account */
   const deleteAccount = () => {
     history.push('/');
     me.delete();
@@ -54,24 +91,57 @@ export function ChatListPage({ style }) {
           </>
         ) : (
           <>
-            <h2>{me.displayName || 'Anonymous'}</h2>
-            <Spacer />
-            {me.isAnonymous ? (
-              <Button
-                className="transparent circle icon"
-                tooltip="Delete Account"
-                onClick={deleteAccount}
-              >
-                delete
-              </Button>
+            {!isEdittingName ? (
+              <>
+                <h2 id="name">{me.displayName || 'Anonymous'}</h2>
+                <Button className="transparent circle icon" onClick={editName}>
+                  edit
+                </Button>
+                <Spacer />
+                {me.isAnonymous ? (
+                  <Button
+                    className="transparent circle icon"
+                    tooltip="Delete Account"
+                    onClick={deleteAccount}
+                  >
+                    delete
+                  </Button>
+                ) : (
+                  <Button
+                    className="transparent circle icon"
+                    tooltip="Logout"
+                    onClick={logout}
+                  >
+                    logout
+                  </Button>
+                )}
+              </>
             ) : (
-              <Button
-                className="transparent circle icon"
-                tooltip="Logout"
-                onClick={logout}
-              >
-                logout
-              </Button>
+              <>
+                <input
+                  id="name"
+                  placeholder="Anonymous"
+                  value={name}
+                  autoFocus
+                  onChange={(e) => setName(e.target.value)}
+                  onKeyUp={(e) => {
+                    if (e.key === 'Escape') {
+                      cancelEdittingName();
+                    } else if (e.key === 'Enter') {
+                      saveName();
+                    }
+                  }}
+                />
+                <Button className="transparent circle icon" onClick={saveName}>
+                  save
+                </Button>
+                <Button
+                  className="transparent circle icon"
+                  onClick={cancelEdittingName}
+                >
+                  cancel
+                </Button>
+              </>
             )}
           </>
         )}
