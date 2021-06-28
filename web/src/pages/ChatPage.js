@@ -58,12 +58,8 @@ export function ChatPage({ style }) {
   if (usersCount > 1000) usersCount = '1000+';
 
   const copy = React.useCallback(() => {
-    if (window.location.hostname === 'localhost') {
-      navigator.clipboard.writeText(chat.id);
-    } else {
-      navigator.clipboard.writeText(window.location.href);
-    }
-  }, [chat.id]);
+    navigator.clipboard.writeText(window.location.href);
+  }, []);
 
   const join = React.useCallback(() => {
     if (!me.isAuth) {
