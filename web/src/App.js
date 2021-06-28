@@ -6,7 +6,6 @@ import { ChatsProvider } from './contexts/ChatsCtx';
 import { MeProvider } from './contexts/MeCtx';
 import { MessagesProvider } from './contexts/MessagesCtx';
 import { ScreenSizeProvider } from './contexts/ScreenSizeCtx';
-import { UsersProvider } from './contexts/UsersCtx';
 import { ChatPage } from './pages/ChatPage';
 import { NotFoundPage } from './pages/NotFoundPage';
 import { AuthRouter } from './routers/AuthRouter';
@@ -59,7 +58,6 @@ export function App() {
     (c) => <Styles>{c}</Styles>,
     (c) => <ReactRouter.BrowserRouter>{c}</ReactRouter.BrowserRouter>,
     (c) => <ScreenSizeProvider>{c}</ScreenSizeProvider>,
-    (c) => <UsersProvider>{c}</UsersProvider>,
     (c) => <MeProvider>{c}</MeProvider>,
     (c) => <AuthRouter>{c}</AuthRouter>,
     (c) => <NewUserRouter>{c}</NewUserRouter>,

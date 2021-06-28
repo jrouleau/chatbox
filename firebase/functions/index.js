@@ -55,20 +55,24 @@ exports.onWriteChatUser = functions
       const {chatId, userId} = context.params;
       const updates = {};
 
-      const chat = await db.ref(`/chats/${chatId}`).get();
-      const userChat = await db.ref(`/user-chats/${userId}/${chatId}`).get();
-      const users = Object.keys((chat.val() || {}).users || {});
+      const chat = (await db.ref(`/chats/${chatId}`).get()).val();
+      const user = (await db.ref(`/users/${userId}`).get()).val();
+      const userChatRef = await db.ref(`/user-chats/${userId}/${chatId}`).get();
+      const users = Object.keys((chat || {}).users || {});
 
       const messageId = db.ref().push().key;
       const message = {
-        author: userId,
+        author: {
+          id: userId,
+          name: user.name,
+        },
         time: TIMESTAMP,
       };
       if (change.after.val()) {
         message.type = "join";
       } else {
         message.type = "leave";
-        if (userChat.exists()) users.unshift(userId);
+        if (userChatRef.exists()) users.unshift(userId);
       }
 
       users.forEach((id) => {
@@ -88,7 +92,7 @@ exports.onCreateMessage = functions
     .onCreate(async (snap, context) => {
       const {userId, chatId, messageId} = context.params;
       const message = snap.val();
-      if (message.author === userId) {
+      if (message.author.id === userId) {
         const updates = {};
         const chat = await db.ref(`/chats/${chatId}`).get();
         const users = Object.keys((chat.val() || {}).users || {});

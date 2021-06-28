@@ -1,7 +1,6 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import { Anchorme } from 'react-anchorme';
-import { useUsers } from '../contexts/UsersCtx';
 
 const Styles = styled.div`
   padding-left: 6.4rem;
@@ -30,9 +29,7 @@ const Styles = styled.div`
 `;
 
 export function ChatMessage({ style, message }) {
-  const users = useUsers();
-
-  const author = users.get(message.author);
+  const author = message.author || {};
   const time =
     message.time &&
     new Date(message.time).toLocaleTimeString([], {

@@ -1,7 +1,6 @@
 import * as React from 'react';
 import * as ReactRouter from 'react-router-dom';
 import styled from 'styled-components';
-import { useUsers } from '../contexts/UsersCtx';
 
 const Styles = styled.li`
   list-style-type: none;
@@ -107,10 +106,9 @@ const Styles = styled.li`
 
 export function ChatListItem({ style, chat }) {
   const history = ReactRouter.useHistory();
-  const users = useUsers();
 
   const message = chat.lastMessage;
-  const author = users.get(message?.author);
+  const author = message?.author || {};
   const unread = Object.keys(chat.unread || {}).length;
   const time =
     message?.time &&

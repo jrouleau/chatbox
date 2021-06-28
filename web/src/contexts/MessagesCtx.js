@@ -23,13 +23,16 @@ export const MessagesProvider = ({ children }) => {
   const send = React.useCallback(
     async (text) => {
       await messagesRef.push({
-        author: me.id,
+        author: {
+          id: me.id,
+          name: me.name,
+        },
         type: 'text',
         text,
         time: firebase.database.ServerValue.TIMESTAMP,
       });
     },
-    [messagesRef, me.id],
+    [messagesRef, me.id, me.name],
   );
 
   const iface = React.useMemo(

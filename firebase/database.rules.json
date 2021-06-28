@@ -26,8 +26,13 @@
         "$chatId": {
           "$messageId": {
             ".write": "auth != null && auth.uid == $userId",
-            ".validate": "!data.exists()",
-            "author": { ".validate": "newData.val() === $userId" },
+            ".validate": "!data.exists() && newData.hasChildren(['author', 'type', 'text', 'time'])",
+            "author": {
+              ".validate": "newData.hasChildren(['id', 'name'])",
+              "id": { ".validate": "newData.val() === $userId" },
+              "name": { ".validate": "newData.val() === root.child('users').child($userId).child('name').val()" },
+              "$other": { ".validate": false}
+            },
             "type": { ".validate": "newData.val() === 'text'" },
             "text": {
               ".validate": "newData.isString() && newData.val().length > 0"
