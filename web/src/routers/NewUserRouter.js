@@ -8,7 +8,7 @@ export function NewUserRouter({ children }) {
   const location = ReactRouter.useLocation();
   const me = useMe();
 
-  return me.isAuth && typeof me.displayName === 'undefined' ? (
+  return me.isAuth && typeof me.name === 'undefined' ? (
     <ReactRouter.Switch>
       <ReactRouter.Route path="/welcome" exact component={NewUserPage} />
       <ReactRouter.Route

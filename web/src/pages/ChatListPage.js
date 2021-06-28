@@ -43,7 +43,7 @@ export function ChatListPage({ style }) {
 
   /* Name */
   const [isEdittingName, setIsEdittingName] = React.useState(false);
-  const [name, setName] = React.useState(me.displayName);
+  const [name, setName] = React.useState(me.name);
   const editName = React.useCallback(() => {
     setIsEdittingName(true);
 
@@ -53,11 +53,11 @@ export function ChatListPage({ style }) {
 
   const cancelEdittingName = React.useCallback(() => {
     setIsEdittingName(false);
-    setName(me.displayName);
-  }, [me.displayName]);
+    setName(me.name);
+  }, [me.name]);
 
   const saveName = async () => {
-    await me.update({ displayName: name });
+    await me.update({ name });
     setIsEdittingName(false);
   };
 
@@ -93,7 +93,7 @@ export function ChatListPage({ style }) {
           <>
             {!isEdittingName ? (
               <>
-                <h2 id="name">{me.displayName || 'Anonymous'}</h2>
+                <h2 id="name">{me.name || 'Anonymous'}</h2>
                 <Button className="transparent circle icon" onClick={editName}>
                   edit
                 </Button>

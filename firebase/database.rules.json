@@ -42,7 +42,7 @@
       "$userId": {
         ".read": true,
         ".write": "auth != null && auth.uid == $userId",
-        "displayName": { ".validate": "newData.isString()" },
+        "name": { ".validate": "newData.isString()" },
         "$other": { ".validate": false }
       }
     }

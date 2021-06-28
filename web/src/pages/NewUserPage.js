@@ -44,10 +44,10 @@ export function NewUserPage({ style }) {
   }, [history, me]);
   useOnEsc(cancel);
 
-  const [displayName, setDisplayName] = React.useState('');
+  const [name, setName] = React.useState('');
   const save = async (e) => {
     e.preventDefault();
-    await me.update({ displayName });
+    await me.update({ name });
   };
 
   return (
@@ -68,8 +68,8 @@ export function NewUserPage({ style }) {
           className="stretch"
           type="text"
           placeholder="Enter name (optional)"
-          value={displayName}
-          onChange={(e) => setDisplayName(e.target.value)}
+          value={name}
+          onChange={(e) => setName(e.target.value)}
         />
         <Button type="submit" className="inverted">
           Continue

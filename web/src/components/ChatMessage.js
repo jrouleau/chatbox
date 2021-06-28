@@ -43,7 +43,7 @@ export function ChatMessage({ style, message }) {
   return (
     <Styles style={style}>
       <span className="time">{time}</span>
-      <span className="author">{author.displayName || 'Anonymous'}</span>
+      <span className="author">{author.name || 'Anonymous'}</span>
       <span className="text">
         {message.type === 'text' ? (
           <Anchorme target="_blank" rel="noreferrer noopener">

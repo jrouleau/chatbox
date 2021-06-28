@@ -131,9 +131,7 @@ export function ChatListItem({ style, chat }) {
           {message ? (
             <>
               <span className="time">{time}</span>
-              <span className="author">
-                {author.displayName || 'Anonymous'}
-              </span>
+              <span className="author">{author.name || 'Anonymous'}</span>
               <span className="text">
                 {message.type === 'text' ? (
                   message.text
