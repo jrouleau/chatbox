@@ -31,6 +31,7 @@ const Styles = styled.div`
 
   .scroll {
     overflow-y: scroll;
+    scrollbar-color: #212121 #21212154;
 
     &::-webkit-scrollbar {
       width: 0.8rem;
