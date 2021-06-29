@@ -6,6 +6,7 @@ import { MessageList } from '../components/MessageList';
 import { Nav, Spacer } from '../components/Nav';
 import { Page } from '../components/Page';
 import { SendMessage } from '../components/SendMessage';
+import { UserList } from '../components/UserList';
 import { useChat } from '../contexts/ChatCtx';
 import { useMe } from '../contexts/MeCtx';
 import { useMessages } from '../contexts/MessagesCtx';
@@ -44,6 +45,13 @@ const Styles = styled(Page)`
       }
     }
   }
+
+  & > .container {
+    display: flex;
+    height: 100%;
+    width: 100%;
+    margin-bottom: 1.2rem;
+  }
 `;
 
 export function ChatPage({ style }) {
@@ -54,6 +62,7 @@ export function ChatPage({ style }) {
   const chat = useChat();
   const messages = useMessages();
 
+  const [usersListIsOpen, setUsersListIsOpen] = React.useState(false);
   let usersCount = Object.keys(chat.users || {}).length;
   if (usersCount > 1000) usersCount = '1000+';
 
@@ -115,21 +124,20 @@ export function ChatPage({ style }) {
         <h3 className="title">{chat.id}</h3>
         <Spacer />
         <Button
-          id="users"
-          className="transparent circle icon"
-          tooltip="Users"
-          onClick={null}
-          disabled
-        >
-          people
-          <span className="users-count">{usersCount}</span>
-        </Button>
-        <Button
           className="transparent circle icon"
           tooltip="Copy Link"
           onClick={copy}
         >
           share
+        </Button>
+        <Button
+          id="users"
+          className="transparent circle icon"
+          tooltip="Users"
+          onClick={() => setUsersListIsOpen((p) => !p)}
+        >
+          people
+          <span className="users-count">{usersCount}</span>
         </Button>
         {!chat.isLoading && !chat.joined ? (
           <Button
@@ -159,7 +167,10 @@ export function ChatPage({ style }) {
           delete
         </Button>
       </Nav>
-      <MessageList />
+      <div className="container">
+        <MessageList />
+        {usersListIsOpen && <UserList />}
+      </div>
       {me.isAuth && (chat.isLoading || chat.joined) ? (
         <SendMessage />
       ) : (

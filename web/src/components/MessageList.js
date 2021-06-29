@@ -7,11 +7,10 @@ import { MessageListItem } from './MessageListItem';
 
 const Styles = styled.ol`
   width: 100%;
-  flex-grow: 1;
+  flex: 1 1 auto;
   display: flex;
   flex-direction: column-reverse;
   padding: 0.8rem 1.6rem;
-  margin-bottom: 1.2rem;
   border-radius: 0.4rem;
   background: #21212121;
 `;
