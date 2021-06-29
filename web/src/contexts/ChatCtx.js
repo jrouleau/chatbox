@@ -22,8 +22,10 @@ export const ChatProvider = ({ children, chatId }) => {
       isLoading,
       join: () =>
         db.ref().update({
-          [`/chats/${chatId}/users/${me.id}`]: firebase.database.ServerValue
-            .TIMESTAMP,
+          [`/chats/${chatId}/users/${me.id}`]: {
+            name: me.name,
+            time: firebase.database.ServerValue.TIMESTAMP,
+          },
         }),
       leave: () =>
         db.ref().update({
@@ -39,7 +41,7 @@ export const ChatProvider = ({ children, chatId }) => {
           [`/user-chats/${me.id}/${chatId}/unread`]: null,
         }),
     };
-  }, [me.id, chatId, chat, userChat, isLoading]);
+  }, [me.id, me.name, chatId, chat, userChat, isLoading]);
 
   return <ChatCtx.Provider value={iface}>{children}</ChatCtx.Provider>;
 };

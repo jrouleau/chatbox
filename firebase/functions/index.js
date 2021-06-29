@@ -20,6 +20,30 @@ exports.onDeleteAuth = functions
 /*
  * User
  */
+
+exports.onWriteUserName = functions
+    .database
+    .ref("/users/{userId}/name")
+    .onWrite(async (change, context) => {
+      const {userId} = context.params;
+      const data = change.before;
+      const newData = change.after;
+
+      if (data.exists() && newData.exists() && data.val() !== newData.val()) {
+        const updates = {};
+
+        const userChats = (
+          await db.ref(`/user-chats/${userId}`).get()
+        ).val() || {};
+
+        Object.keys(userChats).forEach((chatId) => {
+          updates[`/chats/${chatId}/users/${userId}/name`] = newData.val();
+        });
+
+        await db.ref().update(updates);
+      }
+    });
+
 exports.onDeleteUser = functions
     .database
     .ref("/users/{userId}")
@@ -53,34 +77,44 @@ exports.onWriteChatUser = functions
     .ref("/chats/{chatId}/users/{userId}")
     .onWrite(async (change, context) => {
       const {chatId, userId} = context.params;
-      const updates = {};
+      const data = change.before;
+      const newData = change.after;
 
-      const chat = (await db.ref(`/chats/${chatId}`).get()).val();
-      const user = (await db.ref(`/users/${userId}`).get()).val();
-      const userChatRef = await db.ref(`/user-chats/${userId}/${chatId}`).get();
-      const users = Object.keys((chat || {}).users || {});
+      if (!data.exists() || !newData.exists()) {
+        const updates = {};
 
-      const messageId = db.ref().push().key;
-      const message = {
-        author: {
-          id: userId,
-          name: user.name,
-        },
-        time: TIMESTAMP,
-      };
-      if (change.after.val()) {
-        message.type = "join";
-      } else {
-        message.type = "leave";
-        if (userChatRef.exists()) users.unshift(userId);
+        const name = newData.exists() ? newData.val().name : data.val().name;
+
+        const chat = (await db.ref(`/chats/${chatId}`).get()).val();
+        const userChatRef =
+          await db.ref(`/user-chats/${userId}/${chatId}`).get();
+        const users = Object.keys((chat || {}).users || {});
+
+        const messageId = db.ref().push().key;
+        const message = {
+          author: {
+            id: userId,
+            name,
+          },
+          time: TIMESTAMP,
+        };
+        if (newData.exists()) {
+          message.type = "join";
+          updates[`/user-chats/${userId}/${chatId}/joined`] =
+            newData.val().time;
+        } else {
+          message.type = "leave";
+          updates[`/user-chats/${userId}/${chatId}/joined`] = null;
+          if (userChatRef.exists()) users.unshift(userId);
+        }
+
+        users.forEach((id) => {
+          updates[`/user-chats/${id}/${chatId}/lastMessage`] = message;
+          updates[`/user-messages/${id}/${chatId}/${messageId}`] = message;
+        });
+
+        await db.ref().update(updates);
       }
-
-      users.forEach((id) => {
-        updates[`/user-chats/${id}/${chatId}/lastMessage`] = message;
-        updates[`/user-messages/${id}/${chatId}/${messageId}`] = message;
-      });
-
-      await db.ref().update(updates);
     });
 
 /*

@@ -6,7 +6,10 @@
         "users": {
           "$userId": {
             ".write": "auth != null && auth.uid == $userId",
-            ".validate": "!newData.exists() || (!data.exists() && newData.val() === now)"
+            ".validate": "!data.exists() && newData.hasChildren(['name', 'time'])",
+            "name": { ".validate": "newData.val() === root.child('users').child($userId).child('name').val()" },
+            "time": { ".validate": "newData.val() === now" },
+            "$other": { ".validate": false }
           }
         }
       }
