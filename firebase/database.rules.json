@@ -50,7 +50,7 @@
       "$userId": {
         ".read": true,
         ".write": "auth != null && auth.uid == $userId",
-        "name": { ".validate": "newData.isString()" },
+        "name": { ".validate": "newData.isString() && newData.val().length <= 16" },
         "$other": { ".validate": false }
       }
     }

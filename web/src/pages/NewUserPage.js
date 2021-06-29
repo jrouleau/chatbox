@@ -68,6 +68,7 @@ export function NewUserPage({ style }) {
           className="stretch"
           type="text"
           placeholder="Enter name (optional)"
+          maxLength={16}
           value={name}
           onChange={(e) => setName(e.target.value)}
         />

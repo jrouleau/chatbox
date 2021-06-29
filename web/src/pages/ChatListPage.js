@@ -20,6 +20,9 @@ const Styles = styled(Page)`
       line-height: 4.8rem;
       padding-left: 1.6rem;
       padding-right: 0.4rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
       font-size: 2.8rem;
       font-weight: bold;
       color: #fff;
@@ -121,6 +124,7 @@ export function ChatListPage({ style }) {
                 <input
                   id="name"
                   placeholder="Anonymous"
+                  maxLength={16}
                   value={name}
                   autoFocus
                   onChange={(e) => setName(e.target.value)}
