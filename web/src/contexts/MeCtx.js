@@ -5,7 +5,7 @@ export const MeCtx = React.createContext();
 
 export const MeProvider = ({ children }) => {
   const [authUser, setAuthUser] = React.useState(undefined);
-  React.useEffect(() => auth.onAuthStateChanged((u) => setAuthUser(u)));
+  React.useEffect(() => auth.onAuthStateChanged((u) => setAuthUser(u)), []);
 
   const [user, setUser] = React.useState();
   React.useEffect(() => {
@@ -22,7 +22,7 @@ export const MeProvider = ({ children }) => {
   }, [authUser]);
 
   const [isDeleting, setIsDeleting] = React.useState(false);
-  const del = React.useCallback(async () => {
+  const _delete = React.useCallback(async () => {
     setIsDeleting(true);
     await authUser?.delete();
     setIsDeleting(false);
@@ -46,10 +46,10 @@ export const MeProvider = ({ children }) => {
       isAuth: !!authUser,
       signInAnonymously: () => auth.signInAnonymously(),
       signOut: () => auth.signOut(),
-      delete: del,
+      delete: _delete,
       update,
     }),
-    [authUser, user, isDeleting, del, update],
+    [authUser, user, isDeleting, _delete, update],
   );
 
   return <MeCtx.Provider value={iface}>{children}</MeCtx.Provider>;

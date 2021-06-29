@@ -66,11 +66,19 @@ export function ChatPage({ style }) {
   let usersCount = Object.keys(chat.users || {}).length;
   if (usersCount > 1000) usersCount = '1000+';
 
-  const copy = React.useCallback(() => {
+  const copyLink = React.useCallback(() => {
     navigator.clipboard.writeText(window.location.href);
   }, []);
 
-  const join = React.useCallback(() => {
+  React.useEffect(() => {
+    const state = location.state || {};
+    if (state.action === 'joinChat') {
+      history.replace({ ...location, state: undefined });
+      if (me.isAuth) chat.join();
+    }
+  }, [me.isAuth, history, location, chat]);
+
+  const joinChat = React.useCallback(() => {
     if (!me.isAuth) {
       history.push('/login', {
         redirectTo: {
@@ -85,19 +93,11 @@ export function ChatPage({ style }) {
     }
   }, [me.isAuth, history, location, chat]);
 
-  React.useEffect(() => {
-    const state = location.state || {};
-    if (state.action === 'joinChat') {
-      history.replace({ ...location, state: undefined });
-      if (me.isAuth) join();
-    }
-  });
-
-  const leave = React.useCallback(async () => {
+  const leaveChat = React.useCallback(async () => {
     await chat.leave();
   }, [chat]);
 
-  const _delete = React.useCallback(async () => {
+  const deleteChat = React.useCallback(async () => {
     history.push('/');
     await chat.delete();
   }, [history, chat]);
@@ -126,7 +126,7 @@ export function ChatPage({ style }) {
         <Button
           className="transparent circle icon"
           tooltip="Copy Link"
-          onClick={copy}
+          onClick={copyLink}
         >
           share
         </Button>
@@ -143,7 +143,7 @@ export function ChatPage({ style }) {
           <Button
             className="transparent circle icon"
             tooltip="Join Chat"
-            onClick={join}
+            onClick={joinChat}
             disabled={chat.isLoading}
           >
             login
@@ -152,7 +152,7 @@ export function ChatPage({ style }) {
           <Button
             className="transparent circle icon"
             tooltip="Leave Chat"
-            onClick={leave}
+            onClick={leaveChat}
             disabled={chat.isLoading}
           >
             logout
@@ -161,7 +161,7 @@ export function ChatPage({ style }) {
         <Button
           className="transparent circle icon"
           tooltip="Delete Chat"
-          onClick={_delete}
+          onClick={deleteChat}
           disabled={chat.isLoading || messages.list.length === 0}
         >
           delete
@@ -176,7 +176,7 @@ export function ChatPage({ style }) {
       ) : (
         <Button
           className="inverted stretch"
-          onClick={join}
+          onClick={joinChat}
           disabled={chat.isLoading}
         >
           Join Chat

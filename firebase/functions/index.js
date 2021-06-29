@@ -20,7 +20,6 @@ exports.onDeleteAuth = functions
 /*
  * User
  */
-
 exports.onWriteUserName = functions
     .database
     .ref("/users/{userId}/name")

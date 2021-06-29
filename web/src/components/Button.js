@@ -123,16 +123,7 @@ const StyledButton = styled.button`
 export function Button({ children, tooltip, ...props }) {
   return (
     <StyledButton {...props}>
-      {tooltip && (
-        <div
-          className="tooltip"
-          ref={(el) => {
-            if (!el) return;
-          }}
-        >
-          {tooltip}
-        </div>
-      )}
+      {tooltip && <span className="tooltip">{tooltip}</span>}
       {children}
     </StyledButton>
   );

@@ -17,18 +17,22 @@ export const ChatsProvider = ({ children }) => {
 
   const match = ReactRouter.useRouteMatch({ path: '/c/:chatId', exact: true });
   const selectedChatId = match?.params?.chatId;
+
   const list = React.useMemo(() => {
     let hasSelectedChatId = false;
     const a = [
-      ...((userChats || []).slice().reverse() || []).map((c) => {
-        if (!hasSelectedChatId && c.id === selectedChatId) {
-          hasSelectedChatId = true;
-        }
-        return {
-          ...c,
-          selected: c.id === selectedChatId,
-        };
-      }),
+      ...(userChats || [])
+        .slice()
+        .reverse()
+        .map((c) => {
+          if (!hasSelectedChatId && c.id === selectedChatId) {
+            hasSelectedChatId = true;
+          }
+          return {
+            ...c,
+            selected: c.id === selectedChatId,
+          };
+        }),
     ];
     if (selectedChatId && !hasSelectedChatId) {
       a.unshift({
